@@ -223,6 +223,11 @@
     box-shadow: 0 3px 12px rgba(242, 92, 5, 0.3);
   }
   .punten-chip.nul { color: var(--inkt-vaag); background: #f6ede4; }
+  .punten-chip.live {
+    color: var(--oranje); background: #fff;
+    border: 2px solid var(--oranje-fel);
+    animation: knipperen 1.8s ease-in-out infinite;
+  }
   .punten-chip.open { color: var(--inkt-vaag); background: transparent; border: 1.5px dashed var(--rand-sterk); font-size: 13px; padding: 6px 10px; }
 
   .detail { grid-column: 1 / -1; font-size: 11.5px; color: var(--groen); font-weight: 600; }
@@ -511,11 +516,14 @@ function espnNaam(displayName) {
   return ESPN_NAAR_NL[normaliseer(displayName)] || null;
 }
 
-/* Verwerkt ESPN-events in een kopie van de opgeslagen uitslagen.
-   Geeft terug: { uitslagen, versGroep:Set, versKo:Set, live:{}, onplaatsbaar:[] } */
+/* Verwerkt ESPN-events in kopieën van de opgeslagen uitslagen.
+   Geeft terug: { vast, liveUitslagen, versGroep:Set, versKo:Set, live:{}, onplaatsbaar:[] }
+   - vast: alleen afgelopen wedstrijden (definitieve punten)
+   - liveUitslagen: vast + tussenstanden van wedstrijden die nu bezig zijn (voorlopige punten) */
 function verwerkEspn(events, opgeslagen) {
   const uitslagen = JSON.parse(JSON.stringify(opgeslagen));
   const versGroep = new Set(), versKo = new Set(), live = {}, onplaatsbaar = [];
+  const tussenstanden = [];
 
   const paarSleutel = (a, b) => [normaliseer(a), normaliseer(b)].sort().join("|");
   const groepPerPaar = {};
@@ -560,26 +568,42 @@ function verwerkEspn(events, opgeslagen) {
       record.uit_goals = uitGoals;
       (isGroep ? versGroep : versKo).add(isGroep ? record.id : slot);
     } else if (staat === "in") {
-      live[isGroep ? record.id : slot] = {
+      const kenmerk = isGroep ? record.id : slot;
+      live[kenmerk] = {
         score: `${thuisGoals}-${uitGoals}`,
         minuut: event.status.type.shortDetail || "live",
       };
+      tussenstanden.push({ isGroep, kenmerk, thuisGoals, uitGoals });
     }
   }
-  return { uitslagen, versGroep, versKo, live, onplaatsbaar };
+
+  // Kopie met de tussenstanden van lopende wedstrijden erin (voorlopige punten)
+  const liveUitslagen = JSON.parse(JSON.stringify(uitslagen));
+  for (const t of tussenstanden) {
+    const rec = t.isGroep
+      ? liveUitslagen.groepswedstrijden.find(w => w.id === t.kenmerk)
+      : liveUitslagen.knockout[t.kenmerk];
+    if (rec && (rec.thuis_goals === null || rec.thuis_goals === undefined)) {
+      rec.thuis_goals = t.thuisGoals;
+      rec.uit_goals = t.uitGoals;
+    }
+  }
+  return { vast: uitslagen, liveUitslagen, versGroep, versKo, live, onplaatsbaar };
 }
 
 /* ====================== Weergave ====================== */
 
 const App = {
   voorspellingen: null, regels: null, opgeslagen: null,
-  uitslagen: null, versGroep: new Set(), versKo: new Set(), live: {}, onplaatsbaar: [],
+  uitslagenVast: null, uitslagenLive: null,
+  versGroep: new Set(), versKo: new Set(), live: {}, onplaatsbaar: [],
   liveStatus: null, // null | "bezig" | "ok" | "fout"
   liveTijd: null,
 };
 
-function puntenChip(punten) {
+function puntenChip(punten, isLive) {
   if (punten === null || punten === undefined) return `<div class="punten-chip open">−</div>`;
+  if (isLive) return `<div class="punten-chip live" title="Voorlopige punten — de wedstrijd is nog bezig">${punten}</div>`;
   return `<div class="punten-chip ${punten > 0 ? "goed" : "nul"}">${punten}</div>`;
 }
 
@@ -607,8 +631,11 @@ function statusRegel() {
 }
 
 function render() {
-  const stand = standBerekenen(App.voorspellingen, App.uitslagen, App.regels);
+  const standVast = standBerekenen(App.voorspellingen, App.uitslagenVast || App.opgeslagen, App.regels);
+  const stand = standBerekenen(App.voorspellingen, App.uitslagenLive || App.opgeslagen, App.regels);
   const t = stand.totalen;
+  const liveExtra = t.totaal - standVast.totalen.totaal;
+  const liveBezig = Object.keys(App.live).length;
   const actieveTab = (document.querySelector("nav button.actief") || {}).dataset
     ? document.querySelector("nav button.actief").dataset.tab : "groepsfase";
 
@@ -629,12 +656,12 @@ function render() {
       <div class="paneel totaal">
         <div class="label">Totaalscore</div>
         <div class="waarde">${t.totaal}</div>
-        <div class="sub">punten</div>
+        <div class="sub">${liveExtra > 0 ? `waarvan ● +${liveExtra} live (voorlopig)` : "punten"}</div>
       </div>
       <div class="paneel">
         <div class="label">Groepsfase</div>
         <div class="waarde">${t.groepsfase}</div>
-        <div class="sub">${t.groepswedstrijden_gespeeld} van 72 gespeeld</div>
+        <div class="sub">${standVast.totalen.groepswedstrijden_gespeeld} van 72 gespeeld${liveBezig ? ` · ${liveBezig} live bezig` : ""}</div>
       </div>
       <div class="paneel">
         <div class="label">Knock-out</div>
@@ -676,12 +703,12 @@ function render() {
         <div class="wie">
           <div class="teams">${w.thuis} – ${w.uit}</div>
           <div class="datum">${
-            liveInfo ? `<span class="live-label">● Live</span> ${liveInfo.minuut} · stand ${liveInfo.score} · ` : ""
+            liveInfo ? `<span class="live-label">● Live</span> ${liveInfo.minuut} · ` : ""
           }${fmtDatum(w.datum)}${App.versGroep.has(w.id) ? ' · <span class="vers-label">zojuist opgehaald</span>' : ""}</div>
         </div>
         ${badge("tip", w.voorspelling, "voorspelling")}
-        ${badge("uitslag", w.uitslag, "uitslag")}
-        ${puntenChip(w.punten)}
+        ${badge(liveInfo ? "live" : "uitslag", w.uitslag, "uitslag")}
+        ${puntenChip(w.punten, !!liveInfo)}
         ${w.detail.length ? `<div class="detail">✓ ${w.detail.join(" · ")}</div>` : ""}
       </div>`;
     }
@@ -711,10 +738,10 @@ function render() {
           <span class="kopje">Werkelijk${App.versKo.has(k.slot) ? ' · <span class="vers-label">zojuist opgehaald</span>' : ""}</span>
           ${echtBekend
             ? `<span class="inhoud">${k.echt_thuis || "?"} – ${k.echt_uit || "?"}
-                 <span class="score">${liveInfo ? `<span class="live-label">● Live</span> ${liveInfo.score}` : (k.uitslag || "")}</span></span>`
+                 <span class="score">${liveInfo ? `<span class="live-label">● Live ${liveInfo.minuut}</span> ${liveInfo.score}` : (k.uitslag || "")}</span></span>`
             : `<span class="inhoud onbekend">nog niet bekend</span>`}
         </div>
-        ${puntenChip(k.punten)}
+        ${puntenChip(k.punten, !!liveInfo)}
         ${k.detail.length ? `<div class="detail">✓ ${k.detail.join(" · ")}</div>` : ""}
       </div>`;
     }
@@ -741,7 +768,7 @@ function render() {
   html += `<footer>
     <h3>Gehanteerde aannames bij de puntentelling</h3>
     <ul>${stand.aannames.map(a => `<li>${a}</li>`).join("")}</ul>
-    <div class="bron">Live uitslagen via ESPN · De knop "Haal laatste uitslagen op" telt afgelopen wedstrijden direct mee; elke ochtend om 7:00 wordt de stand ook automatisch opgeslagen.</div>
+    <div class="bron">Live uitslagen via ESPN · Wedstrijden die bezig zijn tellen direct mee als voorlopige punten (oranje knipperend); na het eindsignaal worden ze definitief. Elke ochtend om 7:00 wordt de stand ook automatisch vastgelegd.</div>
   </footer>`;
 
   document.getElementById("app").innerHTML = html;
@@ -768,7 +795,8 @@ async function haalLiveOp() {
     if (!antwoord.ok) throw new Error("HTTP " + antwoord.status);
     const data = await antwoord.json();
     const resultaat = verwerkEspn(data.events || [], App.opgeslagen);
-    App.uitslagen = resultaat.uitslagen;
+    App.uitslagenVast = resultaat.vast;
+    App.uitslagenLive = resultaat.liveUitslagen;
     App.versGroep = resultaat.versGroep;
     App.versKo = resultaat.versKo;
     App.live = resultaat.live;
@@ -798,7 +826,8 @@ async function start() {
       <p>Open deze pagina via de website-link (niet als los bestand op de computer).</p></div>`;
     return;
   }
-  App.uitslagen = App.opgeslagen;
+  App.uitslagenVast = App.opgeslagen;
+  App.uitslagenLive = App.opgeslagen;
   render();
   haalLiveOp(); // direct bij het openen de laatste uitslagen ophalen
 }
@@ -859,13 +888,19 @@ function draaiTests() {
     ]}],
   });
   const r1 = verwerkEspn([nepEvent("2026-06-11T19:00Z", "Mexico", "South Africa", 3, 0, true)], App.opgeslagen);
-  check("espn: groepsuitslag geplaatst", r1.uitslagen.groepswedstrijden[0].thuis_goals, 3);
+  check("espn: groepsuitslag geplaatst", r1.vast.groepswedstrijden[0].thuis_goals, 3);
   const r2 = verwerkEspn([nepEvent("2026-06-11T19:00Z", "South Africa", "Mexico", 0, 3, true)], App.opgeslagen);
-  check("espn: omgedraaide teams goed geplaatst", r2.uitslagen.groepswedstrijden[0].thuis_goals, 3);
+  check("espn: omgedraaide teams goed geplaatst", r2.vast.groepswedstrijden[0].thuis_goals, 3);
   const r3 = verwerkEspn([nepEvent("2026-06-11T19:00Z", "Mexico", "South Africa", 1, 0, false)], App.opgeslagen);
-  check("espn: live wedstrijd niet als uitslag geteld", r3.uitslagen.groepswedstrijden[0].thuis_goals, null);
+  check("espn: live wedstrijd niet definitief geteld", r3.vast.groepswedstrijden[0].thuis_goals, null);
+  check("espn: live wedstrijd telt voorlopig mee", r3.liveUitslagen.groepswedstrijden[0].thuis_goals, 1);
   check("espn: live stand zichtbaar", r3.live["G01"] ? r3.live["G01"].score : null, "1-0");
   check("espn: alle 48 landen in vertaaltabel", Object.keys(ESPN_NAAR_NL).length, 48);
+  // Voorlopige punten: live 1-0 bij tip 3-0 = winnaar (5) + doelpunten Zuid-Afrika (5) = 10
+  const standLiveTest = standBerekenen(App.voorspellingen, r3.liveUitslagen, App.regels);
+  check("live punten: tip 3-0 bij live 1-0 = 10", standLiveTest.groepswedstrijden[0].punten, 10);
+  const standVastTest = standBerekenen(App.voorspellingen, r3.vast, App.regels);
+  check("vaste punten blijven leeg tijdens live", standVastTest.groepswedstrijden[0].punten, null);
 
   const geslaagd = resultaten.filter(r => r.ok).length;
   document.getElementById("app").innerHTML =
