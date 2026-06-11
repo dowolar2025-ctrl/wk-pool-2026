@@ -325,6 +325,41 @@
   }
   .verloop-leeg { color: var(--inkt-vaag); font-style: italic; padding: 4px 0; }
 
+  /* ---------- Standen ---------- */
+  .stand-tabel { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .stand-tabel th {
+    font-size: 9.5px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--inkt-vaag); padding: 8px 6px 5px; text-align: center;
+    border-bottom: 1px solid var(--rand);
+  }
+  .stand-tabel td {
+    padding: 7px 6px; text-align: center; font-variant-numeric: tabular-nums;
+    border-bottom: 1px solid #fdf0e3;
+  }
+  .stand-tabel tr:last-child td { border-bottom: none; }
+  .stand-tabel .links { text-align: left; font-weight: 700; }
+  .stand-tabel .punten-kolom { font-weight: 800; color: var(--oranje); }
+  .stand-tabel tr.plek-door td {
+    background: var(--oranje-zacht);
+  }
+  .stand-tabel tr.plek-door td:first-child { box-shadow: inset 3px 0 0 var(--oranje); }
+  .stand-tabel tr.plek-derde td {
+    background: repeating-linear-gradient(45deg, var(--oranje-zacht) 0 6px, #fff 6px 12px);
+  }
+  .stand-tabel tr.plek-derde td:first-child { box-shadow: inset 3px 0 0 var(--rand-sterk); }
+  .standen-legenda {
+    display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 4px 0 16px;
+    font-size: 12.5px; color: var(--inkt-zacht);
+  }
+  .legenda-item { display: inline-flex; align-items: center; gap: 7px; }
+  .legenda-blok {
+    width: 16px; height: 16px; border-radius: 4px; border: 1px solid var(--rand-sterk);
+    display: inline-block;
+  }
+  .legenda-blok.door { background: var(--oranje-zacht); box-shadow: inset 3px 0 0 var(--oranje); }
+  .legenda-blok.derde { background: repeating-linear-gradient(45deg, var(--oranje-zacht) 0 4px, #fff 4px 8px); }
+  .standen-voetnoot { margin-top: 14px; font-size: 11.5px; color: var(--inkt-vaag); }
+
   /* ---------- Programma ---------- */
   .programma-lijst { margin-top: 6px; }
   .programma-dag {
@@ -569,6 +604,55 @@ function standBerekenen(voorspellingen, uitslagen, regels) {
     groepswedstrijden_gespeeld: gespeeld,
   };
   return stand;
+}
+
+/* ====================== Poulestanden ====================== */
+
+/* Berekent de stand per groep uit de (eventueel live) uitslagen.
+   Volgorde volgens FIFA: punten, doelsaldo, doelpunten voor,
+   onderling resultaat. */
+function berekenStanden(uitslagen) {
+  const groepen = {};
+  const onderling = {}; // "TEAM1|TEAM2" -> teken vanuit team1 gezien
+  for (const m of uitslagen.groepswedstrijden) {
+    const g = groepen[m.groep] || (groepen[m.groep] = {});
+    for (const naam of [m.thuis, m.uit])
+      g[naam] = g[naam] || { team: naam, g: 0, w: 0, gl: 0, v: 0, dv: 0, dt: 0, p: 0 };
+    if (m.thuis_goals === null || m.thuis_goals === undefined) continue;
+    const t = g[m.thuis], u = g[m.uit];
+    t.g++; u.g++;
+    t.dv += m.thuis_goals; t.dt += m.uit_goals;
+    u.dv += m.uit_goals; u.dt += m.thuis_goals;
+    const richting = teken(m.thuis_goals, m.uit_goals);
+    if (richting > 0) { t.w++; t.p += 3; u.v++; }
+    else if (richting < 0) { u.w++; u.p += 3; t.v++; }
+    else { t.gl++; u.gl++; t.p++; u.p++; }
+    onderling[`${normaliseer(m.thuis)}|${normaliseer(m.uit)}`] = richting;
+  }
+  const h2h = (a, b) => {
+    const heen = onderling[`${normaliseer(a.team)}|${normaliseer(b.team)}`];
+    if (heen !== undefined) return -heen; // positief teken = a won, dus a eerst
+    const terug = onderling[`${normaliseer(b.team)}|${normaliseer(a.team)}`];
+    if (terug !== undefined) return terug;
+    return 0;
+  };
+  const res = {};
+  for (const [letter, teams] of Object.entries(groepen)) {
+    res[letter] = Object.values(teams).sort((a, b) =>
+      b.p - a.p || (b.dv - b.dt) - (a.dv - a.dt) || b.dv - a.dv ||
+      h2h(a, b) || a.team.localeCompare(b.team));
+  }
+  return res;
+}
+
+/* De 8 beste nummers 3 gaan ook door; geeft een Set met die teamnamen. */
+function besteNummersDrie(standen) {
+  const derden = Object.values(standen)
+    .map(lijst => lijst[2])
+    .filter(rij => rij && rij.g > 0);
+  derden.sort((a, b) =>
+    b.p - a.p || (b.dv - b.dt) - (a.dv - a.dt) || b.dv - a.dv || a.team.localeCompare(b.team));
+  return new Set(derden.slice(0, 8).map(rij => rij.team));
 }
 
 /* ====================== ESPN live-uitslagen ====================== */
@@ -994,6 +1078,7 @@ function render() {
 
   <nav>
     <button data-tab="groepsfase"${actieveTab === "groepsfase" ? ' class="actief"' : ""}>Groepsfase</button>
+    <button data-tab="standen"${actieveTab === "standen" ? ' class="actief"' : ""}>Standen</button>
     <button data-tab="knockout"${actieveTab === "knockout" ? ' class="actief"' : ""}>Knock-out</button>
     <button data-tab="bonus"${actieveTab === "bonus" ? ' class="actief"' : ""}>Bonusvragen</button>
     <button data-tab="programma"${actieveTab === "programma" ? ' class="actief"' : ""}>Programma</button>
@@ -1033,6 +1118,39 @@ function render() {
     html += `</div>`;
   }
   html += `</div></section>`;
+
+  // Standen per groep
+  const standen = berekenStanden(App.uitslagenLive || App.opgeslagen);
+  const derdenDoor = besteNummersDrie(standen);
+  const ietsGespeeld = Object.values(standen).some(lijst => lijst.some(rij => rij.g > 0));
+  html += `<section class="tab${actieveTab === "standen" ? " actief" : ""}" id="tab-standen">
+    <h2>Stand per groep${liveBezig ? ` <span class="nadruk">· incl. live</span>` : ""}</h2>
+    <div class="standen-legenda">
+      <span class="legenda-item"><span class="legenda-blok door"></span> nr. 1 &amp; 2 — door naar de zestiende finale</span>
+      <span class="legenda-item"><span class="legenda-blok derde"></span> bij de 8 beste nummers 3 — ook door (tussenstand)</span>
+    </div>
+    <div class="groepen">`;
+  for (const [letter, lijst] of Object.entries(standen)) {
+    html += `<div class="groep-kaart">
+      <div class="groep-kop"><div class="naam">Groep <span>${letter}</span></div></div>
+      <table class="stand-tabel">
+        <tr><th>#</th><th class="links">Land</th><th>G</th><th>W</th><th>G</th><th>V</th><th>DS</th><th>P</th></tr>`;
+    lijst.forEach((rij, i) => {
+      let klasse = "";
+      if (ietsGespeeld && i < 2) klasse = "plek-door";
+      else if (ietsGespeeld && i === 2 && derdenDoor.has(rij.team)) klasse = "plek-derde";
+      const saldo = rij.dv - rij.dt;
+      html += `<tr class="${klasse}">
+        <td>${i + 1}</td><td class="links">${rij.team}</td>
+        <td>${rij.g}</td><td>${rij.w}</td><td>${rij.gl}</td><td>${rij.v}</td>
+        <td>${saldo > 0 ? "+" : ""}${saldo}</td><td class="punten-kolom">${rij.p}</td>
+      </tr>`;
+    });
+    html += `</table></div>`;
+  }
+  html += `</div>
+    <div class="standen-voetnoot">Volgorde volgens FIFA-regels: punten, doelsaldo, doelpunten vóór, onderling resultaat. G = gespeeld, W = winst, G = gelijk, V = verlies, DS = doelsaldo, P = punten.${liveBezig ? " Wedstrijden die nu bezig zijn tellen mee in deze tussenstand." : ""}</div>
+  </section>`;
 
   // Knock-out
   const rondes = {};
@@ -1294,6 +1412,24 @@ function draaiTests() {
     spelerGoalsUitTelling(r4.tussenstand.scorers, "Kylian Mbappé"), 1);
   check("tussenstand: bijnaam herkend",
     spelerGoalsUitTelling({ "Vini Jr": 2 }, "Vinícius Júnior"), 2);
+
+  // Poulestanden
+  const standData = JSON.parse(JSON.stringify(App.opgeslagen));
+  const zetUitslag = (id, t, u) => {
+    const w = standData.groepswedstrijden.find(x => x.id === id);
+    w.thuis_goals = t; w.uit_goals = u;
+  };
+  zetUitslag("G01", 2, 0); // Mexico - Zuid-Afrika
+  zetUitslag("G02", 2, 1); // Zuid-Korea - Tsjechië
+  const st = berekenStanden(standData);
+  check("stand: koploper groep A", st.A[0].team, "MEXICO");
+  check("stand: koploper heeft 3 punten", st.A[0].p, 3);
+  check("stand: doelsaldo beslist bij gelijke punten", st.A[1].team, "ZUID KOREA");
+  check("stand: nummer 3", st.A[2].team, "TSJECHIË");
+  check("stand: hekkensluiter zonder punten", st.A[3].p, 0);
+  check("stand: gespeeld geteld", st.A[0].g, 1);
+  check("beste nummers 3: tussenstand", besteNummersDrie(st).has("TSJECHIË"), true);
+  check("beste nummers 3: max 8", besteNummersDrie(st).size <= 8, true);
 
   // Programma en wedstrijdverloop
   check("programma: alle events in lijst", r4.programma.lijst.length, 2);
