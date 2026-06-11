@@ -551,6 +551,9 @@ function verwerkEspn(events, opgeslagen) {
   const uitslagen = JSON.parse(JSON.stringify(opgeslagen));
   const versGroep = new Set(), versKo = new Set(), live = {}, onplaatsbaar = [];
   const tussenstanden = [];
+  // Toernooibrede telling voor de bonusvragen (doelpunten, kaarten, topscorers)
+  const telling = { doelpunten: 0, gespeeld: 0, geel: 0, rood: 0,
+                    scorers: {}, detailsGezien: false };
 
   const paarSleutel = (a, b) => [normaliseer(a), normaliseer(b)].sort().join("|");
   const groepPerPaar = {};
@@ -571,6 +574,24 @@ function verwerkEspn(events, opgeslagen) {
 
     const staat = event.status.type.state; // pre | in | post
     const klaar = staat === "post" && event.status.type.completed;
+
+    // Tussenstanden bonusvragen: tel doelpunten, kaarten en doelpuntenmakers
+    if (staat === "in" || klaar) {
+      telling.gespeeld++;
+      telling.doelpunten += (parseInt(thuisC.score, 10) || 0) + (parseInt(uitC.score, 10) || 0);
+      const details = comp.details || [];
+      if (details.length) telling.detailsGezien = true;
+      for (const det of details) {
+        if (det.shootout) continue; // strafschoppenseries tellen nergens mee
+        if (det.scoringPlay && !det.ownGoal && det.athletesInvolved && det.athletesInvolved[0]) {
+          const naam = det.athletesInvolved[0].displayName;
+          telling.scorers[naam] = (telling.scorers[naam] || 0) + 1;
+        }
+        if (det.yellowCard) telling.geel++;
+        if (det.redCard) telling.rood++;
+      }
+    }
+
     const sleutel = paarSleutel(thuisNL, uitNL);
     const isGroep = Date.parse(event.date) < KNOCKOUT_GRENS;
 
@@ -615,14 +636,44 @@ function verwerkEspn(events, opgeslagen) {
       rec.uit_goals = t.uitGoals;
     }
   }
-  return { vast: uitslagen, liveUitslagen, versGroep, versKo, live, onplaatsbaar };
+  const topscorers = Object.entries(telling.scorers)
+    .sort((a, b) => b[1] - a[1]).slice(0, 3)
+    .map(([naam, goals]) => `${naam} (${goals})`).join(", ");
+  const tussenstand = {
+    doelpunten: telling.gespeeld ? telling.doelpunten : null,
+    gespeeld: telling.gespeeld,
+    geel: telling.detailsGezien ? telling.geel : null,
+    rood: telling.detailsGezien ? telling.rood : null,
+    topscorers: topscorers || null,
+    scorers: telling.scorers,
+    detailsGezien: telling.detailsGezien,
+  };
+
+  return { vast: uitslagen, liveUitslagen, versGroep, versKo, live, onplaatsbaar, tussenstand };
+}
+
+/* Hoeveel doelpunten heeft een gekozen speler gemaakt volgens de telling?
+   Naamvergelijking is ongevoelig voor accenten; enkele bijnamen worden herkend. */
+const SPELER_ALIASSEN = {
+  "VINICIUS JUNIOR": ["VINI JR", "VINI JR.", "VINI JUNIOR", "VINICIUS JR", "VINICIUS JR."],
+  "KYLIAN MBAPPE": ["K. MBAPPE", "KYLIAN MBAPPE LOTTIN"],
+};
+function spelerGoalsUitTelling(scorers, speler) {
+  const doel = normaliseer(speler);
+  const aliassen = SPELER_ALIASSEN[doel] || [];
+  let goals = 0;
+  for (const [naam, n] of Object.entries(scorers)) {
+    const genorm = normaliseer(naam);
+    if (genorm === doel || aliassen.includes(genorm)) goals += n;
+  }
+  return goals;
 }
 
 /* ====================== Weergave ====================== */
 
 const App = {
   voorspellingen: null, regels: null, opgeslagen: null,
-  uitslagenVast: null, uitslagenLive: null,
+  uitslagenVast: null, uitslagenLive: null, tussenstand: null,
   versGroep: new Set(), versKo: new Set(), live: {}, onplaatsbaar: [],
   liveStatus: null, // null | "bezig" | "ok" | "fout"
   liveTijd: null,
@@ -649,6 +700,26 @@ function badge(label, waarde, soort) {
   const leeg = waarde === null || waarde === undefined;
   return `<div class="badge ${soort}${leeg ? " leeg" : ""}">
     <span class="mini">${label}</span>${leeg ? "−" : waarde}</div>`;
+}
+
+/* Tussenstand-tekst voor een bonusvraag: live geteld als dat kan,
+   anders de laatst opgeslagen tussenstand uit de dagelijkse update. */
+function bonusTussenstand(vraag) {
+  const t = App.tussenstand;
+  const opgesl = (App.opgeslagen.bonus && App.opgeslagen.bonus.tussenstand) || {};
+  if (vraag === "Topscorer")
+    return (t && t.topscorers) || opgesl.topscorers || null;
+  if (vraag === "Totaal aantal doelpunten")
+    return t && t.doelpunten !== null
+      ? `${t.doelpunten} na ${t.gespeeld} wedstrijd${t.gespeeld === 1 ? "" : "en"}`
+      : (opgesl.doelpunten != null ? String(opgesl.doelpunten) : null);
+  if (vraag === "Aantal gele kaarten")
+    return t && t.geel !== null ? String(t.geel)
+      : (opgesl.gele_kaarten != null ? String(opgesl.gele_kaarten) : null);
+  if (vraag === "Aantal rode kaarten")
+    return t && t.rood !== null ? String(t.rood)
+      : (opgesl.rode_kaarten != null ? String(opgesl.rode_kaarten) : null);
+  return null;
 }
 
 function statusRegel() {
@@ -793,11 +864,14 @@ function render() {
     html += `<div class="bonus-kaart">
       <div class="vraag">${b.vraag}</div>
       <div class="keuze">${b.voorspeld}</div>
-      <div class="echt">${
-        b.echt !== null && b.echt !== undefined
-          ? "Werkelijk: <strong>" + b.echt + "</strong>" + (b.voorlopig ? " (tussenstand)" : "")
-          : "Nog niet bekend"
-      }</div>
+      <div class="echt">${(() => {
+        if (b.echt !== null && b.echt !== undefined)
+          return "Werkelijk: <strong>" + b.echt + "</strong>" + (b.voorlopig ? " (tussenstand)" : "");
+        const tussen = bonusTussenstand(b.vraag);
+        return tussen
+          ? `Tussenstand: <strong>${tussen}</strong> · de einduitslag telt`
+          : "Nog niet bekend";
+      })()}</div>
       <div class="bonus-punten">${puntenChip(b.punten)}</div>
     </div>`;
   }
@@ -833,12 +907,24 @@ async function haalLiveOp() {
     if (!antwoord.ok) throw new Error("HTTP " + antwoord.status);
     const data = await antwoord.json();
     const resultaat = verwerkEspn(data.events || [], App.opgeslagen);
+    // Doelpunten van de 4 gekozen spelers live bijwerken (nooit lager dan de
+    // opgeslagen stand, voor het geval ESPN-details een wedstrijd missen)
+    if (resultaat.tussenstand.detailsGezien) {
+      for (const kopie of [resultaat.vast, resultaat.liveUitslagen]) {
+        const opslag = kopie.bonus.goals_per_gekozen_speler;
+        for (const speler of Object.keys(opslag)) {
+          const geteld = spelerGoalsUitTelling(resultaat.tussenstand.scorers, speler);
+          opslag[speler] = Math.max(opslag[speler] || 0, geteld);
+        }
+      }
+    }
     App.uitslagenVast = resultaat.vast;
     App.uitslagenLive = resultaat.liveUitslagen;
     App.versGroep = resultaat.versGroep;
     App.versKo = resultaat.versKo;
     App.live = resultaat.live;
     App.onplaatsbaar = resultaat.onplaatsbaar;
+    App.tussenstand = resultaat.tussenstand;
     App.liveStatus = "ok";
     App.liveTijd = new Date().toLocaleTimeString("nl-NL", { hour: "2-digit", minute: "2-digit" });
   } catch (e) {
@@ -931,14 +1017,18 @@ function draaiTests() {
     koOpbouw.some(d => d.punten === K.kwartfinale.land_wel_in_ronde && d.max === K.kwartfinale.land_correcte_plaats), true);
 
   // ESPN-verwerking
-  const nepEvent = (datum, thuis, uit, ts, us, klaar) => ({
+  const nepEvent = (datum, thuis, uit, ts, us, klaar, details) => ({
     date: datum,
     status: { type: { state: klaar ? "post" : "in", completed: klaar, shortDetail: "45'" } },
-    competitions: [{ competitors: [
+    competitions: [{ details: details || [], competitors: [
       { homeAway: "home", score: String(ts), team: { displayName: thuis } },
       { homeAway: "away", score: String(us), team: { displayName: uit } },
     ]}],
   });
+  const nepGoal = naam => ({ scoringPlay: true, ownGoal: false, shootout: false,
+    yellowCard: false, redCard: false, athletesInvolved: [{ displayName: naam }] });
+  const nepKaart = rood => ({ scoringPlay: false, ownGoal: false, shootout: false,
+    yellowCard: !rood, redCard: rood, athletesInvolved: [] });
   const r1 = verwerkEspn([nepEvent("2026-06-11T19:00Z", "Mexico", "South Africa", 3, 0, true)], App.opgeslagen);
   check("espn: groepsuitslag geplaatst", r1.vast.groepswedstrijden[0].thuis_goals, 3);
   const r2 = verwerkEspn([nepEvent("2026-06-11T19:00Z", "South Africa", "Mexico", 0, 3, true)], App.opgeslagen);
@@ -948,6 +1038,22 @@ function draaiTests() {
   check("espn: live wedstrijd telt voorlopig mee", r3.liveUitslagen.groepswedstrijden[0].thuis_goals, 1);
   check("espn: live stand zichtbaar", r3.live["G01"] ? r3.live["G01"].score : null, "1-0");
   check("espn: alle 48 landen in vertaaltabel", Object.keys(ESPN_NAAR_NL).length, 48);
+
+  // Tussenstanden bonusvragen
+  const r4 = verwerkEspn([
+    nepEvent("2026-06-11T19:00Z", "Mexico", "South Africa", 2, 1, true,
+      [nepGoal("Raúl Jiménez"), nepGoal("Raúl Jiménez"), nepGoal("Lyle Foster"), nepKaart(false), nepKaart(false)]),
+    nepEvent("2026-06-12T02:00Z", "South Korea", "Czechia", 1, 0, false,
+      [nepGoal("Kylian Mbappé"), nepKaart(true)]),
+  ], App.opgeslagen);
+  check("tussenstand: doelpunten geteld (incl. live)", r4.tussenstand.doelpunten, 4);
+  check("tussenstand: gele kaarten geteld", r4.tussenstand.geel, 2);
+  check("tussenstand: rode kaarten geteld", r4.tussenstand.rood, 1);
+  check("tussenstand: topscorer bovenaan", r4.tussenstand.topscorers.startsWith("Raúl Jiménez (2)"), true);
+  check("tussenstand: gekozen speler geteld (accenten)",
+    spelerGoalsUitTelling(r4.tussenstand.scorers, "Kylian Mbappé"), 1);
+  check("tussenstand: bijnaam herkend",
+    spelerGoalsUitTelling({ "Vini Jr": 2 }, "Vinícius Júnior"), 2);
   // Voorlopige punten: live 1-0 bij tip 3-0 = winnaar (5) + doelpunten Zuid-Afrika (5) = 10
   const standLiveTest = standBerekenen(App.voorspellingen, r3.liveUitslagen, App.regels);
   check("live punten: tip 3-0 bij live 1-0 = 10", standLiveTest.groepswedstrijden[0].punten, 10);

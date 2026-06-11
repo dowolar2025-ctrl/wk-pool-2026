@@ -920,6 +920,14 @@
       "Julián Álvarez": null,
       "Vinícius Júnior": null,
       "Harry Kane": null
+    },
+    "tussenstand": {
+      "_uitleg": "Laatst bekende tussenstanden (alleen weergave; punten tellen pas bij de einduitslag)",
+      "topscorers": null,
+      "doelpunten": null,
+      "gele_kaarten": null,
+      "rode_kaarten": null,
+      "peildatum": null
     }
   }
 }
