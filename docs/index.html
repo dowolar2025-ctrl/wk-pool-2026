@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
+<meta name="theme-color" content="#f25c05">
+<link rel="icon" href="icoon.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.webmanifest">
 <title>WK Pool 2026 — Scoretabel</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -104,7 +107,6 @@
     gap: 14px;
   }
   @media (max-width: 860px) { .scorebord { grid-template-columns: 1fr 1fr; } }
-  @media (max-width: 520px) { .scorebord { grid-template-columns: 1fr; } }
 
   .paneel {
     background: var(--kaart);
@@ -230,7 +232,11 @@
   }
   .punten-chip.open { color: var(--inkt-vaag); background: transparent; border: 1.5px dashed var(--rand-sterk); font-size: 13px; padding: 6px 10px; }
 
-  .detail { grid-column: 1 / -1; font-size: 11.5px; color: var(--groen); font-weight: 600; }
+  .detail { grid-column: 1 / -1; font-size: 11.5px; display: flex; flex-wrap: wrap; gap: 3px 12px; }
+  .detail-item { font-weight: 600; }
+  .detail-item.ok { color: var(--groen); }
+  .detail-item.half { color: #c47b00; }
+  .detail-item.mis { color: var(--inkt-vaag); }
 
   /* ---------- Knock-out ---------- */
   .ko-lijst { display: grid; gap: 10px; }
@@ -291,6 +297,29 @@
   .test-ok { color: var(--groen); }
   .test-fout { color: var(--rood); font-weight: 700; }
 
+  /* ---------- Telefoon en tablet ---------- */
+  @media (max-width: 560px) {
+    .omslag { padding: 0 14px 60px; }
+    header { padding: 28px 0 20px; }
+    .scorebord { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .paneel { padding: 14px 16px; border-radius: 14px; }
+    .paneel.totaal { grid-column: 1 / -1; }
+    .paneel .waarde { font-size: 30px; }
+    .paneel.totaal .waarde { font-size: 46px; }
+    .actiebalk { gap: 10px; }
+    .actiebalk .ververs { width: 100%; justify-content: center; }
+    nav button { padding: 9px 14px; font-size: 13px; flex: 1; }
+    .groepen { grid-template-columns: 1fr; }
+    h2 { font-size: 21px; margin-top: 24px; }
+  }
+  @media (max-width: 470px) {
+    .wedstrijd { grid-template-columns: auto auto 1fr; row-gap: 7px; }
+    .wedstrijd .wie { grid-column: 1 / -1; }
+    .wedstrijd .punten-chip { justify-self: end; }
+    .ko-kaart { grid-template-columns: 38px 1fr auto; padding: 11px 13px; }
+    .slot { font-size: 13px; }
+  }
+
   @keyframes opkomen { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
   @keyframes draaien { to { transform: rotate(360deg); } }
   @keyframes knipperen { 0%,100% { opacity: 1; } 50% { opacity: 0.45; } }
@@ -330,27 +359,28 @@ function teken(a, b) { return Math.sign(a - b); }
 
 /* ====================== Puntenmotor ====================== */
 
+/* Een detailregel beschrijft één onderdeel van de puntenopbouw:
+   { tekst, punten (behaald), max (haalbaar) } — zo zie je ook wat je misloopt. */
+function onderdeel(detail, tekst, punten, max) {
+  detail.push({ tekst, punten, max });
+  return punten;
+}
+
 function berekenGroepswedstrijd(pred, act, regels) {
   if (act.thuis_goals === null || act.thuis_goals === undefined ||
       act.uit_goals === null || act.uit_goals === undefined) return { punten: null, detail: [] };
   let punten = 0;
   const detail = [];
-  if (teken(pred.thuis_goals, pred.uit_goals) === teken(act.thuis_goals, act.uit_goals)) {
-    punten += regels.winnaar_of_gelijkspel;
-    detail.push(`juiste winnaar/gelijkspel (+${regels.winnaar_of_gelijkspel})`);
-  }
-  if (pred.thuis_goals === act.thuis_goals) {
-    punten += regels.doelpunten_per_land;
-    detail.push(`doelpunten ${pred.thuis} juist (+${regels.doelpunten_per_land})`);
-  }
-  if (pred.uit_goals === act.uit_goals) {
-    punten += regels.doelpunten_per_land;
-    detail.push(`doelpunten ${pred.uit} juist (+${regels.doelpunten_per_land})`);
-  }
-  if (pred.thuis_goals === act.thuis_goals && pred.uit_goals === act.uit_goals) {
-    punten += regels.exacte_uitslag_bonus;
-    detail.push(`exacte uitslag (+${regels.exacte_uitslag_bonus})`);
-  }
+  const winnaarGoed = teken(pred.thuis_goals, pred.uit_goals) === teken(act.thuis_goals, act.uit_goals);
+  punten += onderdeel(detail, "juiste winnaar/gelijkspel",
+    winnaarGoed ? regels.winnaar_of_gelijkspel : 0, regels.winnaar_of_gelijkspel);
+  punten += onderdeel(detail, `doelpunten ${pred.thuis}`,
+    pred.thuis_goals === act.thuis_goals ? regels.doelpunten_per_land : 0, regels.doelpunten_per_land);
+  punten += onderdeel(detail, `doelpunten ${pred.uit}`,
+    pred.uit_goals === act.uit_goals ? regels.doelpunten_per_land : 0, regels.doelpunten_per_land);
+  punten += onderdeel(detail, "exacte uitslag",
+    pred.thuis_goals === act.thuis_goals && pred.uit_goals === act.uit_goals
+      ? regels.exacte_uitslag_bonus : 0, regels.exacte_uitslag_bonus);
   return { punten, detail };
 }
 
@@ -365,11 +395,13 @@ function berekenKnockout(pred, act, regels, rondeLanden) {
     for (const land of [pred.thuis, pred.uit]) {
       const n = normaliseer(land);
       if (ditSlot.has(n)) {
-        punten += regels.land_correcte_plaats;
-        detail.push(`${land} op de juiste plaats (+${regels.land_correcte_plaats})`);
+        punten += onderdeel(detail, `${land} op de juiste plaats`,
+          regels.land_correcte_plaats, regels.land_correcte_plaats);
       } else if (rondeLanden.has(n) && regels.land_wel_in_ronde) {
-        punten += regels.land_wel_in_ronde;
-        detail.push(`${land} wel in deze ronde (+${regels.land_wel_in_ronde})`);
+        punten += onderdeel(detail, `${land} wel in deze ronde, andere plaats`,
+          regels.land_wel_in_ronde, regels.land_correcte_plaats);
+      } else {
+        onderdeel(detail, `${land} niet in deze ronde`, 0, regels.land_correcte_plaats);
       }
     }
   }
@@ -377,18 +409,13 @@ function berekenKnockout(pred, act, regels, rondeLanden) {
   if (act.thuis_goals !== null && act.thuis_goals !== undefined &&
       act.uit_goals !== null && act.uit_goals !== undefined) {
     ietsBekend = true;
-    if (pred.thuis_goals === act.thuis_goals) {
-      punten += regels.doelpunten_per_team;
-      detail.push(`doelpunten thuisteam juist (+${regels.doelpunten_per_team})`);
-    }
-    if (pred.uit_goals === act.uit_goals) {
-      punten += regels.doelpunten_per_team;
-      detail.push(`doelpunten uitteam juist (+${regels.doelpunten_per_team})`);
-    }
-    if (pred.thuis_goals === act.thuis_goals && pred.uit_goals === act.uit_goals) {
-      punten += regels.exacte_uitslag_bonus;
-      detail.push(`exacte uitslag (+${regels.exacte_uitslag_bonus})`);
-    }
+    punten += onderdeel(detail, "doelpunten thuisteam",
+      pred.thuis_goals === act.thuis_goals ? regels.doelpunten_per_team : 0, regels.doelpunten_per_team);
+    punten += onderdeel(detail, "doelpunten uitteam",
+      pred.uit_goals === act.uit_goals ? regels.doelpunten_per_team : 0, regels.doelpunten_per_team);
+    punten += onderdeel(detail, "exacte uitslag",
+      pred.thuis_goals === act.thuis_goals && pred.uit_goals === act.uit_goals
+        ? regels.exacte_uitslag_bonus : 0, regels.exacte_uitslag_bonus);
   }
 
   return { punten: ietsBekend ? punten : null, detail };
@@ -607,6 +634,17 @@ function puntenChip(punten, isLive) {
   return `<div class="punten-chip ${punten > 0 ? "goed" : "nul"}">${punten}</div>`;
 }
 
+function detailRegel(detail) {
+  if (!detail || !detail.length) return "";
+  return `<div class="detail">` + detail.map(d => {
+    const klasse = d.punten === 0 ? "mis" : (d.punten < d.max ? "half" : "ok");
+    const symbool = d.punten === 0 ? "✗" : (d.punten < d.max ? "±" : "✓");
+    const score = d.punten === 0 ? `0 van ${d.max}`
+      : (d.punten < d.max ? `+${d.punten} van ${d.max}` : `+${d.punten}`);
+    return `<span class="detail-item ${klasse}">${symbool} ${d.tekst} (${score})</span>`;
+  }).join("") + `</div>`;
+}
+
 function badge(label, waarde, soort) {
   const leeg = waarde === null || waarde === undefined;
   return `<div class="badge ${soort}${leeg ? " leeg" : ""}">
@@ -709,7 +747,7 @@ function render() {
         ${badge("tip", w.voorspelling, "voorspelling")}
         ${badge(liveInfo ? "live" : "uitslag", w.uitslag, "uitslag")}
         ${puntenChip(w.punten, !!liveInfo)}
-        ${w.detail.length ? `<div class="detail">✓ ${w.detail.join(" · ")}</div>` : ""}
+        ${detailRegel(w.detail)}
       </div>`;
     }
     html += `</div>`;
@@ -742,7 +780,7 @@ function render() {
             : `<span class="inhoud onbekend">nog niet bekend</span>`}
         </div>
         ${puntenChip(k.punten, !!liveInfo)}
-        ${k.detail.length ? `<div class="detail">✓ ${k.detail.join(" · ")}</div>` : ""}
+        ${detailRegel(k.detail)}
       </div>`;
     }
     html += `</div>`;
@@ -877,6 +915,20 @@ function draaiTests() {
   check("telvraag: 10 ernaast = 10", berekenTelvraag(281, 291, S), 10);
   check("telvraag: 11 ernaast = 0", berekenTelvraag(281, 292, S), 0);
   check("telvraag: onbekend = null", berekenTelvraag(281, null, S), null);
+
+  // Puntenopbouw: ook gemiste punten zichtbaar
+  const opbouw = berekenGroepswedstrijd(
+    { thuis: "A", uit: "B", thuis_goals: 2, uit_goals: 1 },
+    { thuis_goals: 2, uit_goals: 0 }, G).detail;
+  check("opbouw: alle 4 onderdelen zichtbaar", opbouw.length, 4);
+  check("opbouw: 2 gemiste onderdelen", opbouw.filter(d => d.punten === 0).length, 2);
+  check("opbouw: gemist onderdeel toont maximum", opbouw.find(d => d.punten === 0).max, G.doelpunten_per_land);
+  const koOpbouw = berekenKnockout(
+    { thuis: "DUITSLAND", uit: "BRAZILIË", thuis_goals: 1, uit_goals: 2 },
+    { thuis: "FRANKRIJK", uit: "BRAZILIË", thuis_goals: 3, uit_goals: 2 },
+    K.kwartfinale, new Set(["FRANKRIJK", "BRAZILIE", "DUITSLAND", "SPANJE"].map(normaliseer))).detail;
+  check("opbouw ko: half onderdeel (+10 van 20)",
+    koOpbouw.some(d => d.punten === K.kwartfinale.land_wel_in_ronde && d.max === K.kwartfinale.land_correcte_plaats), true);
 
   // ESPN-verwerking
   const nepEvent = (datum, thuis, uit, ts, us, klaar) => ({

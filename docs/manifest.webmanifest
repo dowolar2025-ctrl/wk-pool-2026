@@ -1,0 +1,12 @@
+{
+  "name": "WK Pool 2026",
+  "short_name": "WK Pool",
+  "description": "Scoretabel van de WK Pool 2026 met live uitslagen",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#fff9f3",
+  "theme_color": "#f25c05",
+  "icons": [
+    { "src": "icoon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
