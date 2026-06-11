@@ -1,0 +1,12 @@
+# Het originele invulbestand bevat een e-mailadres en blijft alleen lokaal
+*.xlsm
+
+# Lokale hulpmiddelen en oude versie van de app (niet nodig op de website)
+.claude/
+app/
+WK-stand.html
+
+# Rommel
+NUL
+*.tmp
+*.bak

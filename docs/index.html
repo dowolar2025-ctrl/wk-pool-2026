@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>WK Pool 2026 — Scoretabel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --papier: #fff9f3;
+    --kaart: #ffffff;
+    --rand: #ffe3cc;
+    --rand-sterk: #ffd0a8;
+    --inkt: #27160a;
+    --inkt-zacht: #8a6f5c;
+    --inkt-vaag: #bda595;
+    --oranje: #f25c05;
+    --oranje-fel: #ff7a1a;
+    --oranje-zacht: #fff1e5;
+    --goud: #e9a118;
+    --groen: #1d8a4e;
+    --blauw: #21468B;
+    --rood: #AE1C28;
+    --display: "Lilita One", "Arial Rounded MT Bold", sans-serif;
+    --tekst: "Archivo", "Segoe UI", sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--tekst);
+    color: var(--inkt);
+    background:
+      radial-gradient(900px 420px at 85% -120px, rgba(255, 122, 26, 0.12), transparent 65%),
+      radial-gradient(700px 380px at 0% -80px, rgba(242, 92, 5, 0.08), transparent 60%),
+      var(--papier);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  /* Nederlandse vlag als lint bovenaan */
+  .vlag {
+    height: 6px;
+    background: linear-gradient(90deg,
+      var(--rood) 0 33.3%, #fff 33.3% 66.6%, var(--blauw) 66.6% 100%);
+  }
+
+  .omslag { max-width: 1180px; margin: 0 auto; padding: 0 20px 80px; }
+
+  /* ---------- Hero ---------- */
+  header { padding: 42px 0 30px; animation: opkomen 0.6s cubic-bezier(.2,.8,.2,1) both; }
+  .wimpel {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 12px; font-weight: 800; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--oranje);
+  }
+  .wimpel::before, .wimpel::after {
+    content: ""; height: 2px; width: 38px; border-radius: 2px;
+    background: linear-gradient(90deg, transparent, var(--oranje-fel));
+  }
+  .wimpel::after { background: linear-gradient(90deg, var(--oranje-fel), transparent); }
+
+  h1 {
+    font-family: var(--display);
+    font-size: clamp(42px, 7vw, 78px);
+    line-height: 1;
+    margin-top: 10px;
+    color: var(--oranje);
+    text-shadow: 0 2px 0 #fff, 0 5px 18px rgba(242, 92, 5, 0.25);
+    letter-spacing: 0.01em;
+  }
+  .deelnemer { margin-top: 8px; font-size: 16px; color: var(--inkt-zacht); }
+  .deelnemer strong { color: var(--inkt); }
+
+  .actiebalk {
+    margin-top: 22px;
+    display: flex; flex-wrap: wrap; align-items: center; gap: 14px;
+  }
+  .ververs {
+    font-family: var(--tekst); font-size: 15px; font-weight: 800;
+    display: inline-flex; align-items: center; gap: 9px;
+    padding: 12px 24px; border-radius: 999px; border: none; cursor: pointer;
+    color: #fff;
+    background: linear-gradient(160deg, var(--oranje-fel), var(--oranje));
+    box-shadow: 0 6px 20px rgba(242, 92, 5, 0.35);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .ververs:hover { transform: translateY(-1px); box-shadow: 0 9px 26px rgba(242, 92, 5, 0.45); }
+  .ververs:disabled { opacity: 0.65; cursor: wait; transform: none; }
+  .ververs .icoon { display: inline-block; font-size: 17px; line-height: 1; }
+  .ververs.bezig .icoon { animation: draaien 0.9s linear infinite; }
+  .status-tekst { font-size: 13px; color: var(--inkt-zacht); }
+  .status-tekst .ok { color: var(--groen); font-weight: 700; }
+  .status-tekst .fout { color: var(--rood); font-weight: 700; }
+
+  .scorebord {
+    margin-top: 26px;
+    display: grid;
+    grid-template-columns: minmax(210px, 1.15fr) repeat(3, minmax(140px, 1fr));
+    gap: 14px;
+  }
+  @media (max-width: 860px) { .scorebord { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 520px) { .scorebord { grid-template-columns: 1fr; } }
+
+  .paneel {
+    background: var(--kaart);
+    border: 1px solid var(--rand);
+    border-radius: 18px;
+    padding: 18px 20px;
+    box-shadow: 0 4px 16px rgba(150, 90, 40, 0.07);
+  }
+  .paneel.totaal {
+    background: linear-gradient(150deg, var(--oranje-fel), var(--oranje) 75%);
+    border-color: transparent;
+    color: #fff;
+    box-shadow: 0 10px 30px rgba(242, 92, 5, 0.35);
+  }
+  .paneel .label {
+    font-size: 11px; font-weight: 800; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--inkt-vaag);
+  }
+  .paneel.totaal .label { color: rgba(255,255,255,0.85); }
+  .paneel .waarde {
+    font-family: var(--display); font-size: 40px; line-height: 1.15;
+    margin-top: 4px; color: var(--oranje);
+    font-variant-numeric: tabular-nums;
+  }
+  .paneel.totaal .waarde { font-size: 58px; color: #fff; text-shadow: 0 3px 12px rgba(120, 40, 0, 0.3); }
+  .paneel .sub { font-size: 12px; color: var(--inkt-vaag); margin-top: 2px; }
+  .paneel.totaal .sub { color: rgba(255,255,255,0.85); }
+
+  /* ---------- Tabs ---------- */
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    display: flex; gap: 8px; flex-wrap: wrap;
+    padding: 12px 0;
+    background: linear-gradient(180deg, var(--papier) 72%, transparent);
+  }
+  nav button {
+    font-family: var(--tekst); font-size: 14px; font-weight: 800;
+    padding: 10px 20px; border-radius: 999px;
+    border: 1.5px solid var(--rand-sterk);
+    background: var(--kaart); color: var(--inkt-zacht); cursor: pointer;
+    transition: all 0.18s ease;
+  }
+  nav button:hover { color: var(--oranje); border-color: var(--oranje-fel); }
+  nav button.actief {
+    background: var(--oranje); border-color: var(--oranje); color: #fff;
+    box-shadow: 0 4px 16px rgba(242, 92, 5, 0.3);
+  }
+
+  section.tab { display: none; animation: opkomen 0.4s cubic-bezier(.2,.8,.2,1) both; }
+  section.tab.actief { display: block; }
+
+  h2 {
+    font-family: var(--display); font-size: 24px; letter-spacing: 0.02em;
+    margin: 30px 0 14px; color: var(--inkt);
+  }
+  h2 .nadruk { color: var(--oranje); }
+
+  /* ---------- Groepen ---------- */
+  .groepen { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 14px; margin-top: 18px; }
+  .groep-kaart {
+    background: var(--kaart); border: 1px solid var(--rand); border-radius: 18px;
+    overflow: hidden; box-shadow: 0 4px 16px rgba(150, 90, 40, 0.06);
+  }
+  .groep-kop {
+    display: flex; align-items: baseline; justify-content: space-between;
+    padding: 12px 16px 10px;
+    background: var(--oranje-zacht);
+    border-bottom: 1px solid var(--rand);
+  }
+  .groep-kop .naam { font-family: var(--display); font-size: 17px; }
+  .groep-kop .naam span { color: var(--oranje); }
+  .groep-kop .groep-punten { font-size: 12px; font-weight: 800; color: var(--oranje); font-variant-numeric: tabular-nums; }
+
+  .wedstrijd {
+    padding: 10px 16px;
+    border-bottom: 1px solid #fdf0e3;
+    display: grid; grid-template-columns: 1fr auto auto auto;
+    gap: 10px; align-items: center;
+  }
+  .wedstrijd:last-child { border-bottom: none; }
+  .wedstrijd.live-nu { background: linear-gradient(90deg, var(--oranje-zacht), transparent 75%); box-shadow: inset 3px 0 0 var(--oranje); }
+  .wie { min-width: 0; }
+  .wie .teams { font-weight: 700; font-size: 13.5px; }
+  .wie .datum { font-size: 11px; color: var(--inkt-vaag); margin-top: 1px; }
+  .live-label {
+    display: inline-block; color: #fff; background: var(--rood);
+    font-weight: 800; font-size: 10px; letter-spacing: 0.08em;
+    padding: 1px 7px; border-radius: 99px; text-transform: uppercase;
+    animation: knipperen 1.6s ease-in-out infinite;
+  }
+  .vers-label {
+    display: inline-block; color: var(--groen); font-weight: 700; font-size: 10.5px;
+  }
+
+  .badge {
+    font-variant-numeric: tabular-nums; font-size: 13px; font-weight: 800;
+    padding: 4px 9px; border-radius: 8px; min-width: 46px; text-align: center;
+  }
+  .badge .mini {
+    display: block; font-size: 8.5px; font-weight: 800;
+    letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.6;
+  }
+  .badge.voorspelling { background: #f6ede4; color: var(--inkt-zacht); }
+  .badge.uitslag { background: var(--oranje-zacht); color: var(--inkt); border: 1px solid var(--rand); }
+  .badge.uitslag.leeg { background: transparent; border: 1.5px dashed var(--rand-sterk); color: var(--inkt-vaag); }
+
+  .punten-chip {
+    font-family: var(--display); font-size: 16px;
+    min-width: 50px; text-align: center;
+    padding: 5px 10px; border-radius: 10px;
+    font-variant-numeric: tabular-nums;
+  }
+  .punten-chip.goed {
+    color: #fff;
+    background: linear-gradient(160deg, var(--oranje-fel), var(--oranje));
+    box-shadow: 0 3px 12px rgba(242, 92, 5, 0.3);
+  }
+  .punten-chip.nul { color: var(--inkt-vaag); background: #f6ede4; }
+  .punten-chip.open { color: var(--inkt-vaag); background: transparent; border: 1.5px dashed var(--rand-sterk); font-size: 13px; padding: 6px 10px; }
+
+  .detail { grid-column: 1 / -1; font-size: 11.5px; color: var(--groen); font-weight: 600; }
+
+  /* ---------- Knock-out ---------- */
+  .ko-lijst { display: grid; gap: 10px; }
+  .ko-kaart {
+    background: var(--kaart); border: 1px solid var(--rand); border-radius: 16px;
+    padding: 12px 16px;
+    display: grid; grid-template-columns: 52px 1fr 1fr auto;
+    gap: 14px; align-items: center;
+    box-shadow: 0 4px 16px rgba(150, 90, 40, 0.06);
+  }
+  @media (max-width: 720px) { .ko-kaart { grid-template-columns: 44px 1fr auto; } .ko-kaart .echt-kolom { grid-column: 2; } }
+  .slot { font-family: var(--display); font-size: 15px; color: var(--inkt-vaag); }
+  .ko-regel { font-size: 13.5px; }
+  .ko-regel .kopje {
+    font-size: 9.5px; font-weight: 800; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--inkt-vaag); display: block;
+  }
+  .ko-regel .inhoud { font-weight: 700; }
+  .ko-regel .inhoud .score { color: var(--oranje); font-variant-numeric: tabular-nums; }
+  .ko-regel .inhoud.onbekend { color: var(--inkt-vaag); font-weight: 400; font-style: italic; }
+  .ko-kaart .detail { grid-column: 2 / -1; }
+
+  /* ---------- Bonus ---------- */
+  .bonus-rooster { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px; margin-top: 18px; }
+  .bonus-kaart {
+    background: var(--kaart); border: 1px solid var(--rand); border-radius: 18px;
+    padding: 18px; box-shadow: 0 4px 16px rgba(150, 90, 40, 0.06);
+  }
+  .bonus-kaart .vraag {
+    font-size: 11px; font-weight: 800; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--inkt-vaag);
+  }
+  .bonus-kaart .keuze { font-size: 17px; font-weight: 800; margin-top: 8px; }
+  .bonus-kaart .echt { font-size: 12.5px; color: var(--inkt-zacht); margin-top: 4px; }
+  .bonus-kaart .bonus-punten { margin-top: 12px; }
+
+  /* ---------- Meldingen / voet ---------- */
+  .melding {
+    margin-top: 16px; padding: 12px 16px; border-radius: 12px;
+    font-size: 13px; font-weight: 600;
+    background: #fdf3e0; border: 1px solid #f3ddb0; color: #8a6a1f;
+  }
+  footer {
+    margin-top: 56px; padding-top: 22px;
+    border-top: 1px solid var(--rand);
+    font-size: 12px; color: var(--inkt-zacht);
+  }
+  footer h3 { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 8px; }
+  footer li { margin: 4px 0 4px 18px; }
+  footer .bron { margin-top: 14px; color: var(--inkt-vaag); }
+
+  .fout-scherm { margin: 90px auto; max-width: 560px; text-align: center; color: var(--inkt-zacht); }
+  .fout-scherm h2 { color: var(--oranje); }
+
+  /* ---------- Testmodus ---------- */
+  .test-lijst { margin-top: 24px; font-family: monospace; font-size: 13px; }
+  .test-lijst div { padding: 3px 0; }
+  .test-ok { color: var(--groen); }
+  .test-fout { color: var(--rood); font-weight: 700; }
+
+  @keyframes opkomen { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+  @keyframes draaien { to { transform: rotate(360deg); } }
+  @keyframes knipperen { 0%,100% { opacity: 1; } 50% { opacity: 0.45; } }
+</style>
+</head>
+<body>
+<div class="vlag"></div>
+<div class="omslag" id="app"><div class="fout-scherm"><h2>Laden…</h2></div></div>
+
+<script>
+"use strict";
+
+/* ====================== Hulpfuncties ====================== */
+
+const RONDE_NAMEN = {
+  zestiende_finale: "Zestiende finale",
+  achtste_finale: "Achtste finale",
+  kwartfinale: "Kwartfinale",
+  halve_finale: "Halve finale",
+  troostfinale: "Troostfinale (3e/4e plaats)",
+  finale: "Finale",
+};
+const MAANDEN = ["januari","februari","maart","april","mei","juni","juli","augustus","september","oktober","november","december"];
+
+function normaliseer(tekst) {
+  if (tekst === null || tekst === undefined) return null;
+  return String(tekst).normalize("NFD").replace(/[̀-ͯ]/g, "").trim().toUpperCase();
+}
+
+function fmtDatum(iso) {
+  if (!iso) return "datum onbekend";
+  const [j, m, d] = iso.split("-").map(Number);
+  return `${d} ${MAANDEN[m - 1]}`;
+}
+
+function teken(a, b) { return Math.sign(a - b); }
+
+/* ====================== Puntenmotor ====================== */
+
+function berekenGroepswedstrijd(pred, act, regels) {
+  if (act.thuis_goals === null || act.thuis_goals === undefined ||
+      act.uit_goals === null || act.uit_goals === undefined) return { punten: null, detail: [] };
+  let punten = 0;
+  const detail = [];
+  if (teken(pred.thuis_goals, pred.uit_goals) === teken(act.thuis_goals, act.uit_goals)) {
+    punten += regels.winnaar_of_gelijkspel;
+    detail.push(`juiste winnaar/gelijkspel (+${regels.winnaar_of_gelijkspel})`);
+  }
+  if (pred.thuis_goals === act.thuis_goals) {
+    punten += regels.doelpunten_per_land;
+    detail.push(`doelpunten ${pred.thuis} juist (+${regels.doelpunten_per_land})`);
+  }
+  if (pred.uit_goals === act.uit_goals) {
+    punten += regels.doelpunten_per_land;
+    detail.push(`doelpunten ${pred.uit} juist (+${regels.doelpunten_per_land})`);
+  }
+  if (pred.thuis_goals === act.thuis_goals && pred.uit_goals === act.uit_goals) {
+    punten += regels.exacte_uitslag_bonus;
+    detail.push(`exacte uitslag (+${regels.exacte_uitslag_bonus})`);
+  }
+  return { punten, detail };
+}
+
+function berekenKnockout(pred, act, regels, rondeLanden) {
+  let punten = 0;
+  const detail = [];
+  let ietsBekend = false;
+
+  const ditSlot = new Set([normaliseer(act.thuis), normaliseer(act.uit)].filter(Boolean));
+  if (ditSlot.size) {
+    ietsBekend = true;
+    for (const land of [pred.thuis, pred.uit]) {
+      const n = normaliseer(land);
+      if (ditSlot.has(n)) {
+        punten += regels.land_correcte_plaats;
+        detail.push(`${land} op de juiste plaats (+${regels.land_correcte_plaats})`);
+      } else if (rondeLanden.has(n) && regels.land_wel_in_ronde) {
+        punten += regels.land_wel_in_ronde;
+        detail.push(`${land} wel in deze ronde (+${regels.land_wel_in_ronde})`);
+      }
+    }
+  }
+
+  if (act.thuis_goals !== null && act.thuis_goals !== undefined &&
+      act.uit_goals !== null && act.uit_goals !== undefined) {
+    ietsBekend = true;
+    if (pred.thuis_goals === act.thuis_goals) {
+      punten += regels.doelpunten_per_team;
+      detail.push(`doelpunten thuisteam juist (+${regels.doelpunten_per_team})`);
+    }
+    if (pred.uit_goals === act.uit_goals) {
+      punten += regels.doelpunten_per_team;
+      detail.push(`doelpunten uitteam juist (+${regels.doelpunten_per_team})`);
+    }
+    if (pred.thuis_goals === act.thuis_goals && pred.uit_goals === act.uit_goals) {
+      punten += regels.exacte_uitslag_bonus;
+      detail.push(`exacte uitslag (+${regels.exacte_uitslag_bonus})`);
+    }
+  }
+
+  return { punten: ietsBekend ? punten : null, detail };
+}
+
+function berekenTelvraag(voorspeld, echt, schaal) {
+  if (echt === null || echt === undefined) return null;
+  const afwijking = Math.abs(voorspeld - echt);
+  if (afwijking === 0) return schaal.precies_goed;
+  if (afwijking <= 5) return schaal.binnen_5;
+  if (afwijking <= 10) return schaal.binnen_10;
+  return 0;
+}
+
+function standBerekenen(voorspellingen, uitslagen, regels) {
+  const stand = {
+    deelnemer: voorspellingen.deelnemer,
+    laatst_bijgewerkt: uitslagen.laatst_bijgewerkt,
+    groepswedstrijden: [], knockout: [], bonus: [],
+    aannames: regels._aannames || [],
+  };
+
+  // Groepsfase
+  const actPerId = Object.fromEntries(uitslagen.groepswedstrijden.map(w => [w.id, w]));
+  let groepPunten = 0, gespeeld = 0;
+  for (const pred of voorspellingen.groepswedstrijden) {
+    const act = actPerId[pred.id];
+    const { punten, detail } = berekenGroepswedstrijd(pred, act, regels.groepsfase);
+    if (punten !== null) { groepPunten += punten; gespeeld++; }
+    stand.groepswedstrijden.push({
+      id: pred.id, groep: pred.groep, datum: pred.datum,
+      thuis: pred.thuis, uit: pred.uit,
+      voorspelling: `${pred.thuis_goals}-${pred.uit_goals}`,
+      uitslag: act.thuis_goals !== null && act.thuis_goals !== undefined
+        ? `${act.thuis_goals}-${act.uit_goals}` : null,
+      punten, detail,
+    });
+  }
+
+  // Knock-out: eerst per ronde verzamelen welke landen er echt in staan
+  const landenPerRonde = {};
+  for (const [slot, act] of Object.entries(uitslagen.knockout)) {
+    const s = landenPerRonde[act.ronde] || (landenPerRonde[act.ronde] = new Set());
+    for (const land of [act.thuis, act.uit]) if (land) s.add(normaliseer(land));
+  }
+
+  let knockoutPunten = 0;
+  for (const [slot, pred] of Object.entries(voorspellingen.knockout)) {
+    const act = uitslagen.knockout[slot];
+    const { punten, detail } = berekenKnockout(
+      pred, act, regels.knockout[pred.ronde], landenPerRonde[pred.ronde] || new Set());
+    if (punten !== null) knockoutPunten += punten;
+    stand.knockout.push({
+      slot, ronde: pred.ronde, ronde_naam: RONDE_NAMEN[pred.ronde], datum: pred.datum,
+      voorspeld_thuis: pred.thuis, voorspeld_uit: pred.uit,
+      voorspelling: `${pred.thuis_goals}-${pred.uit_goals}`,
+      echt_thuis: act.thuis, echt_uit: act.uit,
+      uitslag: act.thuis_goals !== null && act.thuis_goals !== undefined
+        ? `${act.thuis_goals}-${act.uit_goals}` : null,
+      punten, detail,
+    });
+  }
+
+  // Bonusvragen
+  const vb = voorspellingen.bonus, ub = uitslagen.bonus, rb = regels.bonus;
+  let bonusPunten = 0;
+  const voegToe = (vraag, voorspeld, echt, punten, voorlopig) => {
+    if (punten) bonusPunten += punten;
+    stand.bonus.push({ vraag, voorspeld, echt, punten, voorlopig: !!voorlopig });
+  };
+  voegToe("Wereldkampioen", vb.wereldkampioen, ub.wereldkampioen,
+    ub.wereldkampioen === null ? null
+      : (normaliseer(ub.wereldkampioen) === normaliseer(vb.wereldkampioen) ? rb.wereldkampioen : 0));
+  voegToe("Topscorer", vb.topscorer, ub.topscorer,
+    ub.topscorer === null ? null
+      : (normaliseer(ub.topscorer) === normaliseer(vb.topscorer) ? rb.topscorer : 0));
+  for (const speler of vb.vier_spelers) {
+    const goals = ub.goals_per_gekozen_speler[speler];
+    voegToe(`Goals ${speler}`, `${rb.punten_per_goal_gekozen_speler} punten per goal`,
+      goals !== null && goals !== undefined ? `${goals} goals` : null,
+      goals !== null && goals !== undefined ? goals * rb.punten_per_goal_gekozen_speler : null,
+      true);
+  }
+  for (const [vraag, sleutel] of [["Totaal aantal doelpunten", "doelpunten_totaal"],
+                                  ["Aantal gele kaarten", "gele_kaarten"],
+                                  ["Aantal rode kaarten", "rode_kaarten"]]) {
+    voegToe(vraag, vb[sleutel], ub[sleutel], berekenTelvraag(vb[sleutel], ub[sleutel], rb.telvragen));
+  }
+
+  stand.totalen = {
+    groepsfase: groepPunten, knockout: knockoutPunten, bonus: bonusPunten,
+    totaal: groepPunten + knockoutPunten + bonusPunten,
+    groepswedstrijden_gespeeld: gespeeld,
+  };
+  return stand;
+}
+
+/* ====================== ESPN live-uitslagen ====================== */
+
+const ESPN_URL = "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard?dates=20260611-20260719&limit=300";
+// Alles vóór dit moment is groepsfase; de zestiende finales beginnen 28 juni in de avond (UTC).
+const KNOCKOUT_GRENS = Date.parse("2026-06-28T10:00:00Z");
+
+// ESPN-teamnaam (genormaliseerd, accenten weg) -> naam zoals in het poolformulier
+const ESPN_NAAR_NL = {
+  "ALGERIA": "ALGERIJE", "ARGENTINA": "ARGENTINIË", "AUSTRALIA": "AUSTRALIË",
+  "AUSTRIA": "OOSTENRIJK", "BELGIUM": "BELGIË", "BOSNIA-HERZEGOVINA": "BOSNIË/HERZEG.",
+  "BRAZIL": "BRAZILIË", "CANADA": "CANADA", "CAPE VERDE": "KAAPVERDIË",
+  "COLOMBIA": "COLOMBIA", "CONGO DR": "CONGO", "CROATIA": "KROATIË",
+  "CURACAO": "CURACAO", "CZECHIA": "TSJECHIË", "ECUADOR": "ECUADOR",
+  "EGYPT": "EGYPTE", "ENGLAND": "ENGELAND", "FRANCE": "FRANKRIJK",
+  "GERMANY": "DUITSLAND", "GHANA": "GHANA", "HAITI": "HAÏTI",
+  "IRAN": "IRAN", "IRAQ": "IRAK", "IVORY COAST": "IVOORKUST",
+  "JAPAN": "JAPAN", "JORDAN": "JORDANIË", "MEXICO": "MEXICO",
+  "MOROCCO": "MAROKKO", "NETHERLANDS": "NEDERLAND", "NEW ZEALAND": "NIEUW-ZEELAND",
+  "NORWAY": "NOORWEGEN", "PANAMA": "PANAMA", "PARAGUAY": "PARAGUAY",
+  "PORTUGAL": "PORTUGAL", "QATAR": "QATAR", "SAUDI ARABIA": "SAOEDI-ARABIË",
+  "SCOTLAND": "SCHOTLAND", "SENEGAL": "SENEGAL", "SOUTH AFRICA": "ZUID AFRIKA",
+  "SOUTH KOREA": "ZUID KOREA", "SPAIN": "SPANJE", "SWEDEN": "ZWEDEN",
+  "SWITZERLAND": "ZWITSERLAND", "TUNISIA": "TUNESIË", "TURKIYE": "TURKIJE",
+  "UNITED STATES": "USA", "URUGUAY": "URUGUAY", "UZBEKISTAN": "OEZBEKISTAN",
+};
+
+function espnNaam(displayName) {
+  return ESPN_NAAR_NL[normaliseer(displayName)] || null;
+}
+
+/* Verwerkt ESPN-events in een kopie van de opgeslagen uitslagen.
+   Geeft terug: { uitslagen, versGroep:Set, versKo:Set, live:{}, onplaatsbaar:[] } */
+function verwerkEspn(events, opgeslagen) {
+  const uitslagen = JSON.parse(JSON.stringify(opgeslagen));
+  const versGroep = new Set(), versKo = new Set(), live = {}, onplaatsbaar = [];
+
+  const paarSleutel = (a, b) => [normaliseer(a), normaliseer(b)].sort().join("|");
+  const groepPerPaar = {};
+  for (const w of uitslagen.groepswedstrijden) groepPerPaar[paarSleutel(w.thuis, w.uit)] = w;
+  const slotPerPaar = {};
+  for (const [slot, k] of Object.entries(uitslagen.knockout))
+    if (k.thuis && k.uit) slotPerPaar[paarSleutel(k.thuis, k.uit)] = slot;
+
+  for (const event of events) {
+    const comp = event.competitions && event.competitions[0];
+    if (!comp) continue;
+    const thuisC = comp.competitors.find(c => c.homeAway === "home");
+    const uitC = comp.competitors.find(c => c.homeAway === "away");
+    if (!thuisC || !uitC) continue;
+    const thuisNL = espnNaam(thuisC.team.displayName);
+    const uitNL = espnNaam(uitC.team.displayName);
+    if (!thuisNL || !uitNL) continue; // nog een plaatshouder zoals "Group A Winner"
+
+    const staat = event.status.type.state; // pre | in | post
+    const klaar = staat === "post" && event.status.type.completed;
+    const sleutel = paarSleutel(thuisNL, uitNL);
+    const isGroep = Date.parse(event.date) < KNOCKOUT_GRENS;
+
+    const doel = isGroep ? groepPerPaar[sleutel] : null;
+    const slot = isGroep ? null : slotPerPaar[sleutel];
+
+    if (isGroep && !doel) { onplaatsbaar.push(`${thuisNL} – ${uitNL}`); continue; }
+    if (!isGroep && !slot) {
+      if (klaar || staat === "in") onplaatsbaar.push(`${thuisNL} – ${uitNL} (knock-out, nog niet ingedeeld)`);
+      continue;
+    }
+
+    const record = isGroep ? doel : uitslagen.knockout[slot];
+    // Score in de juiste richting zetten (ESPN kan thuis/uit omdraaien t.o.v. ons schema)
+    const omgedraaid = normaliseer(record.thuis) !== normaliseer(thuisNL);
+    const tg = parseInt(thuisC.score, 10), ug = parseInt(uitC.score, 10);
+    const thuisGoals = omgedraaid ? ug : tg;
+    const uitGoals = omgedraaid ? tg : ug;
+
+    if (klaar && (record.thuis_goals === null || record.thuis_goals === undefined)) {
+      record.thuis_goals = thuisGoals;
+      record.uit_goals = uitGoals;
+      (isGroep ? versGroep : versKo).add(isGroep ? record.id : slot);
+    } else if (staat === "in") {
+      live[isGroep ? record.id : slot] = {
+        score: `${thuisGoals}-${uitGoals}`,
+        minuut: event.status.type.shortDetail || "live",
+      };
+    }
+  }
+  return { uitslagen, versGroep, versKo, live, onplaatsbaar };
+}
+
+/* ====================== Weergave ====================== */
+
+const App = {
+  voorspellingen: null, regels: null, opgeslagen: null,
+  uitslagen: null, versGroep: new Set(), versKo: new Set(), live: {}, onplaatsbaar: [],
+  liveStatus: null, // null | "bezig" | "ok" | "fout"
+  liveTijd: null,
+};
+
+function puntenChip(punten) {
+  if (punten === null || punten === undefined) return `<div class="punten-chip open">−</div>`;
+  return `<div class="punten-chip ${punten > 0 ? "goed" : "nul"}">${punten}</div>`;
+}
+
+function badge(label, waarde, soort) {
+  const leeg = waarde === null || waarde === undefined;
+  return `<div class="badge ${soort}${leeg ? " leeg" : ""}">
+    <span class="mini">${label}</span>${leeg ? "−" : waarde}</div>`;
+}
+
+function statusRegel() {
+  const delen = [];
+  delen.push(App.opgeslagen.laatst_bijgewerkt
+    ? `Opgeslagen stand: ${App.opgeslagen.laatst_bijgewerkt}`
+    : "Nog geen opgeslagen uitslagen");
+  if (App.liveStatus === "ok") {
+    const nieuw = App.versGroep.size + App.versKo.size;
+    delen.push(`<span class="ok">✓ live ververst om ${App.liveTijd}` +
+      (nieuw ? ` — ${nieuw} nieuwe uitslag${nieuw === 1 ? "" : "en"}` : " — geen nieuwe uitslagen") + `</span>`);
+  } else if (App.liveStatus === "fout") {
+    delen.push(`<span class="fout">live ophalen lukte niet — opgeslagen stand wordt getoond</span>`);
+  } else if (App.liveStatus === "bezig") {
+    delen.push("uitslagen ophalen…");
+  }
+  return delen.join(" · ");
+}
+
+function render() {
+  const stand = standBerekenen(App.voorspellingen, App.uitslagen, App.regels);
+  const t = stand.totalen;
+  const actieveTab = (document.querySelector("nav button.actief") || {}).dataset
+    ? document.querySelector("nav button.actief").dataset.tab : "groepsfase";
+
+  let html = `
+  <header>
+    <div class="wimpel">FIFA World Cup 2026 · USA · Canada · Mexico</div>
+    <h1>WK Pool 2026</h1>
+    <div class="deelnemer">Formulier van <strong>${stand.deelnemer}</strong></div>
+    <div class="actiebalk">
+      <button class="ververs${App.liveStatus === "bezig" ? " bezig" : ""}" id="ververs-knop"
+        ${App.liveStatus === "bezig" ? "disabled" : ""}>
+        <span class="icoon">↻</span>
+        ${App.liveStatus === "bezig" ? "Bezig met ophalen…" : "Haal laatste uitslagen op"}
+      </button>
+      <div class="status-tekst">${statusRegel()}</div>
+    </div>
+    <div class="scorebord">
+      <div class="paneel totaal">
+        <div class="label">Totaalscore</div>
+        <div class="waarde">${t.totaal}</div>
+        <div class="sub">punten</div>
+      </div>
+      <div class="paneel">
+        <div class="label">Groepsfase</div>
+        <div class="waarde">${t.groepsfase}</div>
+        <div class="sub">${t.groepswedstrijden_gespeeld} van 72 gespeeld</div>
+      </div>
+      <div class="paneel">
+        <div class="label">Knock-out</div>
+        <div class="waarde">${t.knockout}</div>
+        <div class="sub">zestiende finale t/m finale</div>
+      </div>
+      <div class="paneel">
+        <div class="label">Bonusvragen</div>
+        <div class="waarde">${t.bonus}</div>
+        <div class="sub">kampioen, topscorer &amp; meer</div>
+      </div>
+    </div>
+    ${App.onplaatsbaar.length
+      ? `<div class="melding">⚠ Deze uitslagen konden nog niet automatisch geplaatst worden: ${App.onplaatsbaar.join(", ")}. Ze worden bij de eerstvolgende dagelijkse update verwerkt.</div>`
+      : ""}
+  </header>
+
+  <nav>
+    <button data-tab="groepsfase"${actieveTab === "groepsfase" ? ' class="actief"' : ""}>Groepsfase</button>
+    <button data-tab="knockout"${actieveTab === "knockout" ? ' class="actief"' : ""}>Knock-out</button>
+    <button data-tab="bonus"${actieveTab === "bonus" ? ' class="actief"' : ""}>Bonusvragen</button>
+  </nav>`;
+
+  // Groepsfase
+  const groepen = {};
+  for (const w of stand.groepswedstrijden) (groepen[w.groep] = groepen[w.groep] || []).push(w);
+  html += `<section class="tab${actieveTab === "groepsfase" ? " actief" : ""}" id="tab-groepsfase"><div class="groepen">`;
+  for (const [letter, lijst] of Object.entries(groepen)) {
+    const groepPunten = lijst.reduce((s, w) => s + (w.punten || 0), 0);
+    const klaar = lijst.filter(w => w.punten !== null).length;
+    html += `<div class="groep-kaart">
+      <div class="groep-kop">
+        <div class="naam">Groep <span>${letter}</span></div>
+        <div class="groep-punten">${klaar ? groepPunten + " pt" : ""}</div>
+      </div>`;
+    for (const w of lijst) {
+      const liveInfo = App.live[w.id];
+      html += `<div class="wedstrijd${liveInfo ? " live-nu" : ""}">
+        <div class="wie">
+          <div class="teams">${w.thuis} – ${w.uit}</div>
+          <div class="datum">${
+            liveInfo ? `<span class="live-label">● Live</span> ${liveInfo.minuut} · stand ${liveInfo.score} · ` : ""
+          }${fmtDatum(w.datum)}${App.versGroep.has(w.id) ? ' · <span class="vers-label">zojuist opgehaald</span>' : ""}</div>
+        </div>
+        ${badge("tip", w.voorspelling, "voorspelling")}
+        ${badge("uitslag", w.uitslag, "uitslag")}
+        ${puntenChip(w.punten)}
+        ${w.detail.length ? `<div class="detail">✓ ${w.detail.join(" · ")}</div>` : ""}
+      </div>`;
+    }
+    html += `</div>`;
+  }
+  html += `</div></section>`;
+
+  // Knock-out
+  const rondes = {};
+  for (const k of stand.knockout) (rondes[k.ronde_naam] = rondes[k.ronde_naam] || []).push(k);
+  html += `<section class="tab${actieveTab === "knockout" ? " actief" : ""}" id="tab-knockout">`;
+  for (const [naam, lijst] of Object.entries(rondes)) {
+    const rondePunten = lijst.reduce((s, k) => s + (k.punten || 0), 0);
+    const begonnen = lijst.some(k => k.punten !== null);
+    html += `<h2>${naam}${begonnen ? ` <span class="nadruk">· ${rondePunten} pt</span>` : ""}</h2><div class="ko-lijst">`;
+    for (const k of lijst) {
+      const liveInfo = App.live[k.slot];
+      const echtBekend = k.echt_thuis || k.echt_uit;
+      html += `<div class="ko-kaart${liveInfo ? " live-nu" : ""}">
+        <div class="slot">${k.slot}</div>
+        <div class="ko-regel">
+          <span class="kopje">Voorspeld · ${fmtDatum(k.datum)}</span>
+          <span class="inhoud">${k.voorspeld_thuis} – ${k.voorspeld_uit}
+            <span class="score">${k.voorspelling}</span></span>
+        </div>
+        <div class="ko-regel echt-kolom">
+          <span class="kopje">Werkelijk${App.versKo.has(k.slot) ? ' · <span class="vers-label">zojuist opgehaald</span>' : ""}</span>
+          ${echtBekend
+            ? `<span class="inhoud">${k.echt_thuis || "?"} – ${k.echt_uit || "?"}
+                 <span class="score">${liveInfo ? `<span class="live-label">● Live</span> ${liveInfo.score}` : (k.uitslag || "")}</span></span>`
+            : `<span class="inhoud onbekend">nog niet bekend</span>`}
+        </div>
+        ${puntenChip(k.punten)}
+        ${k.detail.length ? `<div class="detail">✓ ${k.detail.join(" · ")}</div>` : ""}
+      </div>`;
+    }
+    html += `</div>`;
+  }
+  html += `</section>`;
+
+  // Bonus
+  html += `<section class="tab${actieveTab === "bonus" ? " actief" : ""}" id="tab-bonus"><div class="bonus-rooster">`;
+  for (const b of stand.bonus) {
+    html += `<div class="bonus-kaart">
+      <div class="vraag">${b.vraag}</div>
+      <div class="keuze">${b.voorspeld}</div>
+      <div class="echt">${
+        b.echt !== null && b.echt !== undefined
+          ? "Werkelijk: <strong>" + b.echt + "</strong>" + (b.voorlopig ? " (tussenstand)" : "")
+          : "Nog niet bekend"
+      }</div>
+      <div class="bonus-punten">${puntenChip(b.punten)}</div>
+    </div>`;
+  }
+  html += `</div></section>`;
+
+  html += `<footer>
+    <h3>Gehanteerde aannames bij de puntentelling</h3>
+    <ul>${stand.aannames.map(a => `<li>${a}</li>`).join("")}</ul>
+    <div class="bron">Live uitslagen via ESPN · De knop "Haal laatste uitslagen op" telt afgelopen wedstrijden direct mee; elke ochtend om 7:00 wordt de stand ook automatisch opgeslagen.</div>
+  </footer>`;
+
+  document.getElementById("app").innerHTML = html;
+
+  document.querySelectorAll("nav button").forEach(knop => {
+    knop.addEventListener("click", () => {
+      document.querySelectorAll("nav button").forEach(b => b.classList.remove("actief"));
+      document.querySelectorAll("section.tab").forEach(s => s.classList.remove("actief"));
+      knop.classList.add("actief");
+      document.getElementById("tab-" + knop.dataset.tab).classList.add("actief");
+    });
+  });
+  const knop = document.getElementById("ververs-knop");
+  if (knop) knop.addEventListener("click", () => haalLiveOp());
+}
+
+/* ====================== Gegevens laden ====================== */
+
+async function haalLiveOp() {
+  App.liveStatus = "bezig";
+  render();
+  try {
+    const antwoord = await fetch(ESPN_URL);
+    if (!antwoord.ok) throw new Error("HTTP " + antwoord.status);
+    const data = await antwoord.json();
+    const resultaat = verwerkEspn(data.events || [], App.opgeslagen);
+    App.uitslagen = resultaat.uitslagen;
+    App.versGroep = resultaat.versGroep;
+    App.versKo = resultaat.versKo;
+    App.live = resultaat.live;
+    App.onplaatsbaar = resultaat.onplaatsbaar;
+    App.liveStatus = "ok";
+    App.liveTijd = new Date().toLocaleTimeString("nl-NL", { hour: "2-digit", minute: "2-digit" });
+  } catch (e) {
+    console.error("Live ophalen mislukt:", e);
+    App.liveStatus = "fout";
+  }
+  render();
+}
+
+async function start() {
+  try {
+    const laad = naam => fetch(`data/${naam}?v=${Date.now()}`).then(r => {
+      if (!r.ok) throw new Error(`${naam}: HTTP ${r.status}`);
+      return r.json();
+    });
+    [App.voorspellingen, App.regels, App.opgeslagen] = await Promise.all([
+      laad("voorspellingen.json"), laad("puntenregels.json"), laad("uitslagen.json"),
+    ]);
+  } catch (e) {
+    console.error(e);
+    document.getElementById("app").innerHTML = `<div class="fout-scherm">
+      <h2>Kan de gegevens niet laden</h2>
+      <p>Open deze pagina via de website-link (niet als los bestand op de computer).</p></div>`;
+    return;
+  }
+  App.uitslagen = App.opgeslagen;
+  render();
+  haalLiveOp(); // direct bij het openen de laatste uitslagen ophalen
+}
+
+/* ====================== Testmodus (?test=1) ====================== */
+
+function draaiTests() {
+  const resultaten = [];
+  const check = (naam, gekregen, verwacht) => resultaten.push({
+    naam, gekregen, verwacht,
+    ok: JSON.stringify(gekregen) === JSON.stringify(verwacht),
+  });
+  const G = App.regels.groepsfase, K = App.regels.knockout, S = App.regels.bonus.telvragen;
+  const groep = (pt, pu, at, au) => berekenGroepswedstrijd(
+    { thuis: "A", uit: "B", thuis_goals: pt, uit_goals: pu },
+    { thuis_goals: at, uit_goals: au }, G).punten;
+  const ko = (ronde, pteams, pscore, ateams, ascore, rondeLanden) => berekenKnockout(
+    { thuis: pteams[0], uit: pteams[1], thuis_goals: pscore[0], uit_goals: pscore[1] },
+    { thuis: ateams[0], uit: ateams[1], thuis_goals: ascore[0], uit_goals: ascore[1] },
+    K[ronde], new Set(rondeLanden.map(normaliseer))).punten;
+
+  check("groep: exact (2-1 om 2-1) = 20", groep(2, 1, 2, 1), 20);
+  check("groep: voorbeeld 2-1 om 2-0 = 10", groep(2, 1, 2, 0), 10);
+  check("groep: voorbeeld 0-1 om 2-1 = 5", groep(0, 1, 2, 1), 5);
+  check("groep: alles fout = 0", groep(0, 2, 3, 1), 0);
+  check("groep: gelijkspel goed = 5", groep(1, 1, 2, 2), 5);
+  check("groep: niet gespeeld = null", groep(2, 1, null, null), null);
+  check("ko zestiende: alles goed = 35",
+    ko("zestiende_finale", ["NEDERLAND", "MAROKKO"], [2, 1], ["NEDERLAND", "MAROKKO"], [2, 1], ["NEDERLAND", "MAROKKO"]), 35);
+  check("ko zestiende: omgedraaid = 20",
+    ko("zestiende_finale", ["NEDERLAND", "MAROKKO"], [2, 1], ["MAROKKO", "NEDERLAND"], [1, 2], ["NEDERLAND", "MAROKKO"]), 20);
+  check("ko kwart: 20+10+5 = 35",
+    ko("kwartfinale", ["DUITSLAND", "BRAZILIË"], [1, 2], ["FRANKRIJK", "BRAZILIË"], [3, 2],
+      ["FRANKRIJK", "BRAZILIË", "DUITSLAND", "SPANJE"]), 35);
+  check("ko zestiende: elders in ronde = 0",
+    ko("zestiende_finale", ["DUITSLAND", "TURKIJE"], [2, 0], ["FRANKRIJK", "EGYPTE"], [3, 1],
+      ["FRANKRIJK", "EGYPTE", "DUITSLAND", "TURKIJE"]), 0);
+  check("ko finale: beide landen, score fout = 100",
+    ko("finale", ["SPANJE", "FRANKRIJK"], [1, 2], ["FRANKRIJK", "SPANJE"], [3, 0], ["FRANKRIJK", "SPANJE"]), 100);
+  check("ko: landen bekend, geen uitslag = 30",
+    ko("halve_finale", ["BRAZILIË", "SPANJE"], [1, 2], ["SPANJE", "ARGENTINIË"], [null, null],
+      ["SPANJE", "ARGENTINIË", "FRANKRIJK", "ENGELAND"]), 30);
+  check("ko: niets bekend = null",
+    ko("halve_finale", ["BRAZILIË", "SPANJE"], [1, 2], [null, null], [null, null], []), null);
+  check("telvraag: precies = 50", berekenTelvraag(281, 281, S), 50);
+  check("telvraag: 5 ernaast = 20", berekenTelvraag(281, 286, S), 20);
+  check("telvraag: 10 ernaast = 10", berekenTelvraag(281, 291, S), 10);
+  check("telvraag: 11 ernaast = 0", berekenTelvraag(281, 292, S), 0);
+  check("telvraag: onbekend = null", berekenTelvraag(281, null, S), null);
+
+  // ESPN-verwerking
+  const nepEvent = (datum, thuis, uit, ts, us, klaar) => ({
+    date: datum,
+    status: { type: { state: klaar ? "post" : "in", completed: klaar, shortDetail: "45'" } },
+    competitions: [{ competitors: [
+      { homeAway: "home", score: String(ts), team: { displayName: thuis } },
+      { homeAway: "away", score: String(us), team: { displayName: uit } },
+    ]}],
+  });
+  const r1 = verwerkEspn([nepEvent("2026-06-11T19:00Z", "Mexico", "South Africa", 3, 0, true)], App.opgeslagen);
+  check("espn: groepsuitslag geplaatst", r1.uitslagen.groepswedstrijden[0].thuis_goals, 3);
+  const r2 = verwerkEspn([nepEvent("2026-06-11T19:00Z", "South Africa", "Mexico", 0, 3, true)], App.opgeslagen);
+  check("espn: omgedraaide teams goed geplaatst", r2.uitslagen.groepswedstrijden[0].thuis_goals, 3);
+  const r3 = verwerkEspn([nepEvent("2026-06-11T19:00Z", "Mexico", "South Africa", 1, 0, false)], App.opgeslagen);
+  check("espn: live wedstrijd niet als uitslag geteld", r3.uitslagen.groepswedstrijden[0].thuis_goals, null);
+  check("espn: live stand zichtbaar", r3.live["G01"] ? r3.live["G01"].score : null, "1-0");
+  check("espn: alle 48 landen in vertaaltabel", Object.keys(ESPN_NAAR_NL).length, 48);
+
+  const geslaagd = resultaten.filter(r => r.ok).length;
+  document.getElementById("app").innerHTML =
+    `<header><h1>Testmodus</h1><div class="deelnemer">${geslaagd} van ${resultaten.length} tests geslaagd</div></header>
+     <div class="test-lijst">` +
+    resultaten.map(r => r.ok
+      ? `<div class="test-ok">✓ ${r.naam}</div>`
+      : `<div class="test-fout">✗ ${r.naam} — kreeg ${JSON.stringify(r.gekregen)}, verwacht ${JSON.stringify(r.verwacht)}</div>`
+    ).join("") + `</div>`;
+  return resultaten.every(r => r.ok);
+}
+
+/* ====================== Start ====================== */
+
+if (new URLSearchParams(location.search).get("test")) {
+  (async () => {
+    const laad = naam => fetch(`data/${naam}?v=${Date.now()}`).then(r => r.json());
+    [App.voorspellingen, App.regels, App.opgeslagen] = await Promise.all([
+      laad("voorspellingen.json"), laad("puntenregels.json"), laad("uitslagen.json"),
+    ]);
+    window.testResultaat = draaiTests();
+  })();
+} else {
+  start();
+}
+</script>
+</body>
+</html>

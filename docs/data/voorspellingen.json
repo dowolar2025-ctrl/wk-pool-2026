@@ -1,0 +1,924 @@
+{
+  "deelnemer": "Daniella Doors",
+  "groepswedstrijden": [
+    {
+      "id": "G01",
+      "groep": "A",
+      "datum": "2026-06-11",
+      "thuis": "MEXICO",
+      "uit": "ZUID AFRIKA",
+      "thuis_goals": 3,
+      "uit_goals": 0
+    },
+    {
+      "id": "G02",
+      "groep": "A",
+      "datum": "2026-06-12",
+      "thuis": "ZUID KOREA",
+      "uit": "TSJECHIË",
+      "thuis_goals": 2,
+      "uit_goals": 1
+    },
+    {
+      "id": "G03",
+      "groep": "A",
+      "datum": "2026-06-18",
+      "thuis": "TSJECHIË",
+      "uit": "ZUID AFRIKA",
+      "thuis_goals": 2,
+      "uit_goals": 0
+    },
+    {
+      "id": "G04",
+      "groep": "A",
+      "datum": "2026-06-19",
+      "thuis": "MEXICO",
+      "uit": "ZUID KOREA",
+      "thuis_goals": 2,
+      "uit_goals": 1
+    },
+    {
+      "id": "G05",
+      "groep": "A",
+      "datum": "2026-06-25",
+      "thuis": "TSJECHIË",
+      "uit": "MEXICO",
+      "thuis_goals": 0,
+      "uit_goals": 2
+    },
+    {
+      "id": "G06",
+      "groep": "A",
+      "datum": "2026-06-25",
+      "thuis": "ZUID AFRIKA",
+      "uit": "ZUID KOREA",
+      "thuis_goals": 1,
+      "uit_goals": 2
+    },
+    {
+      "id": "G07",
+      "groep": "B",
+      "datum": "2026-06-12",
+      "thuis": "CANADA",
+      "uit": "BOSNIË/HERZEG.",
+      "thuis_goals": 2,
+      "uit_goals": 1
+    },
+    {
+      "id": "G08",
+      "groep": "B",
+      "datum": "2026-06-13",
+      "thuis": "QATAR",
+      "uit": "ZWITSERLAND",
+      "thuis_goals": 0,
+      "uit_goals": 3
+    },
+    {
+      "id": "G09",
+      "groep": "B",
+      "datum": "2026-06-18",
+      "thuis": "ZWITSERLAND",
+      "uit": "BOSNIË/HERZEG.",
+      "thuis_goals": 2,
+      "uit_goals": 0
+    },
+    {
+      "id": "G10",
+      "groep": "B",
+      "datum": "2026-06-19",
+      "thuis": "CANADA",
+      "uit": "QATAR",
+      "thuis_goals": 3,
+      "uit_goals": 0
+    },
+    {
+      "id": "G11",
+      "groep": "B",
+      "datum": "2026-06-24",
+      "thuis": "ZWITSERLAND",
+      "uit": "CANADA",
+      "thuis_goals": 2,
+      "uit_goals": 1
+    },
+    {
+      "id": "G12",
+      "groep": "B",
+      "datum": "2026-06-24",
+      "thuis": "BOSNIË/HERZEG.",
+      "uit": "QATAR",
+      "thuis_goals": 2,
+      "uit_goals": 1
+    },
+    {
+      "id": "G13",
+      "groep": "C",
+      "datum": "2026-06-14",
+      "thuis": "BRAZILIË",
+      "uit": "MAROKKO",
+      "thuis_goals": 2,
+      "uit_goals": 0
+    },
+    {
+      "id": "G14",
+      "groep": "C",
+      "datum": "2026-06-14",
+      "thuis": "HAÏTI",
+      "uit": "SCHOTLAND",
+      "thuis_goals": 0,
+      "uit_goals": 2
+    },
+    {
+      "id": "G15",
+      "groep": "C",
+      "datum": "2026-06-20",
+      "thuis": "SCHOTLAND",
+      "uit": "MAROKKO",
+      "thuis_goals": 0,
+      "uit_goals": 2
+    },
+    {
+      "id": "G16",
+      "groep": "C",
+      "datum": "2026-06-20",
+      "thuis": "BRAZILIË",
+      "uit": "HAÏTI",
+      "thuis_goals": 3,
+      "uit_goals": 0
+    },
+    {
+      "id": "G17",
+      "groep": "C",
+      "datum": "2026-06-25",
+      "thuis": "SCHOTLAND",
+      "uit": "BRAZILIË",
+      "thuis_goals": 0,
+      "uit_goals": 3
+    },
+    {
+      "id": "G18",
+      "groep": "C",
+      "datum": "2026-06-25",
+      "thuis": "MAROKKO",
+      "uit": "HAÏTI",
+      "thuis_goals": 3,
+      "uit_goals": 0
+    },
+    {
+      "id": "G19",
+      "groep": "D",
+      "datum": "2026-06-13",
+      "thuis": "USA",
+      "uit": "PARAGUAY",
+      "thuis_goals": 2,
+      "uit_goals": 1
+    },
+    {
+      "id": "G20",
+      "groep": "D",
+      "datum": "2026-06-14",
+      "thuis": "AUSTRALIË",
+      "uit": "TURKIJE",
+      "thuis_goals": 1,
+      "uit_goals": 2
+    },
+    {
+      "id": "G21",
+      "groep": "D",
+      "datum": "2026-06-19",
+      "thuis": "USA",
+      "uit": "AUSTRALIË",
+      "thuis_goals": 2,
+      "uit_goals": 1
+    },
+    {
+      "id": "G22",
+      "groep": "D",
+      "datum": "2026-06-20",
+      "thuis": "TURKIJE",
+      "uit": "PARAGUAY",
+      "thuis_goals": 1,
+      "uit_goals": 1
+    },
+    {
+      "id": "G23",
+      "groep": "D",
+      "datum": "2026-06-26",
+      "thuis": "TURKIJE",
+      "uit": "USA",
+      "thuis_goals": 1,
+      "uit_goals": 2
+    },
+    {
+      "id": "G24",
+      "groep": "D",
+      "datum": "2026-06-26",
+      "thuis": "PARAGUAY",
+      "uit": "AUSTRALIË",
+      "thuis_goals": 1,
+      "uit_goals": 2
+    },
+    {
+      "id": "G25",
+      "groep": "E",
+      "datum": null,
+      "thuis": "DUITSLAND",
+      "uit": "CURACAO",
+      "thuis_goals": 3,
+      "uit_goals": 0
+    },
+    {
+      "id": "G26",
+      "groep": "E",
+      "datum": "2026-06-15",
+      "thuis": "IVOORKUST",
+      "uit": "ECUADOR",
+      "thuis_goals": 1,
+      "uit_goals": 2
+    },
+    {
+      "id": "G27",
+      "groep": "E",
+      "datum": "2026-06-20",
+      "thuis": "DUITSLAND",
+      "uit": "IVOORKUST",
+      "thuis_goals": 2,
+      "uit_goals": 1
+    },
+    {
+      "id": "G28",
+      "groep": "E",
+      "datum": "2026-06-21",
+      "thuis": "ECUADOR",
+      "uit": "CURACAO",
+      "thuis_goals": 3,
+      "uit_goals": 0
+    },
+    {
+      "id": "G29",
+      "groep": "E",
+      "datum": "2026-06-25",
+      "thuis": "CURACAO",
+      "uit": "IVOORKUST",
+      "thuis_goals": 0,
+      "uit_goals": 2
+    },
+    {
+      "id": "G30",
+      "groep": "E",
+      "datum": "2026-06-25",
+      "thuis": "ECUADOR",
+      "uit": "DUITSLAND",
+      "thuis_goals": 1,
+      "uit_goals": 2
+    },
+    {
+      "id": "G31",
+      "groep": "F",
+      "datum": "2026-06-14",
+      "thuis": "NEDERLAND",
+      "uit": "JAPAN",
+      "thuis_goals": 2,
+      "uit_goals": 1
+    },
+    {
+      "id": "G32",
+      "groep": "F",
+      "datum": "2026-06-15",
+      "thuis": "ZWEDEN",
+      "uit": "TUNESIË",
+      "thuis_goals": 1,
+      "uit_goals": 1
+    },
+    {
+      "id": "G33",
+      "groep": "F",
+      "datum": "2026-06-20",
+      "thuis": "NEDERLAND",
+      "uit": "ZWEDEN",
+      "thuis_goals": 2,
+      "uit_goals": 0
+    },
+    {
+      "id": "G34",
+      "groep": "F",
+      "datum": "2026-06-21",
+      "thuis": "TUNESIË",
+      "uit": "JAPAN",
+      "thuis_goals": 1,
+      "uit_goals": 2
+    },
+    {
+      "id": "G35",
+      "groep": "F",
+      "datum": "2026-06-26",
+      "thuis": "JAPAN",
+      "uit": "ZWEDEN",
+      "thuis_goals": 1,
+      "uit_goals": 1
+    },
+    {
+      "id": "G36",
+      "groep": "F",
+      "datum": "2026-06-26",
+      "thuis": "TUNESIË",
+      "uit": "NEDERLAND",
+      "thuis_goals": 0,
+      "uit_goals": 2
+    },
+    {
+      "id": "G37",
+      "groep": "G",
+      "datum": "2026-06-15",
+      "thuis": "BELGIË",
+      "uit": "EGYPTE",
+      "thuis_goals": 2,
+      "uit_goals": 0
+    },
+    {
+      "id": "G38",
+      "groep": "G",
+      "datum": "2026-06-16",
+      "thuis": "IRAN",
+      "uit": "NIEUW-ZEELAND",
+      "thuis_goals": 2,
+      "uit_goals": 0
+    },
+    {
+      "id": "G39",
+      "groep": "G",
+      "datum": "2026-06-21",
+      "thuis": "BELGIË",
+      "uit": "IRAN",
+      "thuis_goals": 2,
+      "uit_goals": 1
+    },
+    {
+      "id": "G40",
+      "groep": "G",
+      "datum": "2026-06-22",
+      "thuis": "NIEUW-ZEELAND",
+      "uit": "EGYPTE",
+      "thuis_goals": 0,
+      "uit_goals": 1
+    },
+    {
+      "id": "G41",
+      "groep": "G",
+      "datum": "2026-06-27",
+      "thuis": "EGYPTE",
+      "uit": "IRAN",
+      "thuis_goals": 1,
+      "uit_goals": 1
+    },
+    {
+      "id": "G42",
+      "groep": "G",
+      "datum": "2026-06-27",
+      "thuis": "NIEUW-ZEELAND",
+      "uit": "BELGIË",
+      "thuis_goals": 0,
+      "uit_goals": 2
+    },
+    {
+      "id": "G43",
+      "groep": "H",
+      "datum": "2026-06-15",
+      "thuis": "SPANJE",
+      "uit": "KAAPVERDIË",
+      "thuis_goals": 4,
+      "uit_goals": 0
+    },
+    {
+      "id": "G44",
+      "groep": "H",
+      "datum": "2026-06-16",
+      "thuis": "SAOEDI-ARABIË",
+      "uit": "URUGUAY",
+      "thuis_goals": 0,
+      "uit_goals": 3
+    },
+    {
+      "id": "G45",
+      "groep": "H",
+      "datum": "2026-06-21",
+      "thuis": "SPANJE",
+      "uit": "SAOEDI-ARABIË",
+      "thuis_goals": 4,
+      "uit_goals": 0
+    },
+    {
+      "id": "G46",
+      "groep": "H",
+      "datum": "2026-06-22",
+      "thuis": "URUGUAY",
+      "uit": "KAAPVERDIË",
+      "thuis_goals": 3,
+      "uit_goals": 0
+    },
+    {
+      "id": "G47",
+      "groep": "H",
+      "datum": "2026-06-27",
+      "thuis": "KAAPVERDIË",
+      "uit": "SAOEDI-ARABIË",
+      "thuis_goals": 1,
+      "uit_goals": 2
+    },
+    {
+      "id": "G48",
+      "groep": "H",
+      "datum": "2026-06-27",
+      "thuis": "URUGUAY",
+      "uit": "SPANJE",
+      "thuis_goals": 0,
+      "uit_goals": 3
+    },
+    {
+      "id": "G49",
+      "groep": "I",
+      "datum": "2026-06-16",
+      "thuis": "FRANKRIJK",
+      "uit": "SENEGAL",
+      "thuis_goals": 3,
+      "uit_goals": 1
+    },
+    {
+      "id": "G50",
+      "groep": "I",
+      "datum": "2026-06-17",
+      "thuis": "IRAK",
+      "uit": "NOORWEGEN",
+      "thuis_goals": 0,
+      "uit_goals": 2
+    },
+    {
+      "id": "G51",
+      "groep": "I",
+      "datum": "2026-06-22",
+      "thuis": "FRANKRIJK",
+      "uit": "IRAK",
+      "thuis_goals": 3,
+      "uit_goals": 0
+    },
+    {
+      "id": "G52",
+      "groep": "I",
+      "datum": "2026-06-23",
+      "thuis": "NOORWEGEN",
+      "uit": "SENEGAL",
+      "thuis_goals": 1,
+      "uit_goals": 1
+    },
+    {
+      "id": "G53",
+      "groep": "I",
+      "datum": "2026-06-26",
+      "thuis": "NOORWEGEN",
+      "uit": "FRANKRIJK",
+      "thuis_goals": 1,
+      "uit_goals": 2
+    },
+    {
+      "id": "G54",
+      "groep": "I",
+      "datum": "2026-06-26",
+      "thuis": "SENEGAL",
+      "uit": "IRAK",
+      "thuis_goals": 2,
+      "uit_goals": 0
+    },
+    {
+      "id": "G55",
+      "groep": "J",
+      "datum": "2026-06-17",
+      "thuis": "ARGENTINIË",
+      "uit": "ALGERIJE",
+      "thuis_goals": 3,
+      "uit_goals": 0
+    },
+    {
+      "id": "G56",
+      "groep": "J",
+      "datum": "2026-06-17",
+      "thuis": "OOSTENRIJK",
+      "uit": "JORDANIË",
+      "thuis_goals": 2,
+      "uit_goals": 0
+    },
+    {
+      "id": "G57",
+      "groep": "J",
+      "datum": "2026-06-22",
+      "thuis": "ARGENTINIË",
+      "uit": "OOSTENRIJK",
+      "thuis_goals": 2,
+      "uit_goals": 1
+    },
+    {
+      "id": "G58",
+      "groep": "J",
+      "datum": "2026-06-23",
+      "thuis": "JORDANIË",
+      "uit": "ALGERIJE",
+      "thuis_goals": 1,
+      "uit_goals": 1
+    },
+    {
+      "id": "G59",
+      "groep": "J",
+      "datum": "2026-06-28",
+      "thuis": "ALGERIJE",
+      "uit": "OOSTENRIJK",
+      "thuis_goals": 0,
+      "uit_goals": 2
+    },
+    {
+      "id": "G60",
+      "groep": "J",
+      "datum": "2026-06-28",
+      "thuis": "JORDANIË",
+      "uit": "ARGENTINIË",
+      "thuis_goals": 0,
+      "uit_goals": 3
+    },
+    {
+      "id": "G61",
+      "groep": "K",
+      "datum": "2026-06-17",
+      "thuis": "PORTUGAL",
+      "uit": "CONGO",
+      "thuis_goals": 3,
+      "uit_goals": 0
+    },
+    {
+      "id": "G62",
+      "groep": "K",
+      "datum": "2026-06-18",
+      "thuis": "OEZBEKISTAN",
+      "uit": "COLOMBIA",
+      "thuis_goals": 0,
+      "uit_goals": 2
+    },
+    {
+      "id": "G63",
+      "groep": "K",
+      "datum": "2026-06-23",
+      "thuis": "PORTUGAL",
+      "uit": "OEZBEKISTAN",
+      "thuis_goals": 3,
+      "uit_goals": 0
+    },
+    {
+      "id": "G64",
+      "groep": "K",
+      "datum": "2026-06-24",
+      "thuis": "COLOMBIA",
+      "uit": "CONGO",
+      "thuis_goals": 2,
+      "uit_goals": 1
+    },
+    {
+      "id": "G65",
+      "groep": "K",
+      "datum": "2026-06-28",
+      "thuis": "COLOMBIA",
+      "uit": "PORTUGAL",
+      "thuis_goals": 1,
+      "uit_goals": 1
+    },
+    {
+      "id": "G66",
+      "groep": "K",
+      "datum": "2026-06-28",
+      "thuis": "CONGO",
+      "uit": "OEZBEKISTAN",
+      "thuis_goals": 0,
+      "uit_goals": 1
+    },
+    {
+      "id": "G67",
+      "groep": "L",
+      "datum": "2026-06-17",
+      "thuis": "ENGELAND",
+      "uit": "KROATIË",
+      "thuis_goals": 2,
+      "uit_goals": 1
+    },
+    {
+      "id": "G68",
+      "groep": "L",
+      "datum": "2026-06-18",
+      "thuis": "GHANA",
+      "uit": "PANAMA",
+      "thuis_goals": 1,
+      "uit_goals": 1
+    },
+    {
+      "id": "G69",
+      "groep": "L",
+      "datum": "2026-06-23",
+      "thuis": "ENGELAND",
+      "uit": "GHANA",
+      "thuis_goals": 3,
+      "uit_goals": 0
+    },
+    {
+      "id": "G70",
+      "groep": "L",
+      "datum": "2026-06-24",
+      "thuis": "PANAMA",
+      "uit": "KROATIË",
+      "thuis_goals": 0,
+      "uit_goals": 2
+    },
+    {
+      "id": "G71",
+      "groep": "L",
+      "datum": "2026-06-27",
+      "thuis": "PANAMA",
+      "uit": "ENGELAND",
+      "thuis_goals": 0,
+      "uit_goals": 2
+    },
+    {
+      "id": "G72",
+      "groep": "L",
+      "datum": "2026-06-27",
+      "thuis": "KROATIË",
+      "uit": "GHANA",
+      "thuis_goals": 2,
+      "uit_goals": 0
+    }
+  ],
+  "knockout": {
+    "W73": {
+      "ronde": "zestiende_finale",
+      "datum": "2026-06-28",
+      "thuis": "ZUID KOREA",
+      "uit": "CANADA",
+      "thuis_goals": 2,
+      "uit_goals": 1
+    },
+    "W74": {
+      "ronde": "zestiende_finale",
+      "datum": "2026-06-29",
+      "thuis": "DUITSLAND",
+      "uit": "TURKIJE",
+      "thuis_goals": 2,
+      "uit_goals": 0
+    },
+    "W75": {
+      "ronde": "zestiende_finale",
+      "datum": "2026-06-30",
+      "thuis": "NEDERLAND",
+      "uit": "MAROKKO",
+      "thuis_goals": 2,
+      "uit_goals": 1
+    },
+    "W76": {
+      "ronde": "zestiende_finale",
+      "datum": "2026-06-29",
+      "thuis": "BRAZILIË",
+      "uit": "JAPAN",
+      "thuis_goals": 2,
+      "uit_goals": 1
+    },
+    "W77": {
+      "ronde": "zestiende_finale",
+      "datum": "2026-06-30",
+      "thuis": "FRANKRIJK",
+      "uit": "EGYPTE",
+      "thuis_goals": 3,
+      "uit_goals": 0
+    },
+    "W78": {
+      "ronde": "zestiende_finale",
+      "datum": "2026-06-30",
+      "thuis": "ECUADOR",
+      "uit": "SENEGAL",
+      "thuis_goals": 1,
+      "uit_goals": 2
+    },
+    "W79": {
+      "ronde": "zestiende_finale",
+      "datum": "2026-07-01",
+      "thuis": "MEXICO",
+      "uit": "SCHOTLAND",
+      "thuis_goals": 3,
+      "uit_goals": 0
+    },
+    "W80": {
+      "ronde": "zestiende_finale",
+      "datum": "2026-07-01",
+      "thuis": "ENGELAND",
+      "uit": "ALGERIJE",
+      "thuis_goals": 3,
+      "uit_goals": 0
+    },
+    "W81": {
+      "ronde": "zestiende_finale",
+      "datum": "2026-07-02",
+      "thuis": "USA",
+      "uit": "KROATIË",
+      "thuis_goals": 1,
+      "uit_goals": 2
+    },
+    "W82": {
+      "ronde": "zestiende_finale",
+      "datum": "2026-07-02",
+      "thuis": "BELGIË",
+      "uit": "TSJECHIË",
+      "thuis_goals": 3,
+      "uit_goals": 0
+    },
+    "W83": {
+      "ronde": "zestiende_finale",
+      "datum": "2026-07-03",
+      "thuis": "COLOMBIA",
+      "uit": "OOSTENRIJK",
+      "thuis_goals": 2,
+      "uit_goals": 1
+    },
+    "W84": {
+      "ronde": "zestiende_finale",
+      "datum": "2026-07-02",
+      "thuis": "SPANJE",
+      "uit": "BOSNIË/HERZEG.",
+      "thuis_goals": 3,
+      "uit_goals": 0
+    },
+    "W85": {
+      "ronde": "zestiende_finale",
+      "datum": "2026-07-03",
+      "thuis": "ZWITSERLAND",
+      "uit": "URUGUAY",
+      "thuis_goals": 1,
+      "uit_goals": 2
+    },
+    "W86": {
+      "ronde": "zestiende_finale",
+      "datum": "2026-07-04",
+      "thuis": "ARGENTINIË",
+      "uit": "IVOORKUST",
+      "thuis_goals": 3,
+      "uit_goals": 0
+    },
+    "W87": {
+      "ronde": "zestiende_finale",
+      "datum": "2026-07-04",
+      "thuis": "PORTUGAL",
+      "uit": "IRAN",
+      "thuis_goals": 2,
+      "uit_goals": 0
+    },
+    "W88": {
+      "ronde": "zestiende_finale",
+      "datum": "2026-07-03",
+      "thuis": "AUSTRALIË",
+      "uit": "NOORWEGEN",
+      "thuis_goals": 2,
+      "uit_goals": 1
+    },
+    "W89": {
+      "ronde": "achtste_finale",
+      "datum": "2026-07-04",
+      "thuis": "ZUID KOREA",
+      "uit": "DUITSLAND",
+      "thuis_goals": 0,
+      "uit_goals": 2
+    },
+    "W90": {
+      "ronde": "achtste_finale",
+      "datum": "2026-07-04",
+      "thuis": "NEDERLAND",
+      "uit": "BRAZILIË",
+      "thuis_goals": 1,
+      "uit_goals": 2
+    },
+    "W91": {
+      "ronde": "achtste_finale",
+      "datum": "2026-07-05",
+      "thuis": "FRANKRIJK",
+      "uit": "SENEGAL",
+      "thuis_goals": 3,
+      "uit_goals": 0
+    },
+    "W92": {
+      "ronde": "achtste_finale",
+      "datum": "2026-07-06",
+      "thuis": "MEXICO",
+      "uit": "ENGELAND",
+      "thuis_goals": 0,
+      "uit_goals": 2
+    },
+    "W93": {
+      "ronde": "achtste_finale",
+      "datum": "2026-07-06",
+      "thuis": "COLOMBIA",
+      "uit": "SPANJE",
+      "thuis_goals": 0,
+      "uit_goals": 3
+    },
+    "W94": {
+      "ronde": "achtste_finale",
+      "datum": "2026-07-07",
+      "thuis": "KROATIË",
+      "uit": "BELGIË",
+      "thuis_goals": 1,
+      "uit_goals": 2
+    },
+    "W95": {
+      "ronde": "achtste_finale",
+      "datum": "2026-07-07",
+      "thuis": "ARGENTINIË",
+      "uit": "PORTUGAL",
+      "thuis_goals": 2,
+      "uit_goals": 1
+    },
+    "W96": {
+      "ronde": "achtste_finale",
+      "datum": "2026-07-07",
+      "thuis": "URUGUAY",
+      "uit": "AUSTRALIË",
+      "thuis_goals": 2,
+      "uit_goals": 1
+    },
+    "W97": {
+      "ronde": "kwartfinale",
+      "datum": "2026-07-09",
+      "thuis": "DUITSLAND",
+      "uit": "BRAZILIË",
+      "thuis_goals": 1,
+      "uit_goals": 2
+    },
+    "W98": {
+      "ronde": "kwartfinale",
+      "datum": "2026-07-10",
+      "thuis": "SPANJE",
+      "uit": "BELGIË",
+      "thuis_goals": 2,
+      "uit_goals": 0
+    },
+    "W99": {
+      "ronde": "kwartfinale",
+      "datum": "2026-07-11",
+      "thuis": "FRANKRIJK",
+      "uit": "ENGELAND",
+      "thuis_goals": 2,
+      "uit_goals": 1
+    },
+    "W100": {
+      "ronde": "kwartfinale",
+      "datum": "2026-07-12",
+      "thuis": "ARGENTINIË",
+      "uit": "URUGUAY",
+      "thuis_goals": 3,
+      "uit_goals": 0
+    },
+    "W101": {
+      "ronde": "halve_finale",
+      "datum": "2026-07-14",
+      "thuis": "BRAZILIË",
+      "uit": "SPANJE",
+      "thuis_goals": 1,
+      "uit_goals": 2
+    },
+    "W102": {
+      "ronde": "halve_finale",
+      "datum": "2026-07-15",
+      "thuis": "FRANKRIJK",
+      "uit": "ARGENTINIË",
+      "thuis_goals": 2,
+      "uit_goals": 1
+    },
+    "W103": {
+      "ronde": "troostfinale",
+      "datum": "2026-07-18",
+      "thuis": "BRAZILIË",
+      "uit": "ARGENTINIË",
+      "thuis_goals": 2,
+      "uit_goals": 1
+    },
+    "W104": {
+      "ronde": "finale",
+      "datum": "2026-07-19",
+      "thuis": "SPANJE",
+      "uit": "FRANKRIJK",
+      "thuis_goals": 1,
+      "uit_goals": 2
+    }
+  },
+  "bonus": {
+    "wereldkampioen": "FRANKRIJK",
+    "topscorer": "Kylian Mbappé",
+    "doelpunten_totaal": 281,
+    "gele_kaarten": 354,
+    "rode_kaarten": 8,
+    "vier_spelers": [
+      "Kylian Mbappé",
+      "Julián Álvarez",
+      "Vinícius Júnior",
+      "Harry Kane"
+    ]
+  }
+}

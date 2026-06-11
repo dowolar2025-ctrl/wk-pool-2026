@@ -1,0 +1,29 @@
+{
+  "_uitleg": "Puntenregels uit het invulbestand (rij 108-154). Aanpasbaar als de poolregels anders blijken.",
+  "groepsfase": {
+    "winnaar_of_gelijkspel": 5,
+    "doelpunten_per_land": 5,
+    "exacte_uitslag_bonus": 5
+  },
+  "knockout": {
+    "zestiende_finale": { "land_correcte_plaats": 10, "land_wel_in_ronde": 0, "doelpunten_per_team": 5, "exacte_uitslag_bonus": 5 },
+    "achtste_finale":   { "land_correcte_plaats": 10, "land_wel_in_ronde": 0, "doelpunten_per_team": 5, "exacte_uitslag_bonus": 5 },
+    "kwartfinale":      { "land_correcte_plaats": 20, "land_wel_in_ronde": 10, "doelpunten_per_team": 5, "exacte_uitslag_bonus": 5 },
+    "halve_finale":     { "land_correcte_plaats": 30, "land_wel_in_ronde": 15, "doelpunten_per_team": 5, "exacte_uitslag_bonus": 5 },
+    "troostfinale":     { "land_correcte_plaats": 30, "land_wel_in_ronde": 15, "doelpunten_per_team": 5, "exacte_uitslag_bonus": 5 },
+    "finale":           { "land_correcte_plaats": 50, "land_wel_in_ronde": 25, "doelpunten_per_team": 5, "exacte_uitslag_bonus": 5 }
+  },
+  "bonus": {
+    "wereldkampioen": 75,
+    "topscorer": 50,
+    "punten_per_goal_gekozen_speler": 10,
+    "telvragen": { "precies_goed": 50, "binnen_5": 20, "binnen_10": 10 }
+  },
+  "_aannames": [
+    "De regels noemen geen aparte puntentelling voor de zestiende finale; aangenomen dat die gelijk is aan de achtste finale (10 punten per land op de juiste plaats).",
+    "De regels noemen geen puntentelling voor de troostfinale (3e/4e plaats); aangenomen dat die gelijk is aan de halve finale (30/15 punten).",
+    "'Land op de correcte plaats' telt als het land in de juiste wedstrijd (slot) staat, ongeacht thuis/uit.",
+    "De telvraag-puntenschaal (50/20/10) geldt voor doelpunten en gele kaarten zoals beschreven; voor rode kaarten is dezelfde schaal aangenomen.",
+    "Bij knock-outwedstrijden telt de stand na eventuele verlenging, zonder strafschoppenserie."
+  ]
+}
