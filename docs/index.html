@@ -364,24 +364,40 @@
   .programma-lijst { margin-top: 6px; }
   .programma-dag {
     font-family: var(--display); font-size: 16px; color: var(--oranje);
-    margin: 20px 0 8px; text-transform: capitalize;
+    margin: 22px 0 8px; text-transform: capitalize;
+    display: flex; align-items: baseline; gap: 10px;
+    scroll-margin-top: 88px;
+  }
+  .programma-dag.vandaag { color: var(--oranje-fel); }
+  .programma-dag .dag-nu {
+    font-family: var(--tekst); font-size: 10.5px; font-weight: 800; letter-spacing: 0.08em;
+    text-transform: uppercase; color: #fff; background: var(--oranje);
+    padding: 2px 9px; border-radius: 999px;
+  }
+  .programma-dag .dag-punten {
+    font-family: var(--tekst); font-size: 12.5px; font-weight: 800;
+    color: var(--oranje); margin-left: auto;
   }
   .programma-rij {
     background: var(--kaart); border: 1px solid var(--rand); border-radius: 12px;
-    padding: 9px 14px; margin-bottom: 6px;
-    display: grid; grid-template-columns: 52px 1.4fr 0.7fr 1.1fr;
-    gap: 12px; align-items: center; font-size: 13px;
+    padding: 9px 12px; margin-bottom: 6px;
+    display: grid; grid-template-columns: 44px 1fr auto auto;
+    gap: 10px; align-items: center; font-size: 13px;
   }
   .programma-rij.live-nu { box-shadow: inset 3px 0 0 var(--oranje); background: linear-gradient(90deg, var(--oranje-zacht), var(--kaart) 70%); }
-  .prog-tijd { font-weight: 800; font-variant-numeric: tabular-nums; color: var(--oranje); }
+  .prog-tijd { font-weight: 800; font-variant-numeric: tabular-nums; color: var(--oranje); text-align: center; }
+  .prog-kern { min-width: 0; }
+  .prog-boven { display: flex; align-items: baseline; flex-wrap: wrap; gap: 7px; }
   .prog-wedstrijd { font-weight: 700; }
-  .prog-score { color: var(--oranje); }
-  .prog-ronde { color: var(--inkt-zacht); font-size: 12px; }
-  .prog-locatie { color: var(--inkt-zacht); font-size: 12px; text-align: right; }
-  @media (max-width: 720px) {
-    .programma-rij { grid-template-columns: 46px 1fr; }
-    .prog-ronde { grid-column: 2; }
-    .prog-locatie { grid-column: 2; text-align: left; }
+  .prog-score { color: var(--oranje); font-variant-numeric: tabular-nums; }
+  .prog-onder { display: flex; flex-wrap: wrap; gap: 2px 12px; margin-top: 2px; font-size: 12px; }
+  .prog-ronde { color: var(--inkt-zacht); }
+  .prog-tip { color: var(--inkt-vaag); font-weight: 600; }
+  .programma-rij .uitklap { justify-self: end; }
+  .programma-rij .verloop { margin-top: 8px; }
+  .opbouw-kop {
+    font-weight: 700; color: var(--inkt-zacht);
+    padding-bottom: 6px; margin-bottom: 2px;
   }
 
   /* ---------- Testmodus ---------- */
@@ -446,6 +462,23 @@ function fmtDatum(iso) {
   if (!iso) return "datum onbekend";
   const [j, m, d] = iso.split("-").map(Number);
   return `${d} ${MAANDEN[m - 1]}`;
+}
+
+/* Volledige dagnaam ("vrijdag 12 juni") uit een ISO-datum, zonder tijdzone-verschuiving. */
+function fmtDag(iso) {
+  if (!iso) return "Datum nog onbekend";
+  const [j, m, d] = iso.split("-").map(Number);
+  return new Date(j, m - 1, d).toLocaleDateString("nl-NL", { weekday: "long", day: "numeric", month: "long" });
+}
+
+/* Een tijdstip (ISO met tijd) terug naar de kalenderdatum in de lokale tijd van de bezoeker. */
+function isoVanTijd(d) {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+
+/* De datum van vandaag als ISO-string (YYYY-MM-DD) in de lokale tijd van de bezoeker. */
+function isoVandaag() {
+  return isoVanTijd(new Date());
 }
 
 function teken(a, b) { return Math.sign(a - b); }
@@ -965,7 +998,55 @@ const App = {
   versGroep: new Set(), versKo: new Set(), live: {}, onplaatsbaar: [],
   liveStatus: null, // null | "bezig" | "ok" | "fout"
   liveTijd: null,
+  programmaScrollGedaan: false, // is er al naar "vandaag" gesprongen in het programma?
 };
+
+/* Springt in het programma naar de wedstrijden van vandaag (of de eerstvolgende
+   speeldag), zodat je niet hoeft te scrollen. */
+function scrollNaarVandaag() {
+  const doel = document.getElementById("prog-nu");
+  if (!doel) return;
+  doel.scrollIntoView({ behavior: "smooth", block: "start" });
+  App.programmaScrollGedaan = true;
+}
+
+/* Bouwt één datum-geordende lijst van alle wedstrijden (groepsfase + knock-out),
+   elk met jouw tip, de uitslag en de behaalde punten. Werkt op de opgeslagen
+   stand — dus ook zonder ESPN — en gebruikt de ESPN-aftraptijd voor de volgorde
+   binnen een dag zodra die bekend is. */
+function bouwProgrammaRijen(stand) {
+  // De ESPN-aftraptijd is leidend voor datum én volgorde zodra die bekend is;
+  // anders valt de wedstrijd terug op de opgeslagen datum (kan ontbreken).
+  const espnTijd = id => {
+    const prog = App.programma && App.programma.perWedstrijd[id];
+    return prog ? new Date(prog.datumtijd) : null;
+  };
+  const maakRij = (id, opgeslagenDatum, velden) => {
+    const tijd = espnTijd(id);
+    return Object.assign({ id, datum: tijd ? isoVanTijd(tijd) : (opgeslagenDatum || null),
+      sorteer: tijd ? tijd.getTime() : Date.parse((opgeslagenDatum || "9999-12-31") + "T23:59:59") }, velden);
+  };
+  const rijen = [];
+  for (const w of stand.groepswedstrijden) {
+    rijen.push(maakRij(w.id, w.datum, {
+      ronde: `Groep ${w.groep}`, teams: `${w.thuis} – ${w.uit}`, tip: w.voorspelling,
+      uitslag: w.uitslag, punten: w.punten, detail: w.detail,
+    }));
+  }
+  for (const k of stand.knockout) {
+    const echtBekend = k.echt_thuis || k.echt_uit;
+    rijen.push(maakRij(k.slot, k.datum, {
+      ronde: k.ronde_naam,
+      teams: echtBekend ? `${k.echt_thuis || "?"} – ${k.echt_uit || "?"}` : "nog te bepalen",
+      tip: `${k.voorspeld_thuis} – ${k.voorspeld_uit} (${k.voorspelling})`,
+      uitslag: k.uitslag, punten: k.punten, detail: k.detail,
+    }));
+  }
+  rijen.sort((a, b) =>
+    (a.datum || "9999-12-31").localeCompare(b.datum || "9999-12-31") ||
+    a.sorteer - b.sorteer || a.id.localeCompare(b.id));
+  return rijen;
+}
 
 function puntenChip(punten, isLive) {
   if (punten === null || punten === undefined) return `<div class="punten-chip open">−</div>`;
@@ -982,12 +1063,6 @@ function detailRegel(detail) {
       : (d.punten < d.max ? `+${d.punten} van ${d.max}` : `+${d.punten}`);
     return `<span class="detail-item ${klasse}">${symbool} ${d.tekst} (${score})</span>`;
   }).join("") + `</div>`;
-}
-
-function badge(label, waarde, soort) {
-  const leeg = waarde === null || waarde === undefined;
-  return `<div class="badge ${soort}${leeg ? " leeg" : ""}">
-    <span class="mini">${label}</span>${leeg ? "−" : waarde}</div>`;
 }
 
 /* Tussenstand-tekst voor een bonusvraag: live geteld als dat kan,
@@ -1034,7 +1109,7 @@ function render() {
   const liveExtra = t.totaal - standVast.totalen.totaal;
   const liveBezig = Object.keys(App.live).length;
   const actieveTab = (document.querySelector("nav button.actief") || {}).dataset
-    ? document.querySelector("nav button.actief").dataset.tab : "groepsfase";
+    ? document.querySelector("nav button.actief").dataset.tab : "programma";
 
   let html = `
   <header>
@@ -1077,47 +1152,11 @@ function render() {
   </header>
 
   <nav>
-    <button data-tab="groepsfase"${actieveTab === "groepsfase" ? ' class="actief"' : ""}>Groepsfase</button>
+    <button data-tab="programma"${actieveTab === "programma" ? ' class="actief"' : ""}>Programma</button>
     <button data-tab="standen"${actieveTab === "standen" ? ' class="actief"' : ""}>Standen</button>
     <button data-tab="knockout"${actieveTab === "knockout" ? ' class="actief"' : ""}>Knock-out</button>
     <button data-tab="bonus"${actieveTab === "bonus" ? ' class="actief"' : ""}>Bonusvragen</button>
-    <button data-tab="programma"${actieveTab === "programma" ? ' class="actief"' : ""}>Programma</button>
   </nav>`;
-
-  // Groepsfase
-  const groepen = {};
-  for (const w of stand.groepswedstrijden) (groepen[w.groep] = groepen[w.groep] || []).push(w);
-  html += `<section class="tab${actieveTab === "groepsfase" ? " actief" : ""}" id="tab-groepsfase"><div class="groepen">`;
-  for (const [letter, lijst] of Object.entries(groepen)) {
-    const groepPunten = lijst.reduce((s, w) => s + (w.punten || 0), 0);
-    const klaar = lijst.filter(w => w.punten !== null).length;
-    html += `<div class="groep-kaart">
-      <div class="groep-kop">
-        <div class="naam">Groep <span>${letter}</span></div>
-        <div class="groep-punten">${klaar ? groepPunten + " pt" : ""}</div>
-      </div>`;
-    for (const w of lijst) {
-      const liveInfo = App.live[w.id];
-      const prog = App.programma && App.programma.perWedstrijd[w.id];
-      const open = App.openVerloop.has(w.id);
-      html += `<div class="wedstrijd${liveInfo ? " live-nu" : ""}">
-        <div class="wie">
-          <div class="teams">${w.thuis} – ${w.uit}</div>
-          <div class="datum">${
-            liveInfo ? `<span class="live-label">● Live</span> ${liveInfo.minuut} · ` : ""
-          }${fmtDatum(w.datum)}${prog ? ` · ${fmtTijd(prog.datumtijd)} u · ${prog.stad || ""} ${landVlag(prog.land)}` : ""}${App.versGroep.has(w.id) ? ' · <span class="vers-label">zojuist opgehaald</span>' : ""}</div>
-        </div>
-        ${badge("tip", w.voorspelling, "voorspelling")}
-        ${badge(liveInfo ? "live" : "uitslag", w.uitslag, "uitslag")}
-        ${puntenChip(w.punten, !!liveInfo)}
-        ${prog ? `<button class="uitklap${open ? " open" : ""}" data-verloop="${w.id}" title="Wedstrijdinfo">▾</button>` : ""}
-        ${open ? `<div class="verloop">${verloopHtml(w.id)}</div>` : ""}
-        ${detailRegel(w.detail)}
-      </div>`;
-    }
-    html += `</div>`;
-  }
-  html += `</div></section>`;
 
   // Standen per groep
   const standen = berekenStanden(App.uitslagenLive || App.opgeslagen);
@@ -1208,29 +1247,57 @@ function render() {
   }
   html += `</div></section>`;
 
-  // Programma: het volledige speelschema
+  // Programma: alle wedstrijden op datumvolgorde, met jouw tip en de punten
   html += `<section class="tab${actieveTab === "programma" ? " actief" : ""}" id="tab-programma">`;
-  if (!App.programma || !App.programma.lijst.length) {
-    html += `<div class="melding" style="margin-top:24px">Het speelschema wordt geladen zodra de uitslagen zijn opgehaald. Druk eventueel op "Haal laatste uitslagen op".</div>`;
-  } else {
-    html += `<h2>Volledig speelschema <span class="nadruk">· ${App.programma.lijst.length} wedstrijden</span></h2>
-      <div class="programma-lijst">`;
-    let vorigeDag = "";
-    for (const p of App.programma.lijst) {
-      const dag = new Date(p.datumtijd).toLocaleDateString("nl-NL", { weekday: "long", day: "numeric", month: "long" });
-      if (dag !== vorigeDag) { html += `<div class="programma-dag">${dag}</div>`; vorigeDag = dag; }
-      html += `<div class="programma-rij${p.staat === "in" ? " live-nu" : ""}">
-        <span class="prog-tijd">${fmtTijd(p.datumtijd)}</span>
-        <span class="prog-wedstrijd">${p.thuis} – ${p.uit}${
-          p.score ? ` <strong class="prog-score">${p.score}</strong>` : ""}${
-          p.staat === "in" ? ` <span class="live-label">● ${p.minuut}</span>` : ""}</span>
-        <span class="prog-ronde">${p.ronde}</span>
-        <span class="prog-locatie">${p.stadion || ""}${p.stad ? `, ${p.stad}` : ""} ${landVlag(p.land)}</span>
+  const progRijen = bouwProgrammaRijen(stand);
+  const progDagen = [];
+  let huidigeDag = null;
+  for (const r of progRijen) {
+    if (!huidigeDag || huidigeDag.datum !== r.datum) { huidigeDag = { datum: r.datum, rijen: [] }; progDagen.push(huidigeDag); }
+    huidigeDag.rijen.push(r);
+  }
+  const vandaagIso = isoVandaag();
+  let ankerDatum = null;
+  for (const d of progDagen) if (d.datum >= vandaagIso) { ankerDatum = d.datum; break; }
+  if (!ankerDatum && progDagen.length) ankerDatum = progDagen[progDagen.length - 1].datum;
+  html += `<h2>Speelschema <span class="nadruk">· ${progRijen.length} wedstrijden</span></h2>
+    <div class="programma-lijst">`;
+  for (const dag of progDagen) {
+    const isVandaag = dag.datum === vandaagIso;
+    const dagPunten = dag.rijen.reduce((s, r) => s + (r.punten || 0), 0);
+    const ietsGespeeld = dag.rijen.some(r => r.punten !== null);
+    html += `<div class="programma-dag${isVandaag ? " vandaag" : ""}"${dag.datum === ankerDatum ? ' id="prog-nu"' : ""}>
+      <span>${fmtDag(dag.datum)}</span>${isVandaag ? ' <span class="dag-nu">vandaag</span>' : ""}${ietsGespeeld ? ` <span class="dag-punten">${dagPunten} pt</span>` : ""}
+    </div>`;
+    for (const r of dag.rijen) {
+      const liveInfo = App.live[r.id];
+      const prog = App.programma && App.programma.perWedstrijd[r.id];
+      const open = App.openVerloop.has(r.id);
+      const tijd = prog ? fmtTijd(prog.datumtijd) : "·";
+      const uitslagTekst = liveInfo ? liveInfo.score : (r.uitslag || "");
+      const kanUit = (r.detail && r.detail.length) || prog;
+      const vers = App.versGroep.has(r.id) || App.versKo.has(r.id);
+      html += `<div class="programma-rij${liveInfo ? " live-nu" : ""}">
+        <span class="prog-tijd">${tijd}</span>
+        <div class="prog-kern">
+          <div class="prog-boven">
+            <span class="prog-wedstrijd">${r.teams}</span>
+            ${uitslagTekst ? `<strong class="prog-score">${uitslagTekst}</strong>` : ""}
+            ${liveInfo ? `<span class="live-label">● ${liveInfo.minuut}</span>` : ""}
+            ${vers ? '<span class="vers-label">zojuist opgehaald</span>' : ""}
+          </div>
+          <div class="prog-onder">
+            <span class="prog-ronde">${r.ronde}</span>
+            <span class="prog-tip">tip ${r.tip}</span>
+          </div>
+        </div>
+        ${puntenChip(r.punten, !!liveInfo)}
+        ${kanUit ? `<button class="uitklap${open ? " open" : ""}" data-verloop="${r.id}" title="Puntenopbouw en wedstrijdinfo">▾</button>` : `<span></span>`}
+        ${open ? `<div class="verloop">${r.detail && r.detail.length ? `<div class="opbouw-kop">Puntenopbouw</div>${detailRegel(r.detail)}` : ""}${prog ? verloopHtml(r.id) : ""}</div>` : ""}
       </div>`;
     }
-    html += `</div>`;
   }
-  html += `</section>`;
+  html += `</div></section>`;
 
   html += `<footer>
     <h3>Gehanteerde aannames bij de puntentelling</h3>
@@ -1246,12 +1313,17 @@ function render() {
       document.querySelectorAll("section.tab").forEach(s => s.classList.remove("actief"));
       knop.classList.add("actief");
       document.getElementById("tab-" + knop.dataset.tab).classList.add("actief");
+      if (knop.dataset.tab === "programma") { App.programmaScrollGedaan = false; requestAnimationFrame(scrollNaarVandaag); }
     });
   });
   const knop = document.getElementById("ververs-knop");
   if (knop) knop.addEventListener("click", () => haalLiveOp());
   document.querySelectorAll("[data-verloop]").forEach(el =>
     el.addEventListener("click", e => { e.stopPropagation(); toggleVerloop(el.dataset.verloop); }));
+
+  // Bij het openen meteen naar de wedstrijden van vandaag springen (één keer per bezoek
+  // aan het programma, zodat een live-verversing de pagina niet telkens verschuift).
+  if (actieveTab === "programma" && !App.programmaScrollGedaan) requestAnimationFrame(scrollNaarVandaag);
 }
 
 /* ====================== Gegevens laden ====================== */
