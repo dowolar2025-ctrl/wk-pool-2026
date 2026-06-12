@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": null,
+  "laatst_bijgewerkt": "2026-06-12 07:58",
   "_uitleg": "Echte uitslagen. Wordt bijgewerkt door Claude na controle van gespeelde wedstrijden.",
   "groepswedstrijden": [
     {
@@ -8,8 +8,8 @@
       "datum": "2026-06-11",
       "thuis": "MEXICO",
       "uit": "ZUID AFRIKA",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 2,
+      "uit_goals": 0
     },
     {
       "id": "G02",
@@ -17,8 +17,8 @@
       "datum": "2026-06-12",
       "thuis": "ZUID KOREA",
       "uit": "TSJECHIË",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 2,
+      "uit_goals": 1
     },
     {
       "id": "G03",
@@ -916,18 +916,18 @@
     "gele_kaarten": null,
     "rode_kaarten": null,
     "goals_per_gekozen_speler": {
-      "Kylian Mbappé": null,
-      "Julián Álvarez": null,
-      "Vinícius Júnior": null,
-      "Harry Kane": null
+      "Kylian Mbappé": 0,
+      "Julián Álvarez": 0,
+      "Vinícius Júnior": 0,
+      "Harry Kane": 0
     },
     "tussenstand": {
       "_uitleg": "Laatst bekende tussenstanden (alleen weergave; punten tellen pas bij de einduitslag)",
-      "topscorers": null,
-      "doelpunten": null,
-      "gele_kaarten": null,
-      "rode_kaarten": null,
-      "peildatum": null
+      "topscorers": "Quiñones (1), Jiménez (1), Krejčí (1)",
+      "doelpunten": 5,
+      "gele_kaarten": 4,
+      "rode_kaarten": 3,
+      "peildatum": "2026-06-12"
     }
   }
 }
