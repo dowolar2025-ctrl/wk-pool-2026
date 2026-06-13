@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-06-12 07:58",
+  "laatst_bijgewerkt": "2026-06-13 14:14",
   "_uitleg": "Echte uitslagen. Wordt bijgewerkt door Claude na controle van gespeelde wedstrijden.",
   "groepswedstrijden": [
     {
@@ -62,8 +62,8 @@
       "datum": "2026-06-12",
       "thuis": "CANADA",
       "uit": "BOSNIË/HERZEG.",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 1,
+      "uit_goals": 1
     },
     {
       "id": "G08",
@@ -170,8 +170,8 @@
       "datum": "2026-06-13",
       "thuis": "USA",
       "uit": "PARAGUAY",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 4,
+      "uit_goals": 1
     },
     {
       "id": "G20",
@@ -923,11 +923,11 @@
     },
     "tussenstand": {
       "_uitleg": "Laatst bekende tussenstanden (alleen weergave; punten tellen pas bij de einduitslag)",
-      "topscorers": "Quiñones (1), Jiménez (1), Krejčí (1)",
-      "doelpunten": 5,
-      "gele_kaarten": 4,
+      "topscorers": "Balogun (2), Quiñones (1), Jiménez (1)",
+      "doelpunten": 12,
+      "gele_kaarten": 15,
       "rode_kaarten": 3,
-      "peildatum": "2026-06-12"
+      "peildatum": "2026-06-13"
     }
   }
 }
