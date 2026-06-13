@@ -135,26 +135,33 @@
   .paneel .sub { font-size: 12px; color: var(--inkt-vaag); margin-top: 2px; }
   .paneel.totaal .sub { color: rgba(255,255,255,0.85); }
 
-  /* ---------- Vast dashboard (scores + tabs) ---------- */
+  /* ---------- Vast dashboard (titel, scores, status, tabs) ---------- */
   .dashboard {
     position: sticky; top: 0; z-index: 60;
     background: var(--papier);
-    margin: 0 -20px; padding: 8px 20px 6px;
+    margin: 0 -20px; padding: 7px 20px 5px;
     border-bottom: 1px solid var(--rand);
-    box-shadow: 0 6px 18px rgba(150, 90, 40, 0.07);
+    box-shadow: 0 6px 18px rgba(150, 90, 40, 0.08);
   }
-  .dash-balk { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px; }
+  .dash-top { display: flex; align-items: center; gap: 10px; }
+  .dash-titel {
+    font-family: var(--display); font-size: 18px; color: var(--oranje);
+    line-height: 1; flex: 1; min-width: 0;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .dash-titel span { font-family: var(--tekst); font-size: 12.5px; font-weight: 600; color: var(--inkt-zacht); }
+  .dash-balk { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 12px; margin-top: 6px; }
   .dash-totaal {
     display: flex; align-items: baseline; gap: 7px; flex-shrink: 0;
     background: linear-gradient(150deg, var(--oranje-fel), var(--oranje) 75%);
-    color: #fff; border-radius: 12px; padding: 5px 13px;
+    color: #fff; border-radius: 11px; padding: 4px 12px;
     box-shadow: 0 4px 14px rgba(242, 92, 5, 0.3);
   }
-  .dash-getal { font-family: var(--display); font-size: 25px; line-height: 1; font-variant-numeric: tabular-nums; }
-  .dash-lbl { font-size: 10px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.92; }
-  .dash-mini { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; flex: 1; min-width: 0; }
-  .dash-chip { font-size: 11.5px; color: var(--inkt-zacht); white-space: nowrap; text-transform: uppercase; letter-spacing: 0.04em; font-weight: 700; }
-  .dash-chip b { font-family: var(--display); font-size: 16px; color: var(--oranje); margin-right: 4px; font-variant-numeric: tabular-nums; letter-spacing: 0; }
+  .dash-getal { font-family: var(--display); font-size: 23px; line-height: 1; font-variant-numeric: tabular-nums; }
+  .dash-lbl { font-size: 9.5px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.92; }
+  .dash-mini { display: flex; flex-wrap: wrap; align-items: baseline; gap: 3px 14px; flex: 1; min-width: 0; }
+  .dash-chip { font-size: 11px; color: var(--inkt-zacht); white-space: nowrap; text-transform: uppercase; letter-spacing: 0.04em; font-weight: 700; }
+  .dash-chip b { font-family: var(--display); font-size: 15px; color: var(--oranje); margin-right: 4px; font-variant-numeric: tabular-nums; letter-spacing: 0; }
   .dash-ververs {
     font-family: var(--tekst); font-size: 13px; font-weight: 800;
     display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0;
@@ -164,14 +171,19 @@
     transition: transform 0.15s ease;
   }
   .dash-ververs:hover { transform: translateY(-1px); }
-  .dash-ververs:disabled { opacity: 0.65; cursor: wait; transform: none; }
-  .dash-ververs .icoon { font-size: 15px; line-height: 1; }
-  .dash-ververs.bezig .icoon { animation: draaien 0.9s linear infinite; }
+  .dash-ververs.bezig { background: var(--inkt-vaag); box-shadow: none; cursor: wait; }
+  .dash-ververs:disabled { cursor: wait; transform: none; }
+  .dash-ververs .icoon { font-size: 15px; line-height: 1; display: inline-block; }
+  .dash-ververs.bezig .icoon { animation: draaien 0.8s linear infinite; }
+  .dash-status { font-size: 11.5px; color: var(--inkt-zacht); margin-top: 5px; line-height: 1.35; }
+  .dash-status .ok { color: var(--groen); font-weight: 700; }
+  .dash-status .fout { color: var(--rood); font-weight: 700; }
+  .dash-status .bezig-nu { color: var(--oranje); font-weight: 800; }
 
   /* ---------- Tabs ---------- */
   nav {
     display: flex; gap: 8px; flex-wrap: wrap;
-    padding: 8px 0 2px;
+    padding: 7px 0 1px;
   }
   nav button {
     font-family: var(--tekst); font-size: 14px; font-weight: 800;
@@ -1113,19 +1125,24 @@ function bonusTussenstand(vraag) {
   return null;
 }
 
-function statusRegel() {
-  const delen = [];
-  delen.push(App.opgeslagen.laatst_bijgewerkt
-    ? `Opgeslagen stand: ${App.opgeslagen.laatst_bijgewerkt}`
-    : "Nog geen opgeslagen uitslagen");
+/* "2026-06-12 07:58" -> "12 jun 07:58" (kort en leesbaar voor het dashboard). */
+function fmtBijgewerkt(s) {
+  if (!s) return "nog niet";
+  const m = s.match(/^(\d{4})-(\d{2})-(\d{2})[ T](\d{2}:\d{2})/);
+  return m ? `${Number(m[3])} ${MAANDEN[Number(m[2]) - 1].slice(0, 3)} ${m[4]}` : s;
+}
+
+/* Compacte statusregel voor het dashboard: wanneer de stand is bijgewerkt
+   (handmatig of automatisch) en de uitkomst van de live-verversing. */
+function dashStatus() {
+  if (App.liveStatus === "bezig")
+    return `<span class="bezig-nu">⏳ Uitslagen ophalen…</span>`;
+  const delen = [`Stand bijgewerkt: <strong>${fmtBijgewerkt(App.opgeslagen.laatst_bijgewerkt)}</strong>`];
   if (App.liveStatus === "ok") {
     const nieuw = App.versGroep.size + App.versKo.size;
-    delen.push(`<span class="ok">✓ live ververst om ${App.liveTijd}` +
-      (nieuw ? ` — ${nieuw} nieuwe uitslag${nieuw === 1 ? "" : "en"}` : " — geen nieuwe uitslagen") + `</span>`);
+    delen.push(`<span class="ok">✓ live ${App.liveTijd}${nieuw ? ` · ${nieuw} nieuw` : ""}</span>`);
   } else if (App.liveStatus === "fout") {
-    delen.push(`<span class="fout">live ophalen lukte niet — opgeslagen stand wordt getoond</span>`);
-  } else if (App.liveStatus === "bezig") {
-    delen.push("uitslagen ophalen…");
+    delen.push(`<span class="fout">live ophalen mislukt</span>`);
   }
   return delen.join(" · ");
 }
@@ -1140,17 +1157,15 @@ function render() {
     ? document.querySelector("nav button.actief").dataset.tab : "programma";
 
   let html = `
-  <header>
-    <div class="wimpel">FIFA World Cup 2026 · USA · Canada · Mexico</div>
-    <h1>WK Pool 2026</h1>
-    <div class="deelnemer">Formulier van <strong>${stand.deelnemer}</strong></div>
-    <div class="status-tekst">${statusRegel()}</div>
-    ${App.onplaatsbaar.length
-      ? `<div class="melding">⚠ Deze uitslagen konden nog niet automatisch geplaatst worden: ${App.onplaatsbaar.join(", ")}. Ze worden bij de eerstvolgende dagelijkse update verwerkt.</div>`
-      : ""}
-  </header>
-
   <div class="dashboard">
+    <div class="dash-top">
+      <div class="dash-titel">WK&nbsp;Pool&nbsp;2026 <span>· ${stand.deelnemer}</span></div>
+      <button class="dash-ververs${App.liveStatus === "bezig" ? " bezig" : ""}" id="ververs-knop"
+        ${App.liveStatus === "bezig" ? "disabled" : ""} title="Haal de laatste uitslagen op">
+        <span class="icoon">↻</span>
+        <span class="dash-ververs-tekst">${App.liveStatus === "bezig" ? "Bezig…" : "Ophalen"}</span>
+      </button>
+    </div>
     <div class="dash-balk">
       <div class="dash-totaal" title="Totaalscore">
         <span class="dash-getal">${t.totaal}</span>
@@ -1161,19 +1176,18 @@ function render() {
         <span class="dash-chip"><b>${t.knockout}</b>knock&#8209;out</span>
         <span class="dash-chip"><b>${t.bonus}</b>bonus</span>
       </div>
-      <button class="dash-ververs${App.liveStatus === "bezig" ? " bezig" : ""}" id="ververs-knop"
-        ${App.liveStatus === "bezig" ? "disabled" : ""} title="Haal laatste uitslagen op">
-        <span class="icoon">↻</span>
-        <span class="dash-ververs-tekst">${App.liveStatus === "bezig" ? "Bezig…" : "Ophalen"}</span>
-      </button>
     </div>
+    <div class="dash-status">${dashStatus()}</div>
     <nav>
       <button data-tab="programma"${actieveTab === "programma" ? ' class="actief"' : ""}>Programma</button>
       <button data-tab="standen"${actieveTab === "standen" ? ' class="actief"' : ""}>Standen</button>
       <button data-tab="knockout"${actieveTab === "knockout" ? ' class="actief"' : ""}>Knock-out</button>
       <button data-tab="bonus"${actieveTab === "bonus" ? ' class="actief"' : ""}>Bonusvragen</button>
     </nav>
-  </div>`;
+  </div>
+  ${App.onplaatsbaar.length
+    ? `<div class="melding">⚠ Deze uitslagen konden nog niet automatisch geplaatst worden: ${App.onplaatsbaar.join(", ")}. Ze worden bij de eerstvolgende update verwerkt.</div>`
+    : ""}`;
 
   // Standen per groep
   const standen = berekenStanden(App.uitslagenLive || App.opgeslagen);
