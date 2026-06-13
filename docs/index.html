@@ -96,7 +96,7 @@
   .ververs:disabled { opacity: 0.65; cursor: wait; transform: none; }
   .ververs .icoon { display: inline-block; font-size: 17px; line-height: 1; }
   .ververs.bezig .icoon { animation: draaien 0.9s linear infinite; }
-  .status-tekst { font-size: 13px; color: var(--inkt-zacht); }
+  .status-tekst { font-size: 13px; color: var(--inkt-zacht); margin-top: 12px; }
   .status-tekst .ok { color: var(--groen); font-weight: 700; }
   .status-tekst .fout { color: var(--rood); font-weight: 700; }
 
@@ -135,12 +135,43 @@
   .paneel .sub { font-size: 12px; color: var(--inkt-vaag); margin-top: 2px; }
   .paneel.totaal .sub { color: rgba(255,255,255,0.85); }
 
+  /* ---------- Vast dashboard (scores + tabs) ---------- */
+  .dashboard {
+    position: sticky; top: 0; z-index: 60;
+    background: var(--papier);
+    margin: 0 -20px; padding: 8px 20px 6px;
+    border-bottom: 1px solid var(--rand);
+    box-shadow: 0 6px 18px rgba(150, 90, 40, 0.07);
+  }
+  .dash-balk { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px; }
+  .dash-totaal {
+    display: flex; align-items: baseline; gap: 7px; flex-shrink: 0;
+    background: linear-gradient(150deg, var(--oranje-fel), var(--oranje) 75%);
+    color: #fff; border-radius: 12px; padding: 5px 13px;
+    box-shadow: 0 4px 14px rgba(242, 92, 5, 0.3);
+  }
+  .dash-getal { font-family: var(--display); font-size: 25px; line-height: 1; font-variant-numeric: tabular-nums; }
+  .dash-lbl { font-size: 10px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.92; }
+  .dash-mini { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; flex: 1; min-width: 0; }
+  .dash-chip { font-size: 11.5px; color: var(--inkt-zacht); white-space: nowrap; text-transform: uppercase; letter-spacing: 0.04em; font-weight: 700; }
+  .dash-chip b { font-family: var(--display); font-size: 16px; color: var(--oranje); margin-right: 4px; font-variant-numeric: tabular-nums; letter-spacing: 0; }
+  .dash-ververs {
+    font-family: var(--tekst); font-size: 13px; font-weight: 800;
+    display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0;
+    padding: 7px 14px; border-radius: 999px; border: none; cursor: pointer; color: #fff;
+    background: linear-gradient(160deg, var(--oranje-fel), var(--oranje));
+    box-shadow: 0 4px 14px rgba(242, 92, 5, 0.3);
+    transition: transform 0.15s ease;
+  }
+  .dash-ververs:hover { transform: translateY(-1px); }
+  .dash-ververs:disabled { opacity: 0.65; cursor: wait; transform: none; }
+  .dash-ververs .icoon { font-size: 15px; line-height: 1; }
+  .dash-ververs.bezig .icoon { animation: draaien 0.9s linear infinite; }
+
   /* ---------- Tabs ---------- */
   nav {
-    position: sticky; top: 0; z-index: 50;
     display: flex; gap: 8px; flex-wrap: wrap;
-    padding: 12px 0;
-    background: linear-gradient(180deg, var(--papier) 72%, transparent);
+    padding: 8px 0 2px;
   }
   nav button {
     font-family: var(--tekst); font-size: 14px; font-weight: 800;
@@ -409,22 +440,16 @@
   /* ---------- Telefoon en tablet ---------- */
   @media (max-width: 560px) {
     .omslag { padding: 0 14px 60px; }
-    header { padding: 28px 0 20px; }
-    .scorebord { grid-template-columns: 1fr 1fr; gap: 10px; }
-    .paneel { padding: 14px 16px; border-radius: 14px; }
-    .paneel.totaal { grid-column: 1 / -1; }
-    .paneel .waarde { font-size: 30px; }
-    .paneel.totaal .waarde { font-size: 46px; }
-    .actiebalk { gap: 10px; }
-    .actiebalk .ververs { width: 100%; justify-content: center; }
+    header { padding: 22px 0 12px; }
+    .dashboard { margin: 0 -14px; padding: 7px 14px 5px; }
+    .dash-getal { font-size: 22px; }
     nav button { padding: 9px 14px; font-size: 13px; flex: 1; }
     .groepen { grid-template-columns: 1fr; }
     h2 { font-size: 21px; margin-top: 24px; }
   }
   @media (max-width: 470px) {
-    .wedstrijd { grid-template-columns: auto auto 1fr auto; row-gap: 7px; }
-    .wedstrijd .wie { grid-column: 1 / -1; }
-    .wedstrijd .punten-chip { justify-self: end; }
+    .dash-ververs-tekst { display: none; }
+    .dash-ververs { padding: 7px 11px; }
     .ko-kaart { grid-template-columns: 38px 1fr auto auto; padding: 11px 13px; }
     .slot { font-size: 13px; }
   }
@@ -1006,7 +1031,10 @@ const App = {
 function scrollNaarVandaag() {
   const doel = document.getElementById("prog-nu");
   if (!doel) return;
-  doel.scrollIntoView({ behavior: "smooth", block: "start" });
+  const balk = document.querySelector(".dashboard");
+  const marge = (balk ? balk.offsetHeight : 0) + 8;
+  const y = doel.getBoundingClientRect().top + window.scrollY - marge;
+  window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
   App.programmaScrollGedaan = true;
 }
 
@@ -1116,47 +1144,36 @@ function render() {
     <div class="wimpel">FIFA World Cup 2026 · USA · Canada · Mexico</div>
     <h1>WK Pool 2026</h1>
     <div class="deelnemer">Formulier van <strong>${stand.deelnemer}</strong></div>
-    <div class="actiebalk">
-      <button class="ververs${App.liveStatus === "bezig" ? " bezig" : ""}" id="ververs-knop"
-        ${App.liveStatus === "bezig" ? "disabled" : ""}>
-        <span class="icoon">↻</span>
-        ${App.liveStatus === "bezig" ? "Bezig met ophalen…" : "Haal laatste uitslagen op"}
-      </button>
-      <div class="status-tekst">${statusRegel()}</div>
-    </div>
-    <div class="scorebord">
-      <div class="paneel totaal">
-        <div class="label">Totaalscore</div>
-        <div class="waarde">${t.totaal}</div>
-        <div class="sub">${liveExtra > 0 ? `waarvan ● +${liveExtra} live (voorlopig)` : "punten"}</div>
-      </div>
-      <div class="paneel">
-        <div class="label">Groepsfase</div>
-        <div class="waarde">${t.groepsfase}</div>
-        <div class="sub">${standVast.totalen.groepswedstrijden_gespeeld} van 72 gespeeld${liveBezig ? ` · ${liveBezig} live bezig` : ""}</div>
-      </div>
-      <div class="paneel">
-        <div class="label">Knock-out</div>
-        <div class="waarde">${t.knockout}</div>
-        <div class="sub">zestiende finale t/m finale</div>
-      </div>
-      <div class="paneel">
-        <div class="label">Bonusvragen</div>
-        <div class="waarde">${t.bonus}</div>
-        <div class="sub">kampioen, topscorer &amp; meer</div>
-      </div>
-    </div>
+    <div class="status-tekst">${statusRegel()}</div>
     ${App.onplaatsbaar.length
       ? `<div class="melding">⚠ Deze uitslagen konden nog niet automatisch geplaatst worden: ${App.onplaatsbaar.join(", ")}. Ze worden bij de eerstvolgende dagelijkse update verwerkt.</div>`
       : ""}
   </header>
 
-  <nav>
-    <button data-tab="programma"${actieveTab === "programma" ? ' class="actief"' : ""}>Programma</button>
-    <button data-tab="standen"${actieveTab === "standen" ? ' class="actief"' : ""}>Standen</button>
-    <button data-tab="knockout"${actieveTab === "knockout" ? ' class="actief"' : ""}>Knock-out</button>
-    <button data-tab="bonus"${actieveTab === "bonus" ? ' class="actief"' : ""}>Bonusvragen</button>
-  </nav>`;
+  <div class="dashboard">
+    <div class="dash-balk">
+      <div class="dash-totaal" title="Totaalscore">
+        <span class="dash-getal">${t.totaal}</span>
+        <span class="dash-lbl">totaal${liveExtra > 0 ? ` · ●+${liveExtra}` : ""}</span>
+      </div>
+      <div class="dash-mini">
+        <span class="dash-chip"><b>${t.groepsfase}</b>groep</span>
+        <span class="dash-chip"><b>${t.knockout}</b>knock&#8209;out</span>
+        <span class="dash-chip"><b>${t.bonus}</b>bonus</span>
+      </div>
+      <button class="dash-ververs${App.liveStatus === "bezig" ? " bezig" : ""}" id="ververs-knop"
+        ${App.liveStatus === "bezig" ? "disabled" : ""} title="Haal laatste uitslagen op">
+        <span class="icoon">↻</span>
+        <span class="dash-ververs-tekst">${App.liveStatus === "bezig" ? "Bezig…" : "Ophalen"}</span>
+      </button>
+    </div>
+    <nav>
+      <button data-tab="programma"${actieveTab === "programma" ? ' class="actief"' : ""}>Programma</button>
+      <button data-tab="standen"${actieveTab === "standen" ? ' class="actief"' : ""}>Standen</button>
+      <button data-tab="knockout"${actieveTab === "knockout" ? ' class="actief"' : ""}>Knock-out</button>
+      <button data-tab="bonus"${actieveTab === "bonus" ? ' class="actief"' : ""}>Bonusvragen</button>
+    </nav>
+  </div>`;
 
   // Standen per groep
   const standen = berekenStanden(App.uitslagenLive || App.opgeslagen);
