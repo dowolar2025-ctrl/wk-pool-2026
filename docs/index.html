@@ -1071,6 +1071,7 @@ function bouwProgrammaRijen(stand) {
     rijen.push(maakRij(w.id, w.datum, {
       ronde: `Groep ${w.groep}`, teams: `${w.thuis} – ${w.uit}`, tip: w.voorspelling,
       uitslag: w.uitslag, punten: w.punten, detail: w.detail,
+      landen: [w.thuis, w.uit],
     }));
   }
   for (const k of stand.knockout) {
@@ -1080,12 +1081,71 @@ function bouwProgrammaRijen(stand) {
       teams: echtBekend ? `${k.echt_thuis || "?"} – ${k.echt_uit || "?"}` : "nog te bepalen",
       tip: `${k.voorspeld_thuis} – ${k.voorspeld_uit} (${k.voorspelling})`,
       uitslag: k.uitslag, punten: k.punten, detail: k.detail,
+      landen: [k.echt_thuis, k.echt_uit, k.voorspeld_thuis, k.voorspeld_uit].filter(Boolean),
     }));
   }
   rijen.sort((a, b) =>
     (a.datum || "9999-12-31").localeCompare(b.datum || "9999-12-31") ||
     a.sorteer - b.sorteer || a.id.localeCompare(b.id));
   return rijen;
+}
+
+/* Geeft de HTML voor een datum-geordende wedstrijdlijst (gebruikt door zowel het
+   volledige Programma als de gefilterde Nederland-tab). Alleen het volledige
+   programma krijgt het "vandaag"-anker (#prog-nu) waar de app naartoe springt. */
+function programmaLijstHtml(rijen, metAnker) {
+  if (!rijen.length)
+    return `<div class="melding" style="margin-top:18px">Nog geen wedstrijden om te tonen.</div>`;
+  const dagen = [];
+  let huidig = null;
+  for (const r of rijen) {
+    if (!huidig || huidig.datum !== r.datum) { huidig = { datum: r.datum, rijen: [] }; dagen.push(huidig); }
+    huidig.rijen.push(r);
+  }
+  const vandaag = isoVandaag();
+  let ankerDatum = null;
+  if (metAnker) {
+    for (const d of dagen) if (d.datum && d.datum >= vandaag) { ankerDatum = d.datum; break; }
+    if (!ankerDatum) ankerDatum = dagen[dagen.length - 1].datum;
+  }
+  let html = `<div class="programma-lijst">`;
+  for (const dag of dagen) {
+    const isVandaag = dag.datum === vandaag;
+    const dagPunten = dag.rijen.reduce((s, r) => s + (r.punten || 0), 0);
+    const ietsGespeeld = dag.rijen.some(r => r.punten !== null);
+    html += `<div class="programma-dag${isVandaag ? " vandaag" : ""}"${metAnker && dag.datum === ankerDatum ? ' id="prog-nu"' : ""}>
+      <span>${fmtDag(dag.datum)}</span>${isVandaag ? ' <span class="dag-nu">vandaag</span>' : ""}${ietsGespeeld ? ` <span class="dag-punten">${dagPunten} pt</span>` : ""}
+    </div>`;
+    for (const r of dag.rijen) {
+      const liveInfo = App.live[r.id];
+      const prog = App.programma && App.programma.perWedstrijd[r.id];
+      const open = App.openVerloop.has(r.id);
+      const tijd = prog ? fmtTijd(prog.datumtijd) : "·";
+      const uitslagTekst = liveInfo ? liveInfo.score : (r.uitslag || "");
+      const kanUit = (r.detail && r.detail.length) || prog;
+      const vers = App.versGroep.has(r.id) || App.versKo.has(r.id);
+      html += `<div class="programma-rij${liveInfo ? " live-nu" : ""}">
+        <span class="prog-tijd">${tijd}</span>
+        <div class="prog-kern">
+          <div class="prog-boven">
+            <span class="prog-wedstrijd">${r.teams}</span>
+            ${uitslagTekst ? `<strong class="prog-score">${uitslagTekst}</strong>` : ""}
+            ${liveInfo ? `<span class="live-label">● ${liveInfo.minuut}</span>` : ""}
+            ${vers ? '<span class="vers-label">zojuist opgehaald</span>' : ""}
+          </div>
+          <div class="prog-onder">
+            <span class="prog-ronde">${r.ronde}</span>
+            <span class="prog-tip">tip ${r.tip}</span>
+          </div>
+        </div>
+        ${puntenChip(r.punten, !!liveInfo)}
+        ${kanUit ? `<button class="uitklap${open ? " open" : ""}" data-verloop="${r.id}" title="Puntenopbouw en wedstrijdinfo">▾</button>` : `<span></span>`}
+        ${open ? `<div class="verloop">${r.detail && r.detail.length ? `<div class="opbouw-kop">Puntenopbouw</div>${detailRegel(r.detail)}` : ""}${prog ? verloopHtml(r.id) : ""}</div>` : ""}
+      </div>`;
+    }
+  }
+  html += `</div>`;
+  return html;
 }
 
 function puntenChip(punten, isLive) {
@@ -1180,6 +1240,7 @@ function render() {
     <div class="dash-status">${dashStatus()}</div>
     <nav>
       <button data-tab="programma"${actieveTab === "programma" ? ' class="actief"' : ""}>Programma</button>
+      <button data-tab="nederland"${actieveTab === "nederland" ? ' class="actief"' : ""}>🇳🇱 Nederland</button>
       <button data-tab="bonus"${actieveTab === "bonus" ? ' class="actief"' : ""}>Bonusvragen</button>
       <button data-tab="knockout"${actieveTab === "knockout" ? ' class="actief"' : ""}>Knock-out</button>
       <button data-tab="standen"${actieveTab === "standen" ? ' class="actief"' : ""}>Standen</button>
@@ -1279,56 +1340,18 @@ function render() {
   html += `</div></section>`;
 
   // Programma: alle wedstrijden op datumvolgorde, met jouw tip en de punten
-  html += `<section class="tab${actieveTab === "programma" ? " actief" : ""}" id="tab-programma">`;
   const progRijen = bouwProgrammaRijen(stand);
-  const progDagen = [];
-  let huidigeDag = null;
-  for (const r of progRijen) {
-    if (!huidigeDag || huidigeDag.datum !== r.datum) { huidigeDag = { datum: r.datum, rijen: [] }; progDagen.push(huidigeDag); }
-    huidigeDag.rijen.push(r);
-  }
-  const vandaagIso = isoVandaag();
-  let ankerDatum = null;
-  for (const d of progDagen) if (d.datum >= vandaagIso) { ankerDatum = d.datum; break; }
-  if (!ankerDatum && progDagen.length) ankerDatum = progDagen[progDagen.length - 1].datum;
-  html += `<h2>Speelschema <span class="nadruk">· ${progRijen.length} wedstrijden</span></h2>
-    <div class="programma-lijst">`;
-  for (const dag of progDagen) {
-    const isVandaag = dag.datum === vandaagIso;
-    const dagPunten = dag.rijen.reduce((s, r) => s + (r.punten || 0), 0);
-    const ietsGespeeld = dag.rijen.some(r => r.punten !== null);
-    html += `<div class="programma-dag${isVandaag ? " vandaag" : ""}"${dag.datum === ankerDatum ? ' id="prog-nu"' : ""}>
-      <span>${fmtDag(dag.datum)}</span>${isVandaag ? ' <span class="dag-nu">vandaag</span>' : ""}${ietsGespeeld ? ` <span class="dag-punten">${dagPunten} pt</span>` : ""}
-    </div>`;
-    for (const r of dag.rijen) {
-      const liveInfo = App.live[r.id];
-      const prog = App.programma && App.programma.perWedstrijd[r.id];
-      const open = App.openVerloop.has(r.id);
-      const tijd = prog ? fmtTijd(prog.datumtijd) : "·";
-      const uitslagTekst = liveInfo ? liveInfo.score : (r.uitslag || "");
-      const kanUit = (r.detail && r.detail.length) || prog;
-      const vers = App.versGroep.has(r.id) || App.versKo.has(r.id);
-      html += `<div class="programma-rij${liveInfo ? " live-nu" : ""}">
-        <span class="prog-tijd">${tijd}</span>
-        <div class="prog-kern">
-          <div class="prog-boven">
-            <span class="prog-wedstrijd">${r.teams}</span>
-            ${uitslagTekst ? `<strong class="prog-score">${uitslagTekst}</strong>` : ""}
-            ${liveInfo ? `<span class="live-label">● ${liveInfo.minuut}</span>` : ""}
-            ${vers ? '<span class="vers-label">zojuist opgehaald</span>' : ""}
-          </div>
-          <div class="prog-onder">
-            <span class="prog-ronde">${r.ronde}</span>
-            <span class="prog-tip">tip ${r.tip}</span>
-          </div>
-        </div>
-        ${puntenChip(r.punten, !!liveInfo)}
-        ${kanUit ? `<button class="uitklap${open ? " open" : ""}" data-verloop="${r.id}" title="Puntenopbouw en wedstrijdinfo">▾</button>` : `<span></span>`}
-        ${open ? `<div class="verloop">${r.detail && r.detail.length ? `<div class="opbouw-kop">Puntenopbouw</div>${detailRegel(r.detail)}` : ""}${prog ? verloopHtml(r.id) : ""}</div>` : ""}
-      </div>`;
-    }
-  }
-  html += `</div></section>`;
+  html += `<section class="tab${actieveTab === "programma" ? " actief" : ""}" id="tab-programma">
+    <h2>Speelschema <span class="nadruk">· ${progRijen.length} wedstrijden</span></h2>
+    ${programmaLijstHtml(progRijen, true)}
+  </section>`;
+
+  // Nederland: alleen de wedstrijden waarin Oranje speelt (echt of volgens jouw tip)
+  const nlRijen = progRijen.filter(r => r.landen.some(l => normaliseer(l) === "NEDERLAND"));
+  html += `<section class="tab${actieveTab === "nederland" ? " actief" : ""}" id="tab-nederland">
+    <h2>Wedstrijden van <span class="nadruk">Nederland</span> 🇳🇱 <span class="nadruk">· ${nlRijen.length}</span></h2>
+    ${programmaLijstHtml(nlRijen, false)}
+  </section>`;
 
   html += `<footer>
     <h3>Gehanteerde aannames bij de puntentelling</h3>
