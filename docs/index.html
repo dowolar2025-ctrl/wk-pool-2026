@@ -1038,16 +1038,16 @@ const App = {
   programmaScrollGedaan: false, // is er al naar "vandaag" gesprongen in het programma?
 };
 
-/* Springt in het programma naar de wedstrijden van vandaag (of de eerstvolgende
-   speeldag), zodat je niet hoeft te scrollen. */
-function scrollNaarVandaag() {
-  const doel = document.getElementById("prog-nu");
-  if (!doel) return;
+/* Springt naar de eerstvolgende speeldag (het anker met dit id), netjes onder
+   de vaste balk. Gebruikt door zowel het Programma als de Nederland-tab. */
+function scrollNaarDag(ankerId) {
+  const doel = document.getElementById(ankerId);
+  if (!doel) return false;
   const balk = document.querySelector(".dashboard");
   const marge = (balk ? balk.offsetHeight : 0) + 8;
   const y = doel.getBoundingClientRect().top + window.scrollY - marge;
   window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
-  App.programmaScrollGedaan = true;
+  return true;
 }
 
 /* Bouwt één datum-geordende lijst van alle wedstrijden (groepsfase + knock-out),
@@ -1091,9 +1091,9 @@ function bouwProgrammaRijen(stand) {
 }
 
 /* Geeft de HTML voor een datum-geordende wedstrijdlijst (gebruikt door zowel het
-   volledige Programma als de gefilterde Nederland-tab). Alleen het volledige
-   programma krijgt het "vandaag"-anker (#prog-nu) waar de app naartoe springt. */
-function programmaLijstHtml(rijen, metAnker) {
+   volledige Programma als de gefilterde Nederland-tab). De lijst krijgt op de
+   eerstvolgende speeldag een anker met dit id, waar de app naartoe springt. */
+function programmaLijstHtml(rijen, ankerId) {
   if (!rijen.length)
     return `<div class="melding" style="margin-top:18px">Nog geen wedstrijden om te tonen.</div>`;
   const dagen = [];
@@ -1104,7 +1104,7 @@ function programmaLijstHtml(rijen, metAnker) {
   }
   const vandaag = isoVandaag();
   let ankerDatum = null;
-  if (metAnker) {
+  if (ankerId) {
     for (const d of dagen) if (d.datum && d.datum >= vandaag) { ankerDatum = d.datum; break; }
     if (!ankerDatum) ankerDatum = dagen[dagen.length - 1].datum;
   }
@@ -1113,7 +1113,7 @@ function programmaLijstHtml(rijen, metAnker) {
     const isVandaag = dag.datum === vandaag;
     const dagPunten = dag.rijen.reduce((s, r) => s + (r.punten || 0), 0);
     const ietsGespeeld = dag.rijen.some(r => r.punten !== null);
-    html += `<div class="programma-dag${isVandaag ? " vandaag" : ""}"${metAnker && dag.datum === ankerDatum ? ' id="prog-nu"' : ""}>
+    html += `<div class="programma-dag${isVandaag ? " vandaag" : ""}"${ankerId && dag.datum === ankerDatum ? ` id="${ankerId}"` : ""}>
       <span>${fmtDag(dag.datum)}</span>${isVandaag ? ' <span class="dag-nu">vandaag</span>' : ""}${ietsGespeeld ? ` <span class="dag-punten">${dagPunten} pt</span>` : ""}
     </div>`;
     for (const r of dag.rijen) {
@@ -1343,14 +1343,14 @@ function render() {
   const progRijen = bouwProgrammaRijen(stand);
   html += `<section class="tab${actieveTab === "programma" ? " actief" : ""}" id="tab-programma">
     <h2>Speelschema <span class="nadruk">· ${progRijen.length} wedstrijden</span></h2>
-    ${programmaLijstHtml(progRijen, true)}
+    ${programmaLijstHtml(progRijen, "prog-nu")}
   </section>`;
 
   // Nederland: alleen de wedstrijden waarin Oranje speelt (echt of volgens jouw tip)
   const nlRijen = progRijen.filter(r => r.landen.some(l => normaliseer(l) === "NEDERLAND"));
   html += `<section class="tab${actieveTab === "nederland" ? " actief" : ""}" id="tab-nederland">
     <h2>Wedstrijden van <span class="nadruk">Nederland</span> 🇳🇱 <span class="nadruk">· ${nlRijen.length}</span></h2>
-    ${programmaLijstHtml(nlRijen, false)}
+    ${programmaLijstHtml(nlRijen, "nl-nu")}
   </section>`;
 
   html += `<footer>
@@ -1367,7 +1367,12 @@ function render() {
       document.querySelectorAll("section.tab").forEach(s => s.classList.remove("actief"));
       knop.classList.add("actief");
       document.getElementById("tab-" + knop.dataset.tab).classList.add("actief");
-      if (knop.dataset.tab === "programma") { App.programmaScrollGedaan = false; requestAnimationFrame(scrollNaarVandaag); }
+      if (knop.dataset.tab === "programma") {
+        App.programmaScrollGedaan = false;
+        requestAnimationFrame(() => { if (scrollNaarDag("prog-nu")) App.programmaScrollGedaan = true; });
+      } else if (knop.dataset.tab === "nederland") {
+        requestAnimationFrame(() => scrollNaarDag("nl-nu"));
+      }
     });
   });
   const knop = document.getElementById("ververs-knop");
@@ -1375,9 +1380,10 @@ function render() {
   document.querySelectorAll("[data-verloop]").forEach(el =>
     el.addEventListener("click", e => { e.stopPropagation(); toggleVerloop(el.dataset.verloop); }));
 
-  // Bij het openen meteen naar de wedstrijden van vandaag springen (één keer per bezoek
+  // Bij het openen meteen naar de eerstvolgende wedstrijd springen (één keer per bezoek
   // aan het programma, zodat een live-verversing de pagina niet telkens verschuift).
-  if (actieveTab === "programma" && !App.programmaScrollGedaan) requestAnimationFrame(scrollNaarVandaag);
+  if (actieveTab === "programma" && !App.programmaScrollGedaan)
+    requestAnimationFrame(() => { if (scrollNaarDag("prog-nu")) App.programmaScrollGedaan = true; });
 }
 
 /* ====================== Gegevens laden ====================== */
