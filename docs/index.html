@@ -1180,9 +1180,9 @@ function render() {
     <div class="dash-status">${dashStatus()}</div>
     <nav>
       <button data-tab="programma"${actieveTab === "programma" ? ' class="actief"' : ""}>Programma</button>
-      <button data-tab="standen"${actieveTab === "standen" ? ' class="actief"' : ""}>Standen</button>
-      <button data-tab="knockout"${actieveTab === "knockout" ? ' class="actief"' : ""}>Knock-out</button>
       <button data-tab="bonus"${actieveTab === "bonus" ? ' class="actief"' : ""}>Bonusvragen</button>
+      <button data-tab="knockout"${actieveTab === "knockout" ? ' class="actief"' : ""}>Knock-out</button>
+      <button data-tab="standen"${actieveTab === "standen" ? ' class="actief"' : ""}>Standen</button>
     </nav>
   </div>
   ${App.onplaatsbaar.length
