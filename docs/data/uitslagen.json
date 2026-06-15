@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-06-13 14:14",
+  "laatst_bijgewerkt": "2026-06-15 08:40",
   "_uitleg": "Echte uitslagen. Wordt bijgewerkt door Claude na controle van gespeelde wedstrijden.",
   "groepswedstrijden": [
     {
@@ -71,8 +71,8 @@
       "datum": "2026-06-13",
       "thuis": "QATAR",
       "uit": "ZWITSERLAND",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 1,
+      "uit_goals": 1
     },
     {
       "id": "G09",
@@ -116,8 +116,8 @@
       "datum": "2026-06-14",
       "thuis": "BRAZILIË",
       "uit": "MAROKKO",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 1,
+      "uit_goals": 1
     },
     {
       "id": "G14",
@@ -125,8 +125,8 @@
       "datum": "2026-06-14",
       "thuis": "HAÏTI",
       "uit": "SCHOTLAND",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 0,
+      "uit_goals": 1
     },
     {
       "id": "G15",
@@ -179,8 +179,8 @@
       "datum": "2026-06-14",
       "thuis": "AUSTRALIË",
       "uit": "TURKIJE",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 2,
+      "uit_goals": 0
     },
     {
       "id": "G21",
@@ -224,8 +224,8 @@
       "datum": null,
       "thuis": "DUITSLAND",
       "uit": "CURACAO",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 7,
+      "uit_goals": 1
     },
     {
       "id": "G26",
@@ -233,8 +233,8 @@
       "datum": "2026-06-15",
       "thuis": "IVOORKUST",
       "uit": "ECUADOR",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 1,
+      "uit_goals": 0
     },
     {
       "id": "G27",
@@ -278,8 +278,8 @@
       "datum": "2026-06-14",
       "thuis": "NEDERLAND",
       "uit": "JAPAN",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 2,
+      "uit_goals": 2
     },
     {
       "id": "G32",
@@ -287,8 +287,8 @@
       "datum": "2026-06-15",
       "thuis": "ZWEDEN",
       "uit": "TUNESIË",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 5,
+      "uit_goals": 1
     },
     {
       "id": "G33",
@@ -918,16 +918,16 @@
     "goals_per_gekozen_speler": {
       "Kylian Mbappé": 0,
       "Julián Álvarez": 0,
-      "Vinícius Júnior": 0,
+      "Vinícius Júnior": 1,
       "Harry Kane": 0
     },
     "tussenstand": {
       "_uitleg": "Laatst bekende tussenstanden (alleen weergave; punten tellen pas bij de einduitslag)",
-      "topscorers": "Balogun (2), Quiñones (1), Jiménez (1)",
-      "doelpunten": 12,
-      "gele_kaarten": 15,
+      "topscorers": "Balogun (2), Havertz (2), Ayari (2)",
+      "doelpunten": 38,
+      "gele_kaarten": 33,
       "rode_kaarten": 3,
-      "peildatum": "2026-06-13"
+      "peildatum": "2026-06-15"
     }
   }
 }
