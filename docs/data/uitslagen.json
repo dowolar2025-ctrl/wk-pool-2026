@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-06-15 08:40",
+  "laatst_bijgewerkt": "2026-06-16 08:53",
   "_uitleg": "Echte uitslagen. Wordt bijgewerkt door Claude na controle van gespeelde wedstrijden.",
   "groepswedstrijden": [
     {
@@ -332,8 +332,8 @@
       "datum": "2026-06-15",
       "thuis": "BELGIË",
       "uit": "EGYPTE",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 1,
+      "uit_goals": 1
     },
     {
       "id": "G38",
@@ -341,8 +341,8 @@
       "datum": "2026-06-16",
       "thuis": "IRAN",
       "uit": "NIEUW-ZEELAND",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 2,
+      "uit_goals": 2
     },
     {
       "id": "G39",
@@ -386,8 +386,8 @@
       "datum": "2026-06-15",
       "thuis": "SPANJE",
       "uit": "KAAPVERDIË",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 0,
+      "uit_goals": 0
     },
     {
       "id": "G44",
@@ -395,8 +395,8 @@
       "datum": "2026-06-16",
       "thuis": "SAOEDI-ARABIË",
       "uit": "URUGUAY",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 1,
+      "uit_goals": 1
     },
     {
       "id": "G45",
@@ -923,11 +923,11 @@
     },
     "tussenstand": {
       "_uitleg": "Laatst bekende tussenstanden (alleen weergave; punten tellen pas bij de einduitslag)",
-      "topscorers": "Balogun (2), Havertz (2), Ayari (2)",
-      "doelpunten": 38,
-      "gele_kaarten": 33,
+      "topscorers": "Balogun (2), Havertz (2), Ayari (2), Just (2)",
+      "doelpunten": 46,
+      "gele_kaarten": 41,
       "rode_kaarten": 3,
-      "peildatum": "2026-06-15"
+      "peildatum": "2026-06-16"
     }
   }
 }
