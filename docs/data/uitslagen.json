@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-06-17 08:23",
+  "laatst_bijgewerkt": "2026-06-18 14:55",
   "_uitleg": "Echte uitslagen. Wordt bijgewerkt door Claude na controle van gespeelde wedstrijden.",
   "groepswedstrijden": [
     {
@@ -548,8 +548,8 @@
       "datum": "2026-06-17",
       "thuis": "PORTUGAL",
       "uit": "CONGO",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 1,
+      "uit_goals": 1
     },
     {
       "id": "G62",
@@ -557,8 +557,8 @@
       "datum": "2026-06-18",
       "thuis": "OEZBEKISTAN",
       "uit": "COLOMBIA",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 1,
+      "uit_goals": 3
     },
     {
       "id": "G63",
@@ -602,8 +602,8 @@
       "datum": "2026-06-17",
       "thuis": "ENGELAND",
       "uit": "KROATIË",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 4,
+      "uit_goals": 2
     },
     {
       "id": "G68",
@@ -611,8 +611,8 @@
       "datum": "2026-06-18",
       "thuis": "GHANA",
       "uit": "PANAMA",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 1,
+      "uit_goals": 0
     },
     {
       "id": "G69",
@@ -919,15 +919,15 @@
       "Kylian Mbappé": 2,
       "Julián Álvarez": 0,
       "Vinícius Júnior": 1,
-      "Harry Kane": 0
+      "Harry Kane": 2
     },
     "tussenstand": {
       "_uitleg": "Laatst bekende tussenstanden (alleen weergave; punten tellen pas bij de einduitslag)",
-      "topscorers": "Messi (3), dan 6×2: Mbappé, Haaland, Balogun, Havertz, Ayari, Just",
-      "doelpunten": 62,
-      "gele_kaarten": 43,
+      "topscorers": "Messi (3), dan 7×2: Balogun, Havertz, Ayari, Just, Mbappé, Haaland, Kane",
+      "doelpunten": 75,
+      "gele_kaarten": 52,
       "rode_kaarten": 3,
-      "peildatum": "2026-06-17"
+      "peildatum": "2026-06-18"
     }
   }
 }
