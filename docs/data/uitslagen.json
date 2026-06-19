@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-06-18 14:55",
+  "laatst_bijgewerkt": "2026-06-19 08:26",
   "_uitleg": "Echte uitslagen. Wordt bijgewerkt door Claude na controle van gespeelde wedstrijden.",
   "groepswedstrijden": [
     {
@@ -26,8 +26,8 @@
       "datum": "2026-06-18",
       "thuis": "TSJECHIË",
       "uit": "ZUID AFRIKA",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 1,
+      "uit_goals": 1
     },
     {
       "id": "G04",
@@ -35,8 +35,8 @@
       "datum": "2026-06-19",
       "thuis": "MEXICO",
       "uit": "ZUID KOREA",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 1,
+      "uit_goals": 0
     },
     {
       "id": "G05",
@@ -80,8 +80,8 @@
       "datum": "2026-06-18",
       "thuis": "ZWITSERLAND",
       "uit": "BOSNIË/HERZEG.",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 4,
+      "uit_goals": 1
     },
     {
       "id": "G10",
@@ -89,8 +89,8 @@
       "datum": "2026-06-19",
       "thuis": "CANADA",
       "uit": "QATAR",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 6,
+      "uit_goals": 0
     },
     {
       "id": "G11",
@@ -923,11 +923,11 @@
     },
     "tussenstand": {
       "_uitleg": "Laatst bekende tussenstanden (alleen weergave; punten tellen pas bij de einduitslag)",
-      "topscorers": "Messi (3), dan 7×2: Balogun, Havertz, Ayari, Just, Mbappé, Haaland, Kane",
-      "doelpunten": 75,
-      "gele_kaarten": 52,
-      "rode_kaarten": 3,
-      "peildatum": "2026-06-18"
+      "topscorers": "Messi (3), J. David (3), dan 9×2 (o.a. Mbappé, Kane, Haaland, Balogun, Havertz)",
+      "doelpunten": 89,
+      "gele_kaarten": 62,
+      "rode_kaarten": 6,
+      "peildatum": "2026-06-19"
     }
   }
 }
