@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-06-22 08:56",
+  "laatst_bijgewerkt": "2026-06-23 07:04",
   "_uitleg": "Echte uitslagen. Wordt bijgewerkt door Claude na controle van gespeelde wedstrijden.",
   "groepswedstrijden": [
     {
@@ -458,8 +458,8 @@
       "datum": "2026-06-22",
       "thuis": "FRANKRIJK",
       "uit": "IRAK",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 3,
+      "uit_goals": 0
     },
     {
       "id": "G52",
@@ -467,8 +467,8 @@
       "datum": "2026-06-23",
       "thuis": "NOORWEGEN",
       "uit": "SENEGAL",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 3,
+      "uit_goals": 2
     },
     {
       "id": "G53",
@@ -512,8 +512,8 @@
       "datum": "2026-06-22",
       "thuis": "ARGENTINIË",
       "uit": "OOSTENRIJK",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 2,
+      "uit_goals": 0
     },
     {
       "id": "G58",
@@ -521,8 +521,8 @@
       "datum": "2026-06-23",
       "thuis": "JORDANIË",
       "uit": "ALGERIJE",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 1,
+      "uit_goals": 2
     },
     {
       "id": "G59",
@@ -916,18 +916,18 @@
     "gele_kaarten": null,
     "rode_kaarten": null,
     "goals_per_gekozen_speler": {
-      "Kylian Mbappé": 2,
+      "Kylian Mbappé": 4,
       "Julián Álvarez": 0,
       "Vinícius Júnior": 2,
       "Harry Kane": 2
     },
     "tussenstand": {
       "_uitleg": "Laatst bekende tussenstanden (alleen weergave; punten tellen pas bij de einduitslag)",
-      "topscorers": "Undav (3), Messi (3), David (3)",
-      "doelpunten": 121,
-      "gele_kaarten": 98,
+      "topscorers": "Messi (5), Mbappé (4), Haaland (4)",
+      "doelpunten": 134,
+      "gele_kaarten": 105,
       "rode_kaarten": 8,
-      "peildatum": "2026-06-22"
+      "peildatum": "2026-06-23"
     }
   }
 }
