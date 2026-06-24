@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-06-23 07:04",
+  "laatst_bijgewerkt": "2026-06-24 07:27",
   "_uitleg": "Echte uitslagen. Wordt bijgewerkt door Claude na controle van gespeelde wedstrijden.",
   "groepswedstrijden": [
     {
@@ -566,8 +566,8 @@
       "datum": "2026-06-23",
       "thuis": "PORTUGAL",
       "uit": "OEZBEKISTAN",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 5,
+      "uit_goals": 0
     },
     {
       "id": "G64",
@@ -575,8 +575,8 @@
       "datum": "2026-06-24",
       "thuis": "COLOMBIA",
       "uit": "CONGO",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 1,
+      "uit_goals": 0
     },
     {
       "id": "G65",
@@ -620,8 +620,8 @@
       "datum": "2026-06-23",
       "thuis": "ENGELAND",
       "uit": "GHANA",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 0,
+      "uit_goals": 0
     },
     {
       "id": "G70",
@@ -629,8 +629,8 @@
       "datum": "2026-06-24",
       "thuis": "PANAMA",
       "uit": "KROATIË",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 0,
+      "uit_goals": 1
     },
     {
       "id": "G71",
@@ -924,10 +924,10 @@
     "tussenstand": {
       "_uitleg": "Laatst bekende tussenstanden (alleen weergave; punten tellen pas bij de einduitslag)",
       "topscorers": "Messi (5), Mbappé (4), Haaland (4)",
-      "doelpunten": 134,
-      "gele_kaarten": 105,
+      "doelpunten": 141,
+      "gele_kaarten": 114,
       "rode_kaarten": 8,
-      "peildatum": "2026-06-23"
+      "peildatum": "2026-06-24"
     }
   }
 }
