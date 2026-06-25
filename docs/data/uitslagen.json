@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-06-24 07:27",
+  "laatst_bijgewerkt": "2026-06-25 07:07",
   "_uitleg": "Echte uitslagen. Wordt bijgewerkt door Claude na controle van gespeelde wedstrijden.",
   "groepswedstrijden": [
     {
@@ -44,8 +44,8 @@
       "datum": "2026-06-25",
       "thuis": "TSJECHIË",
       "uit": "MEXICO",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 0,
+      "uit_goals": 3
     },
     {
       "id": "G06",
@@ -53,8 +53,8 @@
       "datum": "2026-06-25",
       "thuis": "ZUID AFRIKA",
       "uit": "ZUID KOREA",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 1,
+      "uit_goals": 0
     },
     {
       "id": "G07",
@@ -98,8 +98,8 @@
       "datum": "2026-06-24",
       "thuis": "ZWITSERLAND",
       "uit": "CANADA",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 2,
+      "uit_goals": 1
     },
     {
       "id": "G12",
@@ -107,8 +107,8 @@
       "datum": "2026-06-24",
       "thuis": "BOSNIË/HERZEG.",
       "uit": "QATAR",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 3,
+      "uit_goals": 1
     },
     {
       "id": "G13",
@@ -152,8 +152,8 @@
       "datum": "2026-06-25",
       "thuis": "SCHOTLAND",
       "uit": "BRAZILIË",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 0,
+      "uit_goals": 3
     },
     {
       "id": "G18",
@@ -161,8 +161,8 @@
       "datum": "2026-06-25",
       "thuis": "MAROKKO",
       "uit": "HAÏTI",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 4,
+      "uit_goals": 2
     },
     {
       "id": "G19",
@@ -918,16 +918,16 @@
     "goals_per_gekozen_speler": {
       "Kylian Mbappé": 4,
       "Julián Álvarez": 0,
-      "Vinícius Júnior": 2,
+      "Vinícius Júnior": 4,
       "Harry Kane": 2
     },
     "tussenstand": {
       "_uitleg": "Laatst bekende tussenstanden (alleen weergave; punten tellen pas bij de einduitslag)",
-      "topscorers": "Messi (5), Mbappé (4), Haaland (4)",
-      "doelpunten": 141,
-      "gele_kaarten": 114,
+      "topscorers": "Messi (5), Mbappé (4), Vinícius (4)",
+      "doelpunten": 161,
+      "gele_kaarten": 128,
       "rode_kaarten": 8,
-      "peildatum": "2026-06-24"
+      "peildatum": "2026-06-25"
     }
   }
 }
