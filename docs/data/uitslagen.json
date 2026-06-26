@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-06-25 07:07",
+  "laatst_bijgewerkt": "2026-06-26 07:05",
   "_uitleg": "Echte uitslagen. Wordt bijgewerkt door Claude na controle van gespeelde wedstrijden.",
   "groepswedstrijden": [
     {
@@ -206,8 +206,8 @@
       "datum": "2026-06-26",
       "thuis": "TURKIJE",
       "uit": "USA",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 3,
+      "uit_goals": 2
     },
     {
       "id": "G24",
@@ -215,8 +215,8 @@
       "datum": "2026-06-26",
       "thuis": "PARAGUAY",
       "uit": "AUSTRALIË",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 0,
+      "uit_goals": 0
     },
     {
       "id": "G25",
@@ -260,8 +260,8 @@
       "datum": "2026-06-25",
       "thuis": "CURACAO",
       "uit": "IVOORKUST",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 0,
+      "uit_goals": 2
     },
     {
       "id": "G30",
@@ -269,8 +269,8 @@
       "datum": "2026-06-25",
       "thuis": "ECUADOR",
       "uit": "DUITSLAND",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 2,
+      "uit_goals": 1
     },
     {
       "id": "G31",
@@ -314,8 +314,8 @@
       "datum": "2026-06-26",
       "thuis": "JAPAN",
       "uit": "ZWEDEN",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 1,
+      "uit_goals": 1
     },
     {
       "id": "G36",
@@ -323,8 +323,8 @@
       "datum": "2026-06-26",
       "thuis": "TUNESIË",
       "uit": "NEDERLAND",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 1,
+      "uit_goals": 3
     },
     {
       "id": "G37",
@@ -923,11 +923,11 @@
     },
     "tussenstand": {
       "_uitleg": "Laatst bekende tussenstanden (alleen weergave; punten tellen pas bij de einduitslag)",
-      "topscorers": "Messi (5), Mbappé (4), Vinícius (4)",
-      "doelpunten": 161,
-      "gele_kaarten": 128,
+      "topscorers": "Messi (5), Vinícius (4), Mbappé (4)",
+      "doelpunten": 177,
+      "gele_kaarten": 141,
       "rode_kaarten": 8,
-      "peildatum": "2026-06-25"
+      "peildatum": "2026-06-26"
     }
   }
 }
