@@ -730,6 +730,65 @@ function besteNummersDrie(standen) {
 const ESPN_URL = "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard?dates=20260611-20260719&limit=300";
 // Alles vóór dit moment is groepsfase; de zestiende finales beginnen 28 juni in de avond (UTC).
 const KNOCKOUT_GRENS = Date.parse("2026-06-28T10:00:00Z");
+const VAST_KNOCKOUT_PROGRAMMA = {
+  W73:  { espnId: "760486", datumtijd: "2026-06-28T19:00Z", stadion: "SoFi Stadium", stad: "Inglewood, California", land: "USA" },
+  W74:  { espnId: "760489", datumtijd: "2026-06-29T20:30Z", stadion: "Gillette Stadium", stad: "Foxborough, Massachusetts", land: "USA" },
+  W75:  { espnId: "760488", datumtijd: "2026-06-30T01:00Z", stadion: "Estadio BBVA", stad: "Guadalupe", land: "Mexico" },
+  W76:  { espnId: "760487", datumtijd: "2026-06-29T17:00Z", stadion: "NRG Stadium", stad: "Houston, Texas", land: "USA" },
+  W77:  { espnId: "760492", datumtijd: "2026-06-30T21:00Z", stadion: "MetLife Stadium", stad: "East Rutherford, New Jersey", land: "USA" },
+  W78:  { espnId: "760490", datumtijd: "2026-06-30T17:00Z", stadion: "AT&T Stadium", stad: "Arlington, Texas", land: "USA" },
+  W79:  { espnId: "760491", datumtijd: "2026-07-01T01:00Z", stadion: "Estadio Banorte", stad: "Mexico City", land: "Mexico" },
+  W80:  { espnId: "760495", datumtijd: "2026-07-01T16:00Z", stadion: "Mercedes-Benz Stadium", stad: "Atlanta, Georgia", land: "USA" },
+  W81:  { espnId: "760494", datumtijd: "2026-07-02T00:00Z", stadion: "Levi's Stadium", stad: "Santa Clara, California", land: "USA" },
+  W82:  { espnId: "760493", datumtijd: "2026-07-01T20:00Z", stadion: "Lumen Field", stad: "Seattle, Washington", land: "USA" },
+  W83:  { espnId: "760496", datumtijd: "2026-07-02T23:00Z", stadion: "BMO Field", stad: "Toronto", land: "Canada" },
+  W84:  { espnId: "760497", datumtijd: "2026-07-02T19:00Z", stadion: "SoFi Stadium", stad: "Inglewood, California", land: "USA" },
+  W85:  { espnId: "760498", datumtijd: "2026-07-03T03:00Z", stadion: "BC Place", stad: "Vancouver", land: "Canada" },
+  W86:  { espnId: "760500", datumtijd: "2026-07-03T22:00Z", stadion: "Hard Rock Stadium", stad: "Miami Gardens, Florida", land: "USA" },
+  W87:  { espnId: "760501", datumtijd: "2026-07-04T01:30Z", stadion: "GEHA Field at Arrowhead Stadium", stad: "Kansas City, Missouri", land: "USA" },
+  W88:  { espnId: "760499", datumtijd: "2026-07-03T18:00Z", stadion: "AT&T Stadium", stad: "Arlington, Texas", land: "USA" },
+  W89:  { espnId: "760503", datumtijd: "2026-07-04T21:00Z", stadion: "Lincoln Financial Field", stad: "Philadelphia, Pennsylvania", land: "USA" },
+  W90:  { espnId: "760502", datumtijd: "2026-07-04T17:00Z", stadion: "NRG Stadium", stad: "Houston, Texas", land: "USA" },
+  W91:  { espnId: "760504", datumtijd: "2026-07-05T20:00Z", stadion: "MetLife Stadium", stad: "East Rutherford, New Jersey", land: "USA" },
+  W92:  { espnId: "760505", datumtijd: "2026-07-06T00:00Z", stadion: "Estadio Banorte", stad: "Mexico City", land: "Mexico" },
+  W93:  { espnId: "760506", datumtijd: "2026-07-06T19:00Z", stadion: "AT&T Stadium", stad: "Arlington, Texas", land: "USA" },
+  W94:  { espnId: "760507", datumtijd: "2026-07-07T00:00Z", stadion: "Lumen Field", stad: "Seattle, Washington", land: "USA" },
+  W95:  { espnId: "760509", datumtijd: "2026-07-07T16:00Z", stadion: "Mercedes-Benz Stadium", stad: "Atlanta, Georgia", land: "USA" },
+  W96:  { espnId: "760508", datumtijd: "2026-07-07T20:00Z", stadion: "BC Place", stad: "Vancouver", land: "Canada" },
+  W97:  { espnId: "760510", datumtijd: "2026-07-09T20:00Z", stadion: "Gillette Stadium", stad: "Foxborough, Massachusetts", land: "USA" },
+  W98:  { espnId: "760511", datumtijd: "2026-07-10T19:00Z", stadion: "SoFi Stadium", stad: "Inglewood, California", land: "USA" },
+  W99:  { espnId: "760512", datumtijd: "2026-07-11T21:00Z", stadion: "Hard Rock Stadium", stad: "Miami Gardens, Florida", land: "USA" },
+  W100: { espnId: "760513", datumtijd: "2026-07-12T01:00Z", stadion: "GEHA Field at Arrowhead Stadium", stad: "Kansas City, Missouri", land: "USA" },
+  W101: { espnId: "760514", datumtijd: "2026-07-14T19:00Z", stadion: "AT&T Stadium", stad: "Arlington, Texas", land: "USA" },
+  W102: { espnId: "760515", datumtijd: "2026-07-15T19:00Z", stadion: "Mercedes-Benz Stadium", stad: "Atlanta, Georgia", land: "USA" },
+  W103: { espnId: "760516", datumtijd: "2026-07-18T21:00Z", stadion: "Hard Rock Stadium", stad: "Miami Gardens, Florida", land: "USA" },
+  W104: { espnId: "760517", datumtijd: "2026-07-19T19:00Z", stadion: "MetLife Stadium", stad: "East Rutherford, New Jersey", land: "USA" },
+};
+const ESPN_ID_NAAR_KNOCKOUT_SLOT = Object.fromEntries(
+  Object.entries(VAST_KNOCKOUT_PROGRAMMA).map(([slot, info]) => [info.espnId, slot])
+);
+
+function basisProgramma(opgeslagen) {
+  const programma = { perWedstrijd: {}, lijst: [] };
+  if (!opgeslagen || !opgeslagen.knockout) return programma;
+  for (const [slot, info] of Object.entries(VAST_KNOCKOUT_PROGRAMMA)) {
+    const record = opgeslagen.knockout[slot] || {};
+    programma.perWedstrijd[slot] = {
+      espnId: info.espnId,
+      datumtijd: info.datumtijd,
+      stadion: info.stadion,
+      stad: info.stad,
+      land: info.land,
+      thuis: record.thuis || null,
+      uit: record.uit || null,
+      score: null,
+      staat: "pre",
+      minuut: null,
+      ronde: record.ronde ? RONDE_NAMEN[record.ronde] : "Knock-out",
+    };
+  }
+  return programma;
+}
 
 // ESPN-teamnaam (genormaliseerd, accenten weg) -> naam zoals in het poolformulier
 const ESPN_NAAR_NL = {
@@ -805,7 +864,7 @@ function verwerkEspn(events, opgeslagen) {
   const telling = { doelpunten: 0, gespeeld: 0, geel: 0, rood: 0,
                     scorers: {}, detailsGezien: false };
   // Programma: tijd, stadion en plaats van alle 104 wedstrijden
-  const programma = { perWedstrijd: {}, lijst: [] };
+  const programma = basisProgramma(opgeslagen);
 
   const paarSleutel = (a, b) => [normaliseer(a), normaliseer(b)].sort().join("|");
   const groepPerPaar = {};
@@ -841,6 +900,12 @@ function verwerkEspn(events, opgeslagen) {
       ronde: rondeUitEspn(event.date, thuisC.team.displayName, uitC.team.displayName),
     };
     programma.lijst.push(info);
+    const slotViaProgramma = ESPN_ID_NAAR_KNOCKOUT_SLOT[String(event.id)];
+    if (slotViaProgramma && uitslagen.knockout[slotViaProgramma]) {
+      const record = uitslagen.knockout[slotViaProgramma];
+      info.ronde = RONDE_NAMEN[record.ronde];
+      programma.perWedstrijd[slotViaProgramma] = info;
+    }
 
     if (!thuisNL || !uitNL) continue; // nog een plaatshouder zoals "Group A Winner"
 
@@ -865,7 +930,7 @@ function verwerkEspn(events, opgeslagen) {
     const isGroep = Date.parse(event.date) < KNOCKOUT_GRENS;
 
     const doel = isGroep ? groepPerPaar[sleutel] : null;
-    const slot = isGroep ? null : slotPerPaar[sleutel];
+    const slot = isGroep ? null : (slotPerPaar[sleutel] || slotViaProgramma);
 
     if (isGroep && !doel) { onplaatsbaar.push(`${thuisNL} – ${uitNL}`); continue; }
     if (!isGroep && !slot) {
@@ -874,6 +939,10 @@ function verwerkEspn(events, opgeslagen) {
     }
 
     const record = isGroep ? doel : uitslagen.knockout[slot];
+    if (!isGroep && slotViaProgramma) {
+      if (!record.thuis && thuisNL) record.thuis = thuisNL;
+      if (!record.uit && uitNL) record.uit = uitNL;
+    }
     // Programma koppelen aan onze wedstrijd-id (G01..G72 of W73..W104)
     info.ronde = isGroep ? `Groep ${doel.groep}` : RONDE_NAMEN[record.ronde];
     programma.perWedstrijd[isGroep ? doel.id : slot] = info;
@@ -1295,11 +1364,12 @@ function render() {
       const liveInfo = App.live[k.slot];
       const echtBekend = k.echt_thuis || k.echt_uit;
       const prog = App.programma && App.programma.perWedstrijd[k.slot];
+      const datum = prog ? isoVanTijd(new Date(prog.datumtijd)) : k.datum;
       const open = App.openVerloop.has(k.slot);
       html += `<div class="ko-kaart${liveInfo ? " live-nu" : ""}">
         <div class="slot">${k.slot}</div>
         <div class="ko-regel">
-          <span class="kopje">Voorspeld · ${fmtDatum(k.datum)}${prog ? ` · ${fmtTijd(prog.datumtijd)} u · ${prog.stad || ""} ${landVlag(prog.land)}` : ""}</span>
+          <span class="kopje">Voorspeld · ${fmtDatum(datum)}${prog ? ` · ${fmtTijd(prog.datumtijd)} u · ${prog.stad || ""} ${landVlag(prog.land)}` : ""}</span>
           <span class="inhoud">${k.voorspeld_thuis} – ${k.voorspeld_uit}
             <span class="score">${k.voorspelling}</span></span>
         </div>
@@ -1442,6 +1512,7 @@ async function start() {
   }
   App.uitslagenVast = App.opgeslagen;
   App.uitslagenLive = App.opgeslagen;
+  App.programma = basisProgramma(App.opgeslagen);
   render();
   haalLiveOp(); // direct bij het openen de laatste uitslagen ophalen
 }
@@ -1519,11 +1590,17 @@ function draaiTests() {
     yellowCard: false, redCard: false, athletesInvolved: [{ displayName: naam }] });
   const nepKaart = rood => ({ scoringPlay: false, ownGoal: false, shootout: false,
     yellowCard: !rood, redCard: rood, athletesInvolved: [] });
-  const r1 = verwerkEspn([nepEvent("2026-06-11T19:00Z", "Mexico", "South Africa", 3, 0, true)], App.opgeslagen);
+  const testOpgeslagenMetLegeG01 = () => {
+    const data = JSON.parse(JSON.stringify(App.opgeslagen));
+    const g01 = data.groepswedstrijden.find(w => w.id === "G01");
+    if (g01) { g01.thuis_goals = null; g01.uit_goals = null; }
+    return data;
+  };
+  const r1 = verwerkEspn([nepEvent("2026-06-11T19:00Z", "Mexico", "South Africa", 3, 0, true)], testOpgeslagenMetLegeG01());
   check("espn: groepsuitslag geplaatst", r1.vast.groepswedstrijden[0].thuis_goals, 3);
-  const r2 = verwerkEspn([nepEvent("2026-06-11T19:00Z", "South Africa", "Mexico", 0, 3, true)], App.opgeslagen);
+  const r2 = verwerkEspn([nepEvent("2026-06-11T19:00Z", "South Africa", "Mexico", 0, 3, true)], testOpgeslagenMetLegeG01());
   check("espn: omgedraaide teams goed geplaatst", r2.vast.groepswedstrijden[0].thuis_goals, 3);
-  const r3 = verwerkEspn([nepEvent("2026-06-11T19:00Z", "Mexico", "South Africa", 1, 0, false)], App.opgeslagen);
+  const r3 = verwerkEspn([nepEvent("2026-06-11T19:00Z", "Mexico", "South Africa", 1, 0, false)], testOpgeslagenMetLegeG01());
   check("espn: live wedstrijd niet definitief geteld", r3.vast.groepswedstrijden[0].thuis_goals, null);
   check("espn: live wedstrijd telt voorlopig mee", r3.liveUitslagen.groepswedstrijden[0].thuis_goals, 1);
   check("espn: live stand zichtbaar", r3.live["G01"] ? r3.live["G01"].score : null, "1-0");
@@ -1547,6 +1624,7 @@ function draaiTests() {
 
   // Poulestanden
   const standData = JSON.parse(JSON.stringify(App.opgeslagen));
+  for (const w of standData.groepswedstrijden) { w.thuis_goals = null; w.uit_goals = null; }
   const zetUitslag = (id, t, u) => {
     const w = standData.groepswedstrijden.find(x => x.id === id);
     w.thuis_goals = t; w.uit_goals = u;
@@ -1566,6 +1644,18 @@ function draaiTests() {
   // Programma en wedstrijdverloop
   check("programma: alle events in lijst", r4.programma.lijst.length, 2);
   check("programma: gekoppeld aan wedstrijd-id", r4.programma.perWedstrijd["G01"] ? r4.programma.perWedstrijd["G01"].score : null, "2-1");
+  const koProgrammaEvent = {
+    id: "760486",
+    date: "2026-06-28T19:00Z",
+    status: { type: { state: "pre", completed: false, shortDetail: "Scheduled" } },
+    competitions: [{ venue: { fullName: "SoFi Stadium", address: { city: "Inglewood, California", country: "USA" } }, competitors: [
+      { homeAway: "home", score: "0", team: { displayName: "South Africa" } },
+      { homeAway: "away", score: "0", team: { displayName: "Canada" } },
+    ]}],
+  };
+  const r5 = verwerkEspn([koProgrammaEvent], App.opgeslagen);
+  check("programma: knock-outtijd gekoppeld zonder ingevulde teams",
+    r5.programma.perWedstrijd["W73"] ? r5.programma.perWedstrijd["W73"].datumtijd : null, "2026-06-28T19:00Z");
   check("plaatshouder: groepswinnaar", vertaalPlaatshouder("Group A Winner"), "Winnaar groep A");
   check("plaatshouder: nummer 2", vertaalPlaatshouder("Group L 2nd Place"), "Nr. 2 groep L");
   check("plaatshouder: zestiende-winnaar naar W-nummer", vertaalPlaatshouder("Round of 32 5 Winner"), "Winnaar W77");
