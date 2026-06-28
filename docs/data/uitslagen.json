@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-06-27 10:35",
+  "laatst_bijgewerkt": "2026-06-28 07:00",
   "_uitleg": "Echte uitslagen. Wordt bijgewerkt door Claude na controle van gespeelde wedstrijden.",
   "groepswedstrijden": [
     {
@@ -530,8 +530,8 @@
       "datum": "2026-06-28",
       "thuis": "ALGERIJE",
       "uit": "OOSTENRIJK",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 3,
+      "uit_goals": 3
     },
     {
       "id": "G60",
@@ -539,8 +539,8 @@
       "datum": "2026-06-28",
       "thuis": "JORDANIË",
       "uit": "ARGENTINIË",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 1,
+      "uit_goals": 3
     },
     {
       "id": "G61",
@@ -584,8 +584,8 @@
       "datum": "2026-06-28",
       "thuis": "COLOMBIA",
       "uit": "PORTUGAL",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 0,
+      "uit_goals": 0
     },
     {
       "id": "G66",
@@ -593,8 +593,8 @@
       "datum": "2026-06-28",
       "thuis": "CONGO",
       "uit": "OEZBEKISTAN",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 3,
+      "uit_goals": 1
     },
     {
       "id": "G67",
@@ -638,8 +638,8 @@
       "datum": "2026-06-27",
       "thuis": "PANAMA",
       "uit": "ENGELAND",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 0,
+      "uit_goals": 2
     },
     {
       "id": "G72",
@@ -647,136 +647,136 @@
       "datum": "2026-06-27",
       "thuis": "KROATIË",
       "uit": "GHANA",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 2,
+      "uit_goals": 1
     }
   ],
   "knockout": {
     "W73": {
       "ronde": "zestiende_finale",
       "datum": "2026-06-28",
-      "thuis": null,
-      "uit": null,
+      "thuis": "ZUID AFRIKA",
+      "uit": "CANADA",
       "thuis_goals": null,
       "uit_goals": null
     },
     "W74": {
       "ronde": "zestiende_finale",
       "datum": "2026-06-29",
-      "thuis": null,
-      "uit": null,
+      "thuis": "DUITSLAND",
+      "uit": "PARAGUAY",
       "thuis_goals": null,
       "uit_goals": null
     },
     "W75": {
       "ronde": "zestiende_finale",
       "datum": "2026-06-30",
-      "thuis": null,
-      "uit": null,
+      "thuis": "NEDERLAND",
+      "uit": "MAROKKO",
       "thuis_goals": null,
       "uit_goals": null
     },
     "W76": {
       "ronde": "zestiende_finale",
       "datum": "2026-06-29",
-      "thuis": null,
-      "uit": null,
+      "thuis": "BRAZILIË",
+      "uit": "JAPAN",
       "thuis_goals": null,
       "uit_goals": null
     },
     "W77": {
       "ronde": "zestiende_finale",
       "datum": "2026-06-30",
-      "thuis": null,
-      "uit": null,
+      "thuis": "FRANKRIJK",
+      "uit": "ZWEDEN",
       "thuis_goals": null,
       "uit_goals": null
     },
     "W78": {
       "ronde": "zestiende_finale",
       "datum": "2026-06-30",
-      "thuis": null,
-      "uit": null,
+      "thuis": "IVOORKUST",
+      "uit": "NOORWEGEN",
       "thuis_goals": null,
       "uit_goals": null
     },
     "W79": {
       "ronde": "zestiende_finale",
       "datum": "2026-07-01",
-      "thuis": null,
-      "uit": null,
+      "thuis": "MEXICO",
+      "uit": "ECUADOR",
       "thuis_goals": null,
       "uit_goals": null
     },
     "W80": {
       "ronde": "zestiende_finale",
       "datum": "2026-07-01",
-      "thuis": null,
-      "uit": null,
+      "thuis": "ENGELAND",
+      "uit": "CONGO",
       "thuis_goals": null,
       "uit_goals": null
     },
     "W81": {
       "ronde": "zestiende_finale",
       "datum": "2026-07-02",
-      "thuis": null,
-      "uit": null,
+      "thuis": "USA",
+      "uit": "BOSNIË/HERZEG.",
       "thuis_goals": null,
       "uit_goals": null
     },
     "W82": {
       "ronde": "zestiende_finale",
       "datum": "2026-07-02",
-      "thuis": null,
-      "uit": null,
+      "thuis": "BELGIË",
+      "uit": "SENEGAL",
       "thuis_goals": null,
       "uit_goals": null
     },
     "W83": {
       "ronde": "zestiende_finale",
       "datum": "2026-07-03",
-      "thuis": null,
-      "uit": null,
+      "thuis": "PORTUGAL",
+      "uit": "KROATIË",
       "thuis_goals": null,
       "uit_goals": null
     },
     "W84": {
       "ronde": "zestiende_finale",
       "datum": "2026-07-02",
-      "thuis": null,
-      "uit": null,
+      "thuis": "SPANJE",
+      "uit": "OOSTENRIJK",
       "thuis_goals": null,
       "uit_goals": null
     },
     "W85": {
       "ronde": "zestiende_finale",
       "datum": "2026-07-03",
-      "thuis": null,
-      "uit": null,
+      "thuis": "ZWITSERLAND",
+      "uit": "ALGERIJE",
       "thuis_goals": null,
       "uit_goals": null
     },
     "W86": {
       "ronde": "zestiende_finale",
       "datum": "2026-07-04",
-      "thuis": null,
-      "uit": null,
+      "thuis": "ARGENTINIË",
+      "uit": "KAAPVERDIË",
       "thuis_goals": null,
       "uit_goals": null
     },
     "W87": {
       "ronde": "zestiende_finale",
       "datum": "2026-07-04",
-      "thuis": null,
-      "uit": null,
+      "thuis": "COLOMBIA",
+      "uit": "GHANA",
       "thuis_goals": null,
       "uit_goals": null
     },
     "W88": {
       "ronde": "zestiende_finale",
       "datum": "2026-07-03",
-      "thuis": null,
-      "uit": null,
+      "thuis": "AUSTRALIË",
+      "uit": "EGYPTE",
       "thuis_goals": null,
       "uit_goals": null
     },
@@ -919,15 +919,15 @@
       "Kylian Mbappé": 4,
       "Julián Álvarez": 0,
       "Vinícius Júnior": 4,
-      "Harry Kane": 2
+      "Harry Kane": 3
     },
     "tussenstand": {
       "_uitleg": "Laatst bekende tussenstanden (alleen weergave; punten tellen pas bij de einduitslag)",
-      "topscorers": "Messi (5), Vinícius (4), Mbappé (4)",
-      "doelpunten": 196,
-      "gele_kaarten": 164,
+      "topscorers": "Messi (6), Haaland (4), Mbappé (4)",
+      "doelpunten": 215,
+      "gele_kaarten": 179,
       "rode_kaarten": 10,
-      "peildatum": "2026-06-27"
+      "peildatum": "2026-06-28"
     }
   }
 }
