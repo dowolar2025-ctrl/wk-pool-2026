@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-06-28 07:00",
+  "laatst_bijgewerkt": "2026-06-29 08:18",
   "_uitleg": "Echte uitslagen. Wordt bijgewerkt door Claude na controle van gespeelde wedstrijden.",
   "groepswedstrijden": [
     {
@@ -657,8 +657,8 @@
       "datum": "2026-06-28",
       "thuis": "ZUID AFRIKA",
       "uit": "CANADA",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 0,
+      "uit_goals": 1
     },
     "W74": {
       "ronde": "zestiende_finale",
@@ -923,11 +923,11 @@
     },
     "tussenstand": {
       "_uitleg": "Laatst bekende tussenstanden (alleen weergave; punten tellen pas bij de einduitslag)",
-      "topscorers": "Messi (6), Haaland (4), Mbappé (4)",
-      "doelpunten": 215,
-      "gele_kaarten": 179,
+      "topscorers": "Messi (6), Vinícius (4), Mbappé (4)",
+      "doelpunten": 216,
+      "gele_kaarten": 181,
       "rode_kaarten": 10,
-      "peildatum": "2026-06-28"
+      "peildatum": "2026-06-29"
     }
   }
 }
