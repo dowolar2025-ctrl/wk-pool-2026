@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-06-29 08:18",
+  "laatst_bijgewerkt": "2026-06-30 08:22",
   "_uitleg": "Echte uitslagen. Wordt bijgewerkt door Claude na controle van gespeelde wedstrijden.",
   "groepswedstrijden": [
     {
@@ -665,24 +665,24 @@
       "datum": "2026-06-29",
       "thuis": "DUITSLAND",
       "uit": "PARAGUAY",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 1,
+      "uit_goals": 1
     },
     "W75": {
       "ronde": "zestiende_finale",
       "datum": "2026-06-30",
       "thuis": "NEDERLAND",
       "uit": "MAROKKO",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 1,
+      "uit_goals": 1
     },
     "W76": {
       "ronde": "zestiende_finale",
       "datum": "2026-06-29",
       "thuis": "BRAZILIË",
       "uit": "JAPAN",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 2,
+      "uit_goals": 1
     },
     "W77": {
       "ronde": "zestiende_finale",
@@ -783,15 +783,15 @@
     "W89": {
       "ronde": "achtste_finale",
       "datum": "2026-07-04",
-      "thuis": null,
-      "uit": null,
+      "thuis": "CANADA",
+      "uit": "MAROKKO",
       "thuis_goals": null,
       "uit_goals": null
     },
     "W90": {
       "ronde": "achtste_finale",
       "datum": "2026-07-04",
-      "thuis": null,
+      "thuis": "PARAGUAY",
       "uit": null,
       "thuis_goals": null,
       "uit_goals": null
@@ -799,7 +799,7 @@
     "W91": {
       "ronde": "achtste_finale",
       "datum": "2026-07-05",
-      "thuis": null,
+      "thuis": "BRAZILIË",
       "uit": null,
       "thuis_goals": null,
       "uit_goals": null
@@ -924,10 +924,10 @@
     "tussenstand": {
       "_uitleg": "Laatst bekende tussenstanden (alleen weergave; punten tellen pas bij de einduitslag)",
       "topscorers": "Messi (6), Vinícius (4), Mbappé (4)",
-      "doelpunten": 216,
-      "gele_kaarten": 181,
+      "doelpunten": 223,
+      "gele_kaarten": 193,
       "rode_kaarten": 10,
-      "peildatum": "2026-06-29"
+      "peildatum": "2026-06-30"
     }
   }
 }
