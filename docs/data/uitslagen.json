@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-06-30 08:22",
+  "laatst_bijgewerkt": "2026-07-01 08:33",
   "_uitleg": "Echte uitslagen. Wordt bijgewerkt door Claude na controle van gespeelde wedstrijden.",
   "groepswedstrijden": [
     {
@@ -689,24 +689,24 @@
       "datum": "2026-06-30",
       "thuis": "FRANKRIJK",
       "uit": "ZWEDEN",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 3,
+      "uit_goals": 0
     },
     "W78": {
       "ronde": "zestiende_finale",
       "datum": "2026-06-30",
       "thuis": "IVOORKUST",
       "uit": "NOORWEGEN",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 1,
+      "uit_goals": 2
     },
     "W79": {
       "ronde": "zestiende_finale",
       "datum": "2026-07-01",
       "thuis": "MEXICO",
       "uit": "ECUADOR",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 2,
+      "uit_goals": 0
     },
     "W80": {
       "ronde": "zestiende_finale",
@@ -783,16 +783,16 @@
     "W89": {
       "ronde": "achtste_finale",
       "datum": "2026-07-04",
-      "thuis": "CANADA",
-      "uit": "MAROKKO",
+      "thuis": "PARAGUAY",
+      "uit": "FRANKRIJK",
       "thuis_goals": null,
       "uit_goals": null
     },
     "W90": {
       "ronde": "achtste_finale",
       "datum": "2026-07-04",
-      "thuis": "PARAGUAY",
-      "uit": null,
+      "thuis": "CANADA",
+      "uit": "MAROKKO",
       "thuis_goals": null,
       "uit_goals": null
     },
@@ -800,14 +800,14 @@
       "ronde": "achtste_finale",
       "datum": "2026-07-05",
       "thuis": "BRAZILIË",
-      "uit": null,
+      "uit": "NOORWEGEN",
       "thuis_goals": null,
       "uit_goals": null
     },
     "W92": {
       "ronde": "achtste_finale",
       "datum": "2026-07-06",
-      "thuis": null,
+      "thuis": "MEXICO",
       "uit": null,
       "thuis_goals": null,
       "uit_goals": null
@@ -916,18 +916,18 @@
     "gele_kaarten": null,
     "rode_kaarten": null,
     "goals_per_gekozen_speler": {
-      "Kylian Mbappé": 4,
+      "Kylian Mbappé": 6,
       "Julián Álvarez": 0,
       "Vinícius Júnior": 4,
       "Harry Kane": 3
     },
     "tussenstand": {
       "_uitleg": "Laatst bekende tussenstanden (alleen weergave; punten tellen pas bij de einduitslag)",
-      "topscorers": "Messi (6), Vinícius (4), Mbappé (4)",
-      "doelpunten": 223,
-      "gele_kaarten": 193,
-      "rode_kaarten": 10,
-      "peildatum": "2026-06-30"
+      "topscorers": "Mbappé (6), Messi (6), Haaland (5)",
+      "doelpunten": 231,
+      "gele_kaarten": 197,
+      "rode_kaarten": 11,
+      "peildatum": "2026-07-01"
     }
   }
 }
