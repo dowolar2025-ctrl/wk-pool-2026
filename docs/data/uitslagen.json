@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-07-01 08:33",
+  "laatst_bijgewerkt": "2026-07-02 08:22",
   "_uitleg": "Echte uitslagen. Wordt bijgewerkt door Claude na controle van gespeelde wedstrijden.",
   "groepswedstrijden": [
     {
@@ -713,24 +713,24 @@
       "datum": "2026-07-01",
       "thuis": "ENGELAND",
       "uit": "CONGO",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 2,
+      "uit_goals": 1
     },
     "W81": {
       "ronde": "zestiende_finale",
       "datum": "2026-07-02",
       "thuis": "USA",
       "uit": "BOSNIË/HERZEG.",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 2,
+      "uit_goals": 0
     },
     "W82": {
       "ronde": "zestiende_finale",
       "datum": "2026-07-02",
       "thuis": "BELGIË",
       "uit": "SENEGAL",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 3,
+      "uit_goals": 2
     },
     "W83": {
       "ronde": "zestiende_finale",
@@ -808,7 +808,7 @@
       "ronde": "achtste_finale",
       "datum": "2026-07-06",
       "thuis": "MEXICO",
-      "uit": null,
+      "uit": "ENGELAND",
       "thuis_goals": null,
       "uit_goals": null
     },
@@ -823,8 +823,8 @@
     "W94": {
       "ronde": "achtste_finale",
       "datum": "2026-07-07",
-      "thuis": null,
-      "uit": null,
+      "thuis": "USA",
+      "uit": "BELGIË",
       "thuis_goals": null,
       "uit_goals": null
     },
@@ -919,15 +919,15 @@
       "Kylian Mbappé": 6,
       "Julián Álvarez": 0,
       "Vinícius Júnior": 4,
-      "Harry Kane": 3
+      "Harry Kane": 5
     },
     "tussenstand": {
       "_uitleg": "Laatst bekende tussenstanden (alleen weergave; punten tellen pas bij de einduitslag)",
-      "topscorers": "Mbappé (6), Messi (6), Haaland (5)",
-      "doelpunten": 231,
-      "gele_kaarten": 197,
-      "rode_kaarten": 11,
-      "peildatum": "2026-07-01"
+      "topscorers": "Mbappé (6), Messi (6), Haaland (5), Kane (5)",
+      "doelpunten": 241,
+      "gele_kaarten": 204,
+      "rode_kaarten": 12,
+      "peildatum": "2026-07-02"
     }
   }
 }
