@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-07-02 08:22",
+  "laatst_bijgewerkt": "2026-07-03 07:45",
   "_uitleg": "Echte uitslagen. Wordt bijgewerkt door Claude na controle van gespeelde wedstrijden.",
   "groepswedstrijden": [
     {
@@ -737,24 +737,24 @@
       "datum": "2026-07-03",
       "thuis": "PORTUGAL",
       "uit": "KROATIË",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 2,
+      "uit_goals": 1
     },
     "W84": {
       "ronde": "zestiende_finale",
       "datum": "2026-07-02",
       "thuis": "SPANJE",
       "uit": "OOSTENRIJK",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 3,
+      "uit_goals": 0
     },
     "W85": {
       "ronde": "zestiende_finale",
       "datum": "2026-07-03",
       "thuis": "ZWITSERLAND",
       "uit": "ALGERIJE",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 2,
+      "uit_goals": 0
     },
     "W86": {
       "ronde": "zestiende_finale",
@@ -815,8 +815,8 @@
     "W93": {
       "ronde": "achtste_finale",
       "datum": "2026-07-06",
-      "thuis": null,
-      "uit": null,
+      "thuis": "PORTUGAL",
+      "uit": "SPANJE",
       "thuis_goals": null,
       "uit_goals": null
     },
@@ -839,7 +839,7 @@
     "W96": {
       "ronde": "achtste_finale",
       "datum": "2026-07-07",
-      "thuis": null,
+      "thuis": "ZWITSERLAND",
       "uit": null,
       "thuis_goals": null,
       "uit_goals": null
@@ -924,10 +924,10 @@
     "tussenstand": {
       "_uitleg": "Laatst bekende tussenstanden (alleen weergave; punten tellen pas bij de einduitslag)",
       "topscorers": "Mbappé (6), Messi (6), Haaland (5), Kane (5)",
-      "doelpunten": 241,
-      "gele_kaarten": 204,
+      "doelpunten": 249,
+      "gele_kaarten": 210,
       "rode_kaarten": 12,
-      "peildatum": "2026-07-02"
+      "peildatum": "2026-07-03"
     }
   }
 }
