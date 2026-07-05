@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-07-03 07:45",
+  "laatst_bijgewerkt": "2026-07-05 15:12",
   "_uitleg": "Echte uitslagen. Wordt bijgewerkt door Claude na controle van gespeelde wedstrijden.",
   "groepswedstrijden": [
     {
@@ -761,40 +761,40 @@
       "datum": "2026-07-04",
       "thuis": "ARGENTINIË",
       "uit": "KAAPVERDIË",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 3,
+      "uit_goals": 2
     },
     "W87": {
       "ronde": "zestiende_finale",
       "datum": "2026-07-04",
       "thuis": "COLOMBIA",
       "uit": "GHANA",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 1,
+      "uit_goals": 0
     },
     "W88": {
       "ronde": "zestiende_finale",
       "datum": "2026-07-03",
       "thuis": "AUSTRALIË",
       "uit": "EGYPTE",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 1,
+      "uit_goals": 1
     },
     "W89": {
       "ronde": "achtste_finale",
       "datum": "2026-07-04",
       "thuis": "PARAGUAY",
       "uit": "FRANKRIJK",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 0,
+      "uit_goals": 1
     },
     "W90": {
       "ronde": "achtste_finale",
       "datum": "2026-07-04",
       "thuis": "CANADA",
       "uit": "MAROKKO",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 0,
+      "uit_goals": 3
     },
     "W91": {
       "ronde": "achtste_finale",
@@ -831,8 +831,8 @@
     "W95": {
       "ronde": "achtste_finale",
       "datum": "2026-07-07",
-      "thuis": null,
-      "uit": null,
+      "thuis": "ARGENTINIË",
+      "uit": "EGYPTE",
       "thuis_goals": null,
       "uit_goals": null
     },
@@ -840,15 +840,15 @@
       "ronde": "achtste_finale",
       "datum": "2026-07-07",
       "thuis": "ZWITSERLAND",
-      "uit": null,
+      "uit": "COLOMBIA",
       "thuis_goals": null,
       "uit_goals": null
     },
     "W97": {
       "ronde": "kwartfinale",
       "datum": "2026-07-09",
-      "thuis": null,
-      "uit": null,
+      "thuis": "FRANKRIJK",
+      "uit": "MAROKKO",
       "thuis_goals": null,
       "uit_goals": null
     },
@@ -916,18 +916,18 @@
     "gele_kaarten": null,
     "rode_kaarten": null,
     "goals_per_gekozen_speler": {
-      "Kylian Mbappé": 6,
+      "Kylian Mbappé": 7,
       "Julián Álvarez": 0,
       "Vinícius Júnior": 4,
       "Harry Kane": 5
     },
     "tussenstand": {
       "_uitleg": "Laatst bekende tussenstanden (alleen weergave; punten tellen pas bij de einduitslag)",
-      "topscorers": "Mbappé (6), Messi (6), Haaland (5), Kane (5)",
-      "doelpunten": 249,
-      "gele_kaarten": 210,
+      "topscorers": "Mbappé (7), Messi (7), Haaland (5)",
+      "doelpunten": 261,
+      "gele_kaarten": 230,
       "rode_kaarten": 12,
-      "peildatum": "2026-07-03"
+      "peildatum": "2026-07-05"
     }
   }
 }
