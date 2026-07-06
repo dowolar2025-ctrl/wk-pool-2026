@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-07-05 15:12",
+  "laatst_bijgewerkt": "2026-07-06 07:00",
   "_uitleg": "Echte uitslagen. Wordt bijgewerkt door Claude na controle van gespeelde wedstrijden.",
   "groepswedstrijden": [
     {
@@ -801,16 +801,16 @@
       "datum": "2026-07-05",
       "thuis": "BRAZILIË",
       "uit": "NOORWEGEN",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 1,
+      "uit_goals": 2
     },
     "W92": {
       "ronde": "achtste_finale",
       "datum": "2026-07-06",
       "thuis": "MEXICO",
       "uit": "ENGELAND",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 2,
+      "uit_goals": 3
     },
     "W93": {
       "ronde": "achtste_finale",
@@ -863,8 +863,8 @@
     "W99": {
       "ronde": "kwartfinale",
       "datum": "2026-07-11",
-      "thuis": null,
-      "uit": null,
+      "thuis": "NOORWEGEN",
+      "uit": "ENGELAND",
       "thuis_goals": null,
       "uit_goals": null
     },
@@ -919,15 +919,15 @@
       "Kylian Mbappé": 7,
       "Julián Álvarez": 0,
       "Vinícius Júnior": 4,
-      "Harry Kane": 5
+      "Harry Kane": 6
     },
     "tussenstand": {
       "_uitleg": "Laatst bekende tussenstanden (alleen weergave; punten tellen pas bij de einduitslag)",
-      "topscorers": "Mbappé (7), Messi (7), Haaland (5)",
-      "doelpunten": 261,
-      "gele_kaarten": 230,
-      "rode_kaarten": 12,
-      "peildatum": "2026-07-05"
+      "topscorers": "Mbappé (7), Haaland (7), Messi (7)",
+      "doelpunten": 269,
+      "gele_kaarten": 237,
+      "rode_kaarten": 13,
+      "peildatum": "2026-07-06"
     }
   }
 }
