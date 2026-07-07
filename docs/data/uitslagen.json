@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-07-06 07:00",
+  "laatst_bijgewerkt": "2026-07-07 07:45",
   "_uitleg": "Echte uitslagen. Wordt bijgewerkt door Claude na controle van gespeelde wedstrijden.",
   "groepswedstrijden": [
     {
@@ -817,16 +817,16 @@
       "datum": "2026-07-06",
       "thuis": "PORTUGAL",
       "uit": "SPANJE",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 0,
+      "uit_goals": 1
     },
     "W94": {
       "ronde": "achtste_finale",
       "datum": "2026-07-07",
       "thuis": "USA",
       "uit": "BELGIË",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 1,
+      "uit_goals": 4
     },
     "W95": {
       "ronde": "achtste_finale",
@@ -855,8 +855,8 @@
     "W98": {
       "ronde": "kwartfinale",
       "datum": "2026-07-10",
-      "thuis": null,
-      "uit": null,
+      "thuis": "SPANJE",
+      "uit": "BELGIË",
       "thuis_goals": null,
       "uit_goals": null
     },
@@ -924,10 +924,10 @@
     "tussenstand": {
       "_uitleg": "Laatst bekende tussenstanden (alleen weergave; punten tellen pas bij de einduitslag)",
       "topscorers": "Mbappé (7), Haaland (7), Messi (7)",
-      "doelpunten": 269,
-      "gele_kaarten": 237,
+      "doelpunten": 275,
+      "gele_kaarten": 242,
       "rode_kaarten": 13,
-      "peildatum": "2026-07-06"
+      "peildatum": "2026-07-07"
     }
   }
 }
