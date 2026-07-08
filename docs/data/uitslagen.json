@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-07-07 07:45",
+  "laatst_bijgewerkt": "2026-07-08 08:18",
   "_uitleg": "Echte uitslagen. Wordt bijgewerkt door Claude na controle van gespeelde wedstrijden.",
   "groepswedstrijden": [
     {
@@ -833,16 +833,16 @@
       "datum": "2026-07-07",
       "thuis": "ARGENTINIË",
       "uit": "EGYPTE",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 3,
+      "uit_goals": 2
     },
     "W96": {
       "ronde": "achtste_finale",
       "datum": "2026-07-07",
       "thuis": "ZWITSERLAND",
       "uit": "COLOMBIA",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 0,
+      "uit_goals": 0
     },
     "W97": {
       "ronde": "kwartfinale",
@@ -871,8 +871,8 @@
     "W100": {
       "ronde": "kwartfinale",
       "datum": "2026-07-12",
-      "thuis": null,
-      "uit": null,
+      "thuis": "ARGENTINIË",
+      "uit": "ZWITSERLAND",
       "thuis_goals": null,
       "uit_goals": null
     },
@@ -923,11 +923,11 @@
     },
     "tussenstand": {
       "_uitleg": "Laatst bekende tussenstanden (alleen weergave; punten tellen pas bij de einduitslag)",
-      "topscorers": "Mbappé (7), Haaland (7), Messi (7)",
-      "doelpunten": 275,
-      "gele_kaarten": 242,
+      "topscorers": "Messi (8), Mbappé (7), Haaland (7)",
+      "doelpunten": 280,
+      "gele_kaarten": 252,
       "rode_kaarten": 13,
-      "peildatum": "2026-07-07"
+      "peildatum": "2026-07-08"
     }
   }
 }
