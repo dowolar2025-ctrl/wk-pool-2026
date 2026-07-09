@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-07-08 08:18",
+  "laatst_bijgewerkt": "2026-07-09 07:07",
   "_uitleg": "Echte uitslagen. Wordt bijgewerkt door Claude na controle van gespeelde wedstrijden.",
   "groepswedstrijden": [
     {
@@ -916,18 +916,18 @@
     "gele_kaarten": null,
     "rode_kaarten": null,
     "goals_per_gekozen_speler": {
-      "Kylian Mbappé": 7,
+      "Kylian Mbappé": 0,
       "Julián Álvarez": 0,
-      "Vinícius Júnior": 4,
+      "Vinícius Júnior": 0,
       "Harry Kane": 6
     },
     "tussenstand": {
       "_uitleg": "Laatst bekende tussenstanden (alleen weergave; punten tellen pas bij de einduitslag)",
-      "topscorers": "Messi (8), Mbappé (7), Haaland (7)",
+      "topscorers": "Messi (8), Haaland (7), Kane (6)",
       "doelpunten": 280,
       "gele_kaarten": 252,
       "rode_kaarten": 13,
-      "peildatum": "2026-07-08"
+      "peildatum": "2026-07-09"
     }
   }
 }
