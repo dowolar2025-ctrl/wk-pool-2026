@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-07-09 07:07",
+  "laatst_bijgewerkt": "2026-07-10 15:17",
   "_uitleg": "Echte uitslagen. Wordt bijgewerkt door Claude na controle van gespeelde wedstrijden.",
   "groepswedstrijden": [
     {
@@ -849,8 +849,8 @@
       "datum": "2026-07-09",
       "thuis": "FRANKRIJK",
       "uit": "MAROKKO",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 2,
+      "uit_goals": 0
     },
     "W98": {
       "ronde": "kwartfinale",
@@ -879,7 +879,7 @@
     "W101": {
       "ronde": "halve_finale",
       "datum": "2026-07-14",
-      "thuis": null,
+      "thuis": "FRANKRIJK",
       "uit": null,
       "thuis_goals": null,
       "uit_goals": null
@@ -916,18 +916,18 @@
     "gele_kaarten": null,
     "rode_kaarten": null,
     "goals_per_gekozen_speler": {
-      "Kylian Mbappé": 0,
+      "Kylian Mbappé": 8,
       "Julián Álvarez": 0,
-      "Vinícius Júnior": 0,
+      "Vinícius Júnior": 4,
       "Harry Kane": 6
     },
     "tussenstand": {
       "_uitleg": "Laatst bekende tussenstanden (alleen weergave; punten tellen pas bij de einduitslag)",
-      "topscorers": "Messi (8), Haaland (7), Kane (6)",
-      "doelpunten": 280,
-      "gele_kaarten": 252,
+      "topscorers": "Mbappé (8), Messi (8), Haaland (7)",
+      "doelpunten": 282,
+      "gele_kaarten": 253,
       "rode_kaarten": 13,
-      "peildatum": "2026-07-09"
+      "peildatum": "2026-07-10"
     }
   }
 }
