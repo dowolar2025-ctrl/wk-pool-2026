@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-07-10 15:17",
+  "laatst_bijgewerkt": "2026-07-11 07:44",
   "_uitleg": "Echte uitslagen. Wordt bijgewerkt door Claude na controle van gespeelde wedstrijden.",
   "groepswedstrijden": [
     {
@@ -857,8 +857,8 @@
       "datum": "2026-07-10",
       "thuis": "SPANJE",
       "uit": "BELGIË",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 2,
+      "uit_goals": 1
     },
     "W99": {
       "ronde": "kwartfinale",
@@ -880,7 +880,7 @@
       "ronde": "halve_finale",
       "datum": "2026-07-14",
       "thuis": "FRANKRIJK",
-      "uit": null,
+      "uit": "SPANJE",
       "thuis_goals": null,
       "uit_goals": null
     },
@@ -924,10 +924,10 @@
     "tussenstand": {
       "_uitleg": "Laatst bekende tussenstanden (alleen weergave; punten tellen pas bij de einduitslag)",
       "topscorers": "Mbappé (8), Messi (8), Haaland (7)",
-      "doelpunten": 282,
-      "gele_kaarten": 253,
+      "doelpunten": 285,
+      "gele_kaarten": 257,
       "rode_kaarten": 13,
-      "peildatum": "2026-07-10"
+      "peildatum": "2026-07-11"
     }
   }
 }
