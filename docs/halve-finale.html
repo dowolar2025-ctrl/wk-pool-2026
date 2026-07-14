@@ -258,6 +258,44 @@ nav button.actief { background:var(--inkt); color:var(--papier); }
 }
 .melding.zichtbaar { opacity:1; transform:translateX(-50%) translateY(0); }
 footer { text-align:center; color:#b0aa9b; font-size:12.5px; margin-top:50px; }
+
+/* ============ MOBIEL (telefoons) ============ */
+@media (max-width:560px) {
+  .wrap { padding:0 12px 60px; }
+  header { padding:30px 0 6px; }
+  .kop-label { font-size:10px; letter-spacing:.14em; padding:6px 12px; }
+  .pot { gap:14px; padding:12px 18px; }
+  .pot .bedrag { font-size:32px; }
+  .pot .uitleg { font-size:12.5px; }
+  nav { width:100%; justify-content:space-between; }
+  nav button { padding:9px 10px; font-size:12.5px; flex:1; }
+  .scorebord-teams { padding:18px 10px 12px; gap:6px; }
+  .team .vlag { width:46px; height:46px; font-size:26px; margin-bottom:5px; }
+  .midden { min-width:110px; }
+  .status-regel { font-size:11px; letter-spacing:.08em; }
+  .sub-scores { gap:10px 14px; font-size:12.5px; padding:0 12px 14px; }
+  .feed { padding:10px 12px 12px; font-size:12.5px; gap:6px 8px; }
+  .feed .gebeurtenis { padding:4px 10px; }
+  .vernieuw-balk { flex-direction:column; align-items:stretch; text-align:center; }
+  .vernieuw-balk .knop { width:100%; }
+  .ranglijst-titel { font-size:18px; flex-wrap:wrap; gap:8px; }
+  .ranglijst-titel .tag { font-size:10.5px; padding:3px 9px; }
+  .deelnemer-kop { grid-template-columns:30px 1fr auto 18px; gap:8px; padding:12px 12px; }
+  .plek { font-size:17px; }
+  .deelnemer-naam { font-size:15.5px; }
+  .punten-badge { font-size:19px; padding:2px 11px; }
+  .detail { padding:8px 6px 12px; }
+  .detail table { font-size:11.5px; }
+  .detail th { font-size:9.5px; padding:5px 4px; letter-spacing:.04em; }
+  .detail td { padding:6px 4px; }
+  .paneel { padding:18px 16px; border-radius:16px; }
+  .paneel h2 { font-size:19px; }
+  .paneel .hint { font-size:13px; }
+  .form-acties .knop { width:100%; }
+  .regels-tabel { font-size:13px; }
+  .regels-tabel td { padding:8px 6px; }
+  .regels-tabel th { padding:6px; }
+}
 </style>
 </head>
 <body>
