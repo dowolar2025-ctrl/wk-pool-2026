@@ -329,7 +329,28 @@ footer { text-align:center; color:#b0aa9b; font-size:12.5px; margin-top:50px; }
       </div>
       <div class="veld">
         <label>4. Wie maakt het eerste doelpunt? <span class="pts-tag">(15 pt)</span></label>
-        <input type="text" id="f-q4" list="spelersLijst" placeholder="Spelernaam, of typ: geen doelpunt">
+        <select id="f-q4" onchange="toggleAndersVeld()">
+          <option value="">— kies —</option>
+          <optgroup label="🇫🇷 Frankrijk">
+            <option value="Kylian Mbappé">Kylian Mbappé</option>
+            <option value="Ousmane Dembélé">Ousmane Dembélé</option>
+            <option value="Bradley Barcola">Bradley Barcola</option>
+            <option value="Marcus Thuram">Marcus Thuram</option>
+            <option value="Michael Olise">Michael Olise</option>
+          </optgroup>
+          <optgroup label="🇪🇸 Spanje">
+            <option value="Mikel Oyarzabal">Mikel Oyarzabal</option>
+            <option value="Lamine Yamal">Lamine Yamal</option>
+            <option value="Nico Williams">Nico Williams</option>
+            <option value="Mikel Merino">Mikel Merino</option>
+            <option value="Dani Olmo">Dani Olmo</option>
+          </optgroup>
+          <optgroup label="Overig">
+            <option value="geen doelpunt">Geen doelpunt (0-0)</option>
+            <option value="anders">Iemand anders… (typ hieronder de naam)</option>
+          </optgroup>
+        </select>
+        <input type="text" id="f-q4anders" list="spelersLijst" placeholder="Typ de spelernaam" style="display:none;margin-top:8px">
         <datalist id="spelersLijst"></datalist>
       </div>
       <div class="veld">
@@ -508,17 +529,35 @@ document.querySelectorAll("nav button").forEach(b => {
 let bewerkId = null;
 const VELDEN = ["q1","q2h","q2a","q3h","q3a","q4","q5","q6","q7","q8","q9","q10"];
 
+/* Vraag 4 is een keuzemenu; bij "iemand anders" verschijnt een typvak. */
+function toggleAndersVeld() {
+  $("f-q4anders").style.display = $("f-q4").value === "anders" ? "block" : "none";
+}
+function zetQ4InForm(waarde) {
+  const opties = [...$("f-q4").options].map(o => o.value);
+  if (!waarde) { $("f-q4").value = ""; $("f-q4anders").value = ""; }
+  else if (opties.includes(waarde)) { $("f-q4").value = waarde; $("f-q4anders").value = ""; }
+  else { $("f-q4").value = "anders"; $("f-q4anders").value = waarde; }
+  toggleAndersVeld();
+}
+function leesQ4UitForm() {
+  const keuze = $("f-q4").value;
+  return keuze === "anders" ? $("f-q4anders").value.trim() : keuze;
+}
+
 function maakFormLeeg() {
   bewerkId = null;
   $("formTitel").textContent = "Nieuwe deelnemer";
   $("f-naam").value = "";
   VELDEN.forEach(v => $("f-" + v).value = "");
+  zetQ4InForm("");
 }
 function bewaarDeelnemer() {
   const naam = $("f-naam").value.trim();
   if (!naam) { toon("Vul eerst een naam in."); return; }
   const d = { id: bewerkId || ("d" + Date.now()), naam };
   VELDEN.forEach(v => d[v] = $("f-" + v).value.trim());
+  d.q4 = leesQ4UitForm();
   const idx = db.deelnemers.findIndex(x => x.id === d.id);
   if (idx >= 0) db.deelnemers[idx] = d; else db.deelnemers.push(d);
   bewaarDb(); maakFormLeeg(); renderAlles();
@@ -530,6 +569,7 @@ function bewerkDeelnemer(id) {
   $("formTitel").textContent = "Bewerk: " + d.naam;
   $("f-naam").value = d.naam;
   VELDEN.forEach(v => $("f-" + v).value = d[v] || "");
+  zetQ4InForm(d.q4 || "");
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 function verwijderDeelnemer(id) {
@@ -609,7 +649,7 @@ function kopieerVragenlijst() {
     "1. Wie gaat naar de finale? (Frankrijk/Spanje):",
     "2. Eindstand na 90 min (bijv. 2-1, Frankrijk eerst):",
     "3. Ruststand (bijv. 1-0):",
-    "4. Eerste doelpuntenmaker (of: geen doelpunt):",
+    "4. Eerste doelpuntenmaker — kies uit: Mbappé, Dembélé, Barcola, Thuram, Olise (FRA) / Oyarzabal, Yamal, Nico Williams, Merino, Olmo (ESP), iemand anders, of: geen doelpunt:",
     "5. Totaal aantal doelpunten:",
     "6. Scoren beide teams? (ja/nee):",
     "7. Aantal gele kaarten:",
