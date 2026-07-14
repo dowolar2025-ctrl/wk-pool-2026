@@ -624,31 +624,6 @@ function kopieerVragenlijst() {
   } else mislukt();
 }
 
-/* ---------------- deel-link ----------------
-   Verpakt alle deelnemers + correcties in het adres achter de #.
-   Wie de link opent ziet dezelfde pool; de live stand haalt
-   iedere telefoon zelf bij ESPN op. */
-function kopieerDeelLink() {
-  if (db.deelnemers.length === 0) { toon("Voer eerst deelnemers in — dan valt er wat te delen."); return; }
-  const data = btoa(unescape(encodeURIComponent(JSON.stringify(db))));
-  const link = location.origin + location.pathname + "#data=" + data;
-  const gelukt = () => toon("Deel-link gekopieerd! Plak hem in de groepsapp. 📱");
-  const mislukt = () => { prompt("Kopieer deze link zelf:", link); };
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(link).then(gelukt).catch(mislukt);
-  } else mislukt();
-}
-function laadUitDeelLink() {
-  const m = location.hash.match(/^#data=(.+)$/);
-  if (!m) return false;
-  try {
-    const data = JSON.parse(decodeURIComponent(escape(atob(m[1]))));
-    if (!Array.isArray(data.deelnemers)) throw new Error();
-    db = Object.assign({ deelnemers: [], overrides: {} }, data);
-    return true;
-  } catch (e) { return false; }
-}
-
 /* ==================================================================
    LIVE GEGEVENS (ESPN)
    ================================================================== */
