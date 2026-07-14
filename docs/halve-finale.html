@@ -298,10 +298,7 @@ footer { text-align:center; color:#b0aa9b; font-size:12.5px; margin-top:50px; }
 
   <div class="vernieuw-balk">
     <div class="info" id="vernieuwInfo">Nog geen gegevens opgehaald.</div>
-    <div style="display:flex;gap:10px;flex-wrap:wrap">
-      <button class="knop" onclick="kopieerDeelLink()">📱 Deel-link kopiëren</button>
-      <button class="knop primair" onclick="haalLiveOp(true)">↺ Ververs nu</button>
-    </div>
+    <button class="knop primair" onclick="haalLiveOp(true)">↺ Ververs nu</button>
   </div>
 
   <h2 class="ranglijst-titel" id="ranglijstTitel">Deelnemers</h2>
@@ -363,6 +360,7 @@ footer { text-align:center; color:#b0aa9b; font-size:12.5px; margin-top:50px; }
     <div class="form-acties">
       <button class="knop primair" onclick="bewaarDeelnemer()">💾 Bewaar deelnemer</button>
       <button class="knop" onclick="maakFormLeeg()">Leegmaken</button>
+      <button class="knop" onclick="kopieerVragenlijst()">📋 Kopieer vragenlijstje voor de groepsapp</button>
     </div>
   </div>
 
@@ -599,6 +597,31 @@ function verwijderAlles() {
   db = { deelnemers: [], overrides: {} };
   bewaarDb(); maakFormLeeg(); laadOverridesInForm(); renderAlles();
   toon("Alles gewist.");
+}
+
+/* ---------------- vragenlijstje voor de groepsapp ---------------- */
+function kopieerVragenlijst() {
+  const tekst = [
+    "⚽ POOL FRANKRIJK – SPANJE — vanavond 21:00 · inleg € 5",
+    "Stuur je antwoorden vóór de aftrap!",
+    "",
+    "Naam:",
+    "1. Wie gaat naar de finale? (Frankrijk/Spanje):",
+    "2. Eindstand na 90 min (bijv. 2-1, Frankrijk eerst):",
+    "3. Ruststand (bijv. 1-0):",
+    "4. Eerste doelpuntenmaker (of: geen doelpunt):",
+    "5. Totaal aantal doelpunten:",
+    "6. Scoren beide teams? (ja/nee):",
+    "7. Aantal gele kaarten:",
+    "8. Rode kaart? (ja/nee):",
+    "9. Verlenging? (ja/nee):",
+    "10. In welke minuut valt het eerste doelpunt?:",
+  ].join("\n");
+  const gelukt = () => toon("Vragenlijstje gekopieerd — plak het in de groepsapp! 📋");
+  const mislukt = () => { prompt("Kopieer de tekst hieronder zelf:", tekst); };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(tekst).then(gelukt).catch(mislukt);
+  } else mislukt();
 }
 
 /* ---------------- deel-link ----------------
