@@ -552,6 +552,10 @@ footer { text-align:center; color:#b0aa9b; font-size:12.5px; margin-top:50px; }
    net zoals ESPN en de tv-uitslag het noteren.
    ================================================================== */
 
+/* Versie van deze pagina. Wordt bij elke publicatie opgehoogd; de app kijkt
+   zelf of er een nieuwere versie op de site staat en haalt die dan op. */
+const APP_VERSIE = "2026-07-15-5";
+
 const EVENT_ID = "760515";
 const SCOREBOARD_URL = "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard?dates=20260715&limit=10";
 const SUMMARY_URL = "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/summary?event=" + EVENT_ID;
@@ -1404,11 +1408,50 @@ document.addEventListener("visibilitychange", () => {
   if (document.visibilityState !== "visible") return;
   haalDeelnemersOp(false);
   if (wedstrijd.staat !== "post") haalLiveOp(false);
+  checkNieuweVersie();
 });
 
-/* Precies op de aftrap het formulier sluiten, ook als niemand de pagina aanraakt. */
+/* ==================================================================
+   NIEUWE VERSIE VAN DE PAGINA OPHALEN
+   Een pagina die de hele dag open staat draait nog de code van het moment
+   waarop hij geladen werd: de deelnemers worden wel bijgewerkt, de
+   rekenregels niet. Daarom kijkt de app elke 10 minuten of er een nieuwere
+   versie op de site staat en haalt die dan zelf op.
+   ================================================================== */
+async function checkNieuweVersie() {
+  try {
+    // Nooit herladen terwijl iemand aan het invullen is — dat gooit zijn werk weg.
+    if ($("f-naam").value.trim() !== "" || bewerkId) return;
+
+    const r = await fetch(location.pathname + "?versiecheck=" + Date.now(), { cache: "no-store" });
+    if (!r.ok) return;
+    const gevonden = (await r.text()).match(/APP_VERSIE\s*=\s*"([^"]+)"/);
+    if (!gevonden) return;
+
+    if (gevonden[1] === APP_VERSIE) { sessionStorage.setItem("pool-herladen", "0"); return; }
+
+    /* Rem tegen een herlaadlus: zou de check ooit stuk gaan, dan blijft het
+       scherm bruikbaar in plaats van eindeloos te herladen. De teller wordt
+       hierboven op nul gezet zodra een herlaadbeurt wél de juiste versie
+       opleverde, dus opeenvolgende publicaties blijven gewoon doorkomen. */
+    const pogingen = Number(sessionStorage.getItem("pool-herladen") || "0");
+    if (pogingen >= 3) return;
+    sessionStorage.setItem("pool-herladen", String(pogingen + 1));
+    location.reload();
+  } catch (e) { /* geen net? dan volgende keer weer */ }
+}
+setInterval(checkNieuweVersie, 600000);   // elke 10 minuten
+/* Meteen bij het laden ook één keer kijken. Dat zet de herlaadteller op nul
+   zodra blijkt dat we de juiste versie draaien, zodat opeenvolgende
+   publicaties allemaal doorkomen en de rem alleen een echte lus vangt. */
+setTimeout(checkNieuweVersie, 3000);
+
+/* Precies op de aftrap ook verversen: dan sluit het formulier en start
+   iedereen de wedstrijd met dezelfde, nieuwste versie. */
 const tijdTotAftrap = AFTRAP - new Date();
-if (tijdTotAftrap > 0 && tijdTotAftrap < 86400000) setTimeout(renderAlles, tijdTotAftrap + 1000);
+if (tijdTotAftrap > 0 && tijdTotAftrap < 86400000) {
+  setTimeout(() => location.reload(), tijdTotAftrap + 2000);
+}
 </script>
 </body>
 </html>
