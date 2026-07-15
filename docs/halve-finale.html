@@ -528,8 +528,10 @@ footer { text-align:center; color:#b0aa9b; font-size:12.5px; margin-top:50px; }
     <div class="hint">Iedereen vult in op deze site en komt meteen in dezelfde lijst — je hoeft niets door te sturen. De lijst staat in een beveiligde database, niet in je browser, dus alle deelnemers zien precies hetzelfde.<br><br>
     Wat de database zelf bewaakt, en wat dus niemand kan omzeilen:<br>
     • iedereen mag de stand bekijken en zichzelf inschrijven;<br>
+    • <b>je kunt alleen je eigen voorspelling wijzigen</b> — bij het invullen krijgt je inzending een geheim dat alleen in jouw browser staat, en zonder dat geheim weigert de database elke wijziging;<br>
     • <b>niemand kan een deelnemer verwijderen</b> — de lijst kan niet gesloopt worden;<br>
     • <b>om 21:00 gaat alles op slot</b> — zodra de wedstrijd loopt kan niemand zijn voorspelling nog aanpassen.<br><br>
+    Let op: dat geheim staat in de browser waarin je hebt ingevuld. Wis je je browsergegevens of gebruik je een ander apparaat, dan kun je je eigen inzending niet meer wijzigen.<br><br>
     Moet er toch iemand uit de lijst, of klopt er iets niet? Geef het door aan Claude.</div>
     <div class="form-acties">
       <button class="knop" onclick="exporteer()">⬇ Download de lijst (noodback-up)</button>
@@ -573,9 +575,25 @@ const SB_TABEL = "pool_deelnemers";
 const AFTRAP = new Date("2026-07-15T19:00:00Z");   // 21:00 Nederlandse tijd
 const SB_HEADERS = { apikey: SB_KEY, Authorization: "Bearer " + SB_KEY, "Content-Type": "application/json" };
 
+/* Alle kolommen behalve bewerk_sleutel: die is geheim en mag door niemand
+   opgevraagd worden. "select=*" werkt daarom niet meer — dat zou juist die
+   geheime kolom opvragen en de database weigert dat terecht. */
+const SB_KOLOMMEN = "id,naam,q1,q2h,q2a,q3h,q3a,q4,q5,q6,q7,q8,q9,q10,aangemaakt_op";
+
 let db = { deelnemers: [], overrides: {} };
 let mijnId = null;          // welke inzending op dit apparaat is ingevuld
+let mijnSleutel = null;     // geheim; hiermee bewijs je dat die inzending van jou is
 let poolFout = null;        // laatste fout bij het praten met de database
+
+/* Een geheim dat alleen in deze browser blijft. Zonder dit geheim weigert de
+   database een wijziging, dus niemand kan aan andermans voorspelling komen. */
+function nieuweSleutel() {
+  if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, c => {
+    const r = crypto.getRandomValues(new Uint8Array(1))[0] % 16;
+    return (c === "x" ? r : (r & 0x3 | 0x8)).toString(16);
+  });
+}
 
 /* De klok van een telefoon kan verkeerd staan; die van de database niet.
    Deze check is dus alleen voor de weergave — het echte slot zit in de database. */
@@ -585,11 +603,16 @@ function poolIsOpen() { return new Date() < AFTRAP; }
 function laadDb() {
   try {
     const r = localStorage.getItem(OPSLAG_SLEUTEL);
-    if (r) { const o = JSON.parse(r); db.overrides = o.overrides || {}; mijnId = o.mijnId || null; }
+    if (r) {
+      const o = JSON.parse(r);
+      db.overrides = o.overrides || {};
+      mijnId = o.mijnId || null;
+      mijnSleutel = o.mijnSleutel || null;
+    }
   } catch (e) {}
 }
 function bewaarDb() {
-  try { localStorage.setItem(OPSLAG_SLEUTEL, JSON.stringify({ overrides: db.overrides, mijnId })); } catch (e) {}
+  try { localStorage.setItem(OPSLAG_SLEUTEL, JSON.stringify({ overrides: db.overrides, mijnId, mijnSleutel })); } catch (e) {}
 }
 
 /* ---------------- praten met de database ---------------- */
@@ -602,7 +625,7 @@ function schoon(d) {
 
 async function haalDeelnemersOp(toonFout) {
   try {
-    const r = await fetch(SB_URL + "/rest/v1/" + SB_TABEL + "?select=*&order=aangemaakt_op", { headers: SB_HEADERS });
+    const r = await fetch(SB_URL + "/rest/v1/" + SB_TABEL + "?select=" + SB_KOLOMMEN + "&order=aangemaakt_op", { headers: SB_HEADERS });
     if (!r.ok) throw new Error("HTTP " + r.status);
     const rijen = await r.json();
     db.deelnemers = rijen.map(schoon);
@@ -749,27 +772,42 @@ async function bewaarDeelnemer() {
   knop.disabled = true;
   knop.textContent = "Bezig met opslaan…";
   try {
-    const kop = Object.assign({}, SB_HEADERS, { Prefer: "return=representation" });
-    const r = wasBewerken
-      ? await fetch(SB_URL + "/rest/v1/" + SB_TABEL + "?id=eq." + encodeURIComponent(bewerkId), { method: "PATCH", headers: kop, body: JSON.stringify(d) })
-      : await fetch(SB_URL + "/rest/v1/" + SB_TABEL, { method: "POST", headers: kop, body: JSON.stringify(d) });
+    let r;
+    if (wasBewerken) {
+      /* Wijzigen mag alleen met het geheim van deze browser. De database
+         controleert dat; zonder het juiste geheim gebeurt er niets. */
+      const kop = Object.assign({}, SB_HEADERS, { Prefer: "return=representation", "x-bewerk-sleutel": mijnSleutel || "" });
+      r = await fetch(SB_URL + "/rest/v1/" + SB_TABEL + "?id=eq." + encodeURIComponent(bewerkId) + "&select=" + SB_KOLOMMEN,
+                      { method: "PATCH", headers: kop, body: JSON.stringify(d) });
+    } else {
+      /* Nieuwe inzending: hier ontstaat het geheim. Het gaat één keer naar de
+         database en blijft verder alleen in deze browser staan. */
+      const sleutel = nieuweSleutel();
+      const kop = Object.assign({}, SB_HEADERS, { Prefer: "return=representation" });
+      r = await fetch(SB_URL + "/rest/v1/" + SB_TABEL + "?select=" + SB_KOLOMMEN,
+                      { method: "POST", headers: kop, body: JSON.stringify(Object.assign({ bewerk_sleutel: sleutel }, d)) });
+      if (r.ok) { mijnSleutel = sleutel; }
+    }
 
     const tekst = await r.text();
     if (!r.ok) { toon(legFoutUit(r.status, tekst)); return; }
 
-    /* Belangrijk: als de database een wijziging tegenhoudt (bijvoorbeeld na de
-       aftrap) meldt hij géén fout, maar geeft hij nul rijen terug. Zonder deze
-       controle zou de app "opgeslagen" zeggen terwijl er niets is gebeurd. */
+    /* Belangrijk: als de database een wijziging tegenhoudt (na de aftrap, of
+       omdat het geheim niet klopt) meldt hij géén fout maar geeft hij nul rijen
+       terug. Zonder deze controle zou de app "opgeslagen" zeggen terwijl er
+       niets is gebeurd. */
     let rijen = [];
     try { rijen = JSON.parse(tekst || "[]"); } catch (e) {}
     if (!rijen.length) {
-      toon(poolIsOpen() ? "Opslaan lukte niet — ververs de pagina en probeer opnieuw."
-                        : "De pool is gesloten — de wedstrijd is begonnen.");
+      toon(!poolIsOpen() ? "De pool is gesloten — de wedstrijd is begonnen."
+                         : wasBewerken ? "Deze voorspelling is niet van dit apparaat, dus je kunt hem niet wijzigen."
+                                       : "Opslaan lukte niet — ververs de pagina en probeer opnieuw.");
       await haalDeelnemersOp(false);
       return;
     }
 
-    if (rijen[0].id) { mijnId = rijen[0].id; bewaarDb(); }
+    if (rijen[0].id) { mijnId = rijen[0].id; }
+    bewaarDb();
     maakFormLeeg();
     await haalDeelnemersOp(false);
     toon(wasBewerken ? "Wijziging opgeslagen ✓" : "Bewaard: " + naam + " doet mee! 🎉");
@@ -783,6 +821,7 @@ async function bewaarDeelnemer() {
 function bewerkDeelnemer(id) {
   const d = db.deelnemers.find(x => x.id === id); if (!d) return;
   if (!poolIsOpen()) { toon("De wedstrijd is begonnen — voorspellingen staan vast."); return; }
+  if (id !== mijnId || !mijnSleutel) { toon("Dit is de voorspelling van " + d.naam + ". Alleen je eigen inzending kun je wijzigen."); return; }
   bewerkId = id;
   $("formTitel").textContent = "Bewerk: " + d.naam;
   $("f-naam").value = d.naam;
@@ -1247,17 +1286,22 @@ function renderRanglijst() {
 
 function renderChips() {
   const open = poolIsOpen();
+  const heeftEigen = db.deelnemers.some(d => d.id === mijnId) && !!mijnSleutel;
   $("aantalDeelnemers").textContent = db.deelnemers.length;
-  $("chipsHint").textContent = open
-    ? "Klik op een naam om die voorspelling te wijzigen — dat kan tot de aftrap om 21:00."
-    : "De wedstrijd is begonnen — alle voorspellingen staan vast.";
+  $("chipsHint").textContent = !open
+    ? "De wedstrijd is begonnen — alle voorspellingen staan vast."
+    : heeftEigen
+      ? "Klik op je eigen naam (👤) om je voorspelling te wijzigen. Dat kan tot de aftrap om 21:00. De voorspellingen van anderen kun je niet aanpassen."
+      : "Vul hierboven je voorspelling in om mee te doen.";
   $("deelnemerChips").innerHTML = db.deelnemers.length === 0 ?
     '<span style="color:var(--inkt-zacht);font-size:14px">Nog niemand ingevuld.</span>' :
     db.deelnemers.map(d => {
-      const ik = d.id === mijnId ? ' <span title="Dit ben jij">👤</span>' : "";
-      return open
-        ? '<span class="chip"><a href="#" onclick="bewerkDeelnemer(\'' + escapeHtml(d.id) + '\');return false" style="color:inherit;text-decoration:none">✏️ ' + escapeHtml(d.naam) + ik + '</a></span>'
-        : '<span class="chip">' + escapeHtml(d.naam) + ik + '</span>';
+      /* Alleen de eigen inzending is aanklikbaar; die van een ander kun je
+         sowieso niet wijzigen — de database weigert dat. */
+      const vanMij = d.id === mijnId && !!mijnSleutel;
+      return (open && vanMij)
+        ? '<span class="chip"><a href="#" onclick="bewerkDeelnemer(\'' + escapeHtml(d.id) + '\');return false" style="color:inherit;text-decoration:none">✏️ ' + escapeHtml(d.naam) + ' <span title="Dit ben jij">👤</span></a></span>'
+        : '<span class="chip">' + escapeHtml(d.naam) + (vanMij ? ' <span title="Dit ben jij">👤</span>' : "") + '</span>';
     }).join("");
 }
 
