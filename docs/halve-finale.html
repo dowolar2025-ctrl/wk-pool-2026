@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Halve Finale Pool — Frankrijk vs Spanje</title>
+<title>Halve Finale Pool — Engeland vs Argentinië</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -14,10 +14,10 @@
   --inkt-zacht: #5d6b62;
   --wit: #ffffff;
   --lijn: #e7e4da;
-  --fra: #2653e9;
-  --fra-licht: #eaefff;
-  --esp: #e63946;
-  --esp-licht: #ffecec;
+  --eng: #c8102e;
+  --eng-licht: #ffecef;
+  --arg: #2f80d0;
+  --arg-licht: #e8f3fd;
   --goud: #f5a623;
   --goud-licht: #fff4de;
   --groen-ok: #12a150;
@@ -29,15 +29,15 @@ html { scroll-behavior:smooth; }
 body {
   font-family:'Instrument Sans',sans-serif;
   background:
-    radial-gradient(ellipse 55% 32% at 12% 0%, rgba(38,83,233,.09), transparent 70%),
-    radial-gradient(ellipse 55% 32% at 88% 0%, rgba(230,57,70,.09), transparent 70%),
+    radial-gradient(ellipse 55% 32% at 12% 0%, rgba(200,16,46,.09), transparent 70%),
+    radial-gradient(ellipse 55% 32% at 88% 0%, rgba(47,128,208,.09), transparent 70%),
     var(--papier);
   color:var(--inkt);
   min-height:100vh;
 }
 body::before {
   content:""; position:fixed; top:0; left:0; right:0; height:6px; z-index:10;
-  background:linear-gradient(90deg, var(--fra) 0 44%, var(--goud) 44% 56%, var(--esp) 56% 100%);
+  background:linear-gradient(90deg, var(--eng) 0 44%, var(--goud) 44% 56%, var(--arg) 56% 100%);
 }
 .wrap { max-width:1060px; margin:0 auto; padding:0 20px 80px; }
 
@@ -55,8 +55,8 @@ h1 {
   line-height:1.03; letter-spacing:-.02em;
   margin:20px 0 6px;
 }
-h1 .fra { color:var(--fra); }
-h1 .esp { color:var(--esp); }
+h1 .eng { color:var(--eng); }
+h1 .arg { color:var(--arg); }
 h1 .vs {
   display:inline-block; font-size:.34em; font-weight:700; color:var(--wit);
   background:var(--inkt); border-radius:999px; padding:.35em .8em;
@@ -112,14 +112,17 @@ nav button.actief { background:var(--inkt); color:var(--papier); }
 .team .naam {
   font-family:'Bricolage Grotesque'; font-weight:800; font-size:clamp(20px,3.2vw,32px); letter-spacing:-.01em;
 }
-.team.fra .naam { color:var(--fra); }
-.team.esp .naam { color:var(--esp); }
+.team.eng .naam { color:var(--eng); }
+.team.arg .naam { color:var(--arg); }
+.team .thuisuit {
+  display:block; margin-top:3px; font-size:10.5px; font-weight:600; letter-spacing:.16em;
+  text-transform:uppercase; color:#b0aa9b;
+}
 .team .vlag {
-  font-size:36px; display:inline-grid; place-items:center; width:64px; height:64px; margin-bottom:8px;
+  display:inline-block; width:64px; height:64px; margin-bottom:8px; overflow:hidden;
   border-radius:50%; border:1px solid var(--lijn); box-shadow:var(--schaduw); background:var(--papier);
 }
-.team.fra .vlag { background:var(--fra-licht); }
-.team.esp .vlag { background:var(--esp-licht); }
+.team .vlag svg { width:100%; height:100%; display:block; }
 .midden { text-align:center; min-width:170px; }
 .grote-score {
   font-family:'Bricolage Grotesque'; font-weight:800; font-size:clamp(42px,6.5vw,64px); letter-spacing:.02em;
@@ -130,10 +133,10 @@ nav button.actief { background:var(--inkt); color:var(--papier); }
   color:var(--inkt-zacht);
 }
 .status-regel .live-dot {
-  display:inline-block; width:9px; height:9px; border-radius:50%; background:var(--esp);
+  display:inline-block; width:9px; height:9px; border-radius:50%; background:var(--eng);
   margin-right:7px; animation:puls 1.2s infinite;
 }
-@keyframes puls { 0%,100%{opacity:1; box-shadow:0 0 0 0 rgba(230,57,70,.45);} 50%{opacity:.6; box-shadow:0 0 0 7px rgba(230,57,70,0);} }
+@keyframes puls { 0%,100%{opacity:1; box-shadow:0 0 0 0 rgba(200,16,46,.45);} 50%{opacity:.6; box-shadow:0 0 0 7px rgba(200,16,46,0);} }
 .sub-scores { display:flex; justify-content:center; gap:26px; padding:0 20px 18px; color:var(--inkt-zacht); font-size:14px; flex-wrap:wrap; }
 .sub-scores b { color:var(--inkt); }
 .feed {
@@ -157,7 +160,7 @@ nav button.actief { background:var(--inkt); color:var(--papier); }
 .knop.primair { background:var(--inkt); color:var(--papier); border-color:var(--inkt); }
 .knop.primair:hover { background:#2c3a33; }
 .knop.gevaar { color:var(--rood-fout); }
-.knop.gevaar:hover { background:var(--esp-licht); border-color:#f0b9b9; }
+.knop.gevaar:hover { background:var(--eng-licht); border-color:#f0b9b9; }
 .knop.klein { font-size:13px; padding:6px 14px; }
 
 /* ============ RANGLIJST ============ */
@@ -216,10 +219,13 @@ nav button.actief { background:var(--inkt); color:var(--papier); }
   background:var(--papier); color:var(--inkt); font-family:'Instrument Sans'; font-size:15px;
   transition:border-color .15s, background .15s;
 }
-.veld input:focus, .veld select:focus { outline:none; border-color:var(--fra); background:var(--wit); }
+.veld input:focus, .veld select:focus { outline:none; border-color:var(--arg); background:var(--wit); }
 .veld .duo { display:flex; align-items:center; gap:8px; }
 .veld .duo input { width:70px; text-align:center; }
 .veld .duo span { color:var(--inkt-zacht); font-size:15px; }
+.veld .duo .land { font-weight:700; font-size:12.5px; letter-spacing:.06em; }
+.veld .duo .land.e { color:var(--eng); }
+.veld .duo .land.a { color:var(--arg); }
 .form-acties { margin-top:22px; display:flex; gap:10px; flex-wrap:wrap; }
 .deelnemer-lijst-klein { display:flex; flex-wrap:wrap; gap:8px; margin-top:4px; }
 .chip {
@@ -244,7 +250,7 @@ nav button.actief { background:var(--inkt); color:var(--papier); }
   font-family:'Instrument Sans'; font-weight:600; font-size:12px; letter-spacing:.1em; text-transform:uppercase;
   border-radius:999px; padding:4px 12px; background:var(--papier); border:1px solid var(--lijn); color:var(--inkt-zacht);
 }
-.ranglijst-titel .tag.live { background:var(--esp-licht); border-color:#f3c2c2; color:var(--esp); }
+.ranglijst-titel .tag.live { background:var(--eng-licht); border-color:#f3c2c2; color:var(--eng); }
 .ranglijst-titel .tag.klaar { background:var(--goud-licht); border-color:#f0d49a; color:#c9820e; }
 .leeg-melding {
   text-align:center; color:var(--inkt-zacht); padding:44px 20px; font-size:15px;
@@ -270,7 +276,8 @@ footer { text-align:center; color:#b0aa9b; font-size:12.5px; margin-top:50px; }
   nav { width:100%; justify-content:space-between; }
   nav button { padding:9px 10px; font-size:12.5px; flex:1; }
   .scorebord-teams { padding:18px 10px 12px; gap:6px; }
-  .team .vlag { width:46px; height:46px; font-size:26px; margin-bottom:5px; }
+  .team .vlag { width:46px; height:46px; margin-bottom:5px; }
+  .team .thuisuit { font-size:9px; letter-spacing:.1em; }
   .midden { min-width:110px; }
   .status-regel { font-size:11px; letter-spacing:.08em; }
   .sub-scores { gap:10px 14px; font-size:12.5px; padding:0 12px 14px; }
@@ -302,9 +309,9 @@ footer { text-align:center; color:#b0aa9b; font-size:12.5px; margin-top:50px; }
 <div class="wrap">
 
 <header>
-  <div class="kop-label">WK 2026 · Halve finale · AT&amp;T Stadium, Arlington</div>
-  <h1><span class="fra">Frankrijk</span><span class="vs">VS</span><span class="esp">Spanje</span></h1>
-  <div class="kop-sub">Dinsdag 14 juli 2026 · <b>21:00</b> Nederlandse tijd</div>
+  <div class="kop-label">WK 2026 · Halve finale · Mercedes-Benz Stadium, Atlanta</div>
+  <h1><span class="eng">Engeland</span><span class="vs">VS</span><span class="arg">Argentinië</span></h1>
+  <div class="kop-sub">Woensdag 15 juli 2026 · <b>21:00</b> Nederlandse tijd</div>
   <div class="pot">
     <div class="bedrag" id="potBedrag">€ 0</div>
     <div class="uitleg"><b id="potDeelnemers">0 deelnemers</b> × € 5 inleg<br>Meeste punten pakt de pot</div>
@@ -323,12 +330,18 @@ footer { text-align:center; color:#b0aa9b; font-size:12.5px; margin-top:50px; }
 <div class="tab actief" id="tab-live">
   <div class="scorebord">
     <div class="scorebord-teams">
-      <div class="team fra"><span class="vlag">🇫🇷</span><div class="naam">Frankrijk</div></div>
+      <div class="team eng">
+        <span class="vlag"><svg viewBox="0 0 64 64" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Vlag van Engeland"><rect width="64" height="64" fill="#ffffff"/><rect x="25.6" width="12.8" height="64" fill="#ce1124"/><rect y="25.6" width="64" height="12.8" fill="#ce1124"/></svg></span>
+        <div class="naam">Engeland<span class="thuisuit">Thuis</span></div>
+      </div>
       <div class="midden">
         <div class="grote-score" id="score">– : –</div>
         <div class="status-regel" id="statusRegel">Nog niet begonnen</div>
       </div>
-      <div class="team esp"><span class="vlag">🇪🇸</span><div class="naam">Spanje</div></div>
+      <div class="team arg">
+        <span class="vlag"><svg viewBox="0 0 64 64" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Vlag van Argentinië"><rect width="64" height="64" fill="#74acdf"/><rect y="21.3" width="64" height="21.4" fill="#ffffff"/><circle cx="32" cy="32" r="6.2" fill="#f6b40e" stroke="#85340a" stroke-width="0.9"/></svg></span>
+        <div class="naam">Argentinië<span class="thuisuit">Uit</span></div>
+      </div>
     </div>
     <div class="sub-scores" id="subScores"></div>
     <div class="feed" id="feed"><span style="color:var(--inkt-zacht)">Doelpunten en kaarten verschijnen hier zodra de wedstrijd loopt.</span></div>
@@ -347,7 +360,7 @@ footer { text-align:center; color:#b0aa9b; font-size:12.5px; margin-top:50px; }
 <div class="tab" id="tab-invullen">
   <div class="paneel">
     <h2 id="formTitel">Nieuwe deelnemer</h2>
-    <div class="hint">Vul de naam en de 10 voorspellingen in. Alles gaat over Frankrijk – Spanje van vanavond. Tussen haakjes de punten per vraag (maximaal 115).</div>
+    <div class="hint">Vul de naam en de 10 voorspellingen in. Alles gaat over Engeland – Argentinië van vanavond. <b>Engeland is het thuisteam en staat overal als eerste.</b> Tussen haakjes de punten per vraag (maximaal 115).</div>
     <div class="vraag-grid">
       <div class="veld" style="grid-column:1/-1">
         <label>Naam deelnemer</label>
@@ -355,33 +368,33 @@ footer { text-align:center; color:#b0aa9b; font-size:12.5px; margin-top:50px; }
       </div>
       <div class="veld">
         <label>1. Wie gaat er naar de finale? <span class="pts-tag">(10 pt)</span></label>
-        <select id="f-q1"><option value="">— kies —</option><option value="FRA">Frankrijk</option><option value="ESP">Spanje</option></select>
+        <select id="f-q1"><option value="">— kies —</option><option value="ENG">Engeland</option><option value="ARG">Argentinië</option></select>
       </div>
       <div class="veld">
         <label>2. Eindstand na 90 minuten <span class="pts-tag">(20 pt, exact)</span></label>
-        <div class="duo"><span>🇫🇷</span><input type="number" min="0" max="15" id="f-q2h"><span>–</span><input type="number" min="0" max="15" id="f-q2a"><span>🇪🇸</span></div>
+        <div class="duo"><span class="land e">ENG</span><input type="number" min="0" max="15" id="f-q2h"><span>–</span><input type="number" min="0" max="15" id="f-q2a"><span class="land a">ARG</span></div>
       </div>
       <div class="veld">
         <label>3. Ruststand <span class="pts-tag">(15 pt, exact)</span></label>
-        <div class="duo"><span>🇫🇷</span><input type="number" min="0" max="15" id="f-q3h"><span>–</span><input type="number" min="0" max="15" id="f-q3a"><span>🇪🇸</span></div>
+        <div class="duo"><span class="land e">ENG</span><input type="number" min="0" max="15" id="f-q3h"><span>–</span><input type="number" min="0" max="15" id="f-q3a"><span class="land a">ARG</span></div>
       </div>
       <div class="veld">
         <label>4. Wie maakt het eerste doelpunt? <span class="pts-tag">(15 pt)</span></label>
         <select id="f-q4" onchange="toggleAndersVeld()">
           <option value="">— kies —</option>
-          <optgroup label="🇫🇷 Frankrijk">
-            <option value="Kylian Mbappé">Kylian Mbappé</option>
-            <option value="Ousmane Dembélé">Ousmane Dembélé</option>
-            <option value="Bradley Barcola">Bradley Barcola</option>
-            <option value="Marcus Thuram">Marcus Thuram</option>
-            <option value="Michael Olise">Michael Olise</option>
+          <optgroup label="Engeland">
+            <option value="Harry Kane">Harry Kane</option>
+            <option value="Jude Bellingham">Jude Bellingham</option>
+            <option value="Bukayo Saka">Bukayo Saka</option>
+            <option value="Marcus Rashford">Marcus Rashford</option>
+            <option value="Anthony Gordon">Anthony Gordon</option>
           </optgroup>
-          <optgroup label="🇪🇸 Spanje">
-            <option value="Mikel Oyarzabal">Mikel Oyarzabal</option>
-            <option value="Lamine Yamal">Lamine Yamal</option>
-            <option value="Nico Williams">Nico Williams</option>
-            <option value="Mikel Merino">Mikel Merino</option>
-            <option value="Dani Olmo">Dani Olmo</option>
+          <optgroup label="Argentinië">
+            <option value="Lionel Messi">Lionel Messi</option>
+            <option value="Lautaro Martínez">Lautaro Martínez</option>
+            <option value="Julián Álvarez">Julián Álvarez</option>
+            <option value="Alexis Mac Allister">Alexis Mac Allister</option>
+            <option value="Enzo Fernández">Enzo Fernández</option>
           </optgroup>
           <optgroup label="Overig">
             <option value="geen doelpunt">Geen doelpunt (0-0)</option>
@@ -434,7 +447,7 @@ footer { text-align:center; color:#b0aa9b; font-size:12.5px; margin-top:50px; }
 <div class="tab" id="tab-regels">
   <div class="paneel">
     <h2>Spelregels</h2>
-    <div class="hint">Iedereen legt € 5 in. Wie na afloop de meeste punten heeft, wint de hele pot. Bij gelijke stand wint degene die met vraag 10 (minuut eerste doelpunt) het dichtst bij zit; is dat ook gelijk, dan wordt de pot gedeeld.</div>
+    <div class="hint">Iedereen legt € 5 in. Wie na afloop de meeste punten heeft, wint de hele pot. Bij gelijke stand wint degene die met vraag 10 (minuut eerste doelpunt) het dichtst bij zit; is dat ook gelijk, dan wordt de pot gedeeld. Engeland is thuisteam en staat bij elke stand als eerste genoemd.</div>
     <table class="regels-tabel">
       <tr><th>#</th><th>Vraag</th><th style="text-align:right">Punten</th></tr>
       <tr><td>1</td><td>Wie gaat er naar de finale? (na eventuele verlenging/strafschoppen)</td><td class="p">10</td></tr>
@@ -455,9 +468,9 @@ footer { text-align:center; color:#b0aa9b; font-size:12.5px; margin-top:50px; }
     <h2>Correcties (alleen als ESPN het mis heeft)</h2>
     <div class="hint">Normaal niets invullen — de app rekent alles zelf uit. Wijkt ESPN af van wat je op tv ziet, dan kun je hier het juiste antwoord vastzetten. Leeg = automatisch.</div>
     <div class="override-grid">
-      <div class="veld"><label>1. Finalist</label><select id="o-q1"><option value="">automatisch</option><option value="FRA">Frankrijk</option><option value="ESP">Spanje</option></select></div>
-      <div class="veld"><label>2. Stand na 90 min (bijv. 2-1, Frankrijk eerst)</label><input id="o-q2" placeholder="leeg = automatisch"></div>
-      <div class="veld"><label>3. Ruststand (bijv. 1-0)</label><input id="o-q3" placeholder="leeg = automatisch"></div>
+      <div class="veld"><label>1. Finalist</label><select id="o-q1"><option value="">automatisch</option><option value="ENG">Engeland</option><option value="ARG">Argentinië</option></select></div>
+      <div class="veld"><label>2. Stand na 90 min (bijv. 2-1, Engeland eerst)</label><input id="o-q2" placeholder="leeg = automatisch"></div>
+      <div class="veld"><label>3. Ruststand (bijv. 1-0, Engeland eerst)</label><input id="o-q3" placeholder="leeg = automatisch"></div>
       <div class="veld"><label>4. Eerste doelpuntenmaker</label><input id="o-q4" placeholder="leeg = automatisch"></div>
       <div class="veld"><label>5. Totaal doelpunten</label><input id="o-q5" type="number" min="0" placeholder="leeg = automatisch"></div>
       <div class="veld"><label>6. Beide teams gescoord (ja/nee)</label><select id="o-q6"><option value="">automatisch</option><option value="ja">Ja</option><option value="nee">Nee</option></select></div>
@@ -484,7 +497,7 @@ footer { text-align:center; color:#b0aa9b; font-size:12.5px; margin-top:50px; }
   </div>
 </div>
 
-<footer>Halve Finale Pool · gebouwd voor één avond · live gegevens via ESPN</footer>
+<footer>Halve Finale Pool · Engeland – Argentinië · gebouwd voor één avond · live gegevens via ESPN</footer>
 </div>
 
 <div class="melding" id="melding"></div>
@@ -492,16 +505,17 @@ footer { text-align:center; color:#b0aa9b; font-size:12.5px; margin-top:50px; }
 <script>
 "use strict";
 /* ==================================================================
-   HALVE FINALE POOL — Frankrijk vs Spanje, WK 2026 (14 juli 2026)
-   ESPN event 760514. Frankrijk is thuisteam (index 0 in ESPN-data).
+   HALVE FINALE POOL — Engeland vs Argentinië, WK 2026 (15 juli 2026)
+   ESPN event 760515. Engeland is thuisteam en staat overal eerst,
+   net zoals ESPN en de tv-uitslag het noteren.
    ================================================================== */
 
-const EVENT_ID = "760514";
-const SCOREBOARD_URL = "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard?dates=20260714&limit=10";
+const EVENT_ID = "760515";
+const SCOREBOARD_URL = "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard?dates=20260715&limit=10";
 const SUMMARY_URL = "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/summary?event=" + EVENT_ID;
-const OPSLAG_SLEUTEL = "hf-pool-fra-esp-2026";
+const OPSLAG_SLEUTEL = "hf-pool-eng-arg-2026";
 const INLEG = 5;
-const TEAMNAAM = { FRA: "Frankrijk", ESP: "Spanje" };
+const TEAMNAAM = { ENG: "Engeland", ARG: "Argentinië" };
 
 /* ---------------- opslag ---------------- */
 let db = { deelnemers: [], overrides: {} };
@@ -510,13 +524,13 @@ function laadDb() {
 }
 function bewaarDb() { localStorage.setItem(OPSLAG_SLEUTEL, JSON.stringify(db)); }
 
-/* Net als bij de WK-pool: de gepubliceerde deelnemers staan in een
+/* Net als bij de vorige pool: de gepubliceerde deelnemers staan in een
    JSON-bestand naast de app. Wie de site opent zonder eigen invoer
    (telefoons van de anderen) krijgt automatisch die versie te zien. */
 async function laadGepubliceerdeDeelnemers() {
   if (db.deelnemers.length > 0) return; // eigen invoer op dit apparaat gaat voor
   try {
-    const r = await fetch("data/halve-finale-deelnemers.json?t=" + Date.now());
+    const r = await fetch("data/halve-finale-eng-arg-deelnemers.json?t=" + Date.now());
     if (!r.ok) return;
     const data = await r.json();
     if (Array.isArray(data.deelnemers) && data.deelnemers.length > 0) {
@@ -651,7 +665,7 @@ function exporteer() {
   const blob = new Blob([JSON.stringify(db, null, 2)], { type: "application/json" });
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
-  a.download = "halve-finale-pool-backup.json";
+  a.download = "halve-finale-eng-arg-backup.json";
   a.click();
   toon("Back-up gedownload.");
 }
@@ -680,14 +694,14 @@ function verwijderAlles() {
 /* ---------------- vragenlijstje voor de groepsapp ---------------- */
 function kopieerVragenlijst() {
   const tekst = [
-    "⚽ POOL FRANKRIJK – SPANJE — vanavond 21:00 · inleg € 5",
-    "Stuur je antwoorden vóór de aftrap!",
+    "⚽ POOL ENGELAND – ARGENTINIË — vanavond 21:00 · inleg € 5",
+    "Stuur je antwoorden vóór de aftrap! (Engeland is thuis en staat overal eerst)",
     "",
     "Naam:",
-    "1. Wie gaat naar de finale? (Frankrijk/Spanje):",
-    "2. Eindstand na 90 min (bijv. 2-1, Frankrijk eerst):",
-    "3. Ruststand (bijv. 1-0):",
-    "4. Eerste doelpuntenmaker — kies uit: Mbappé, Dembélé, Barcola, Thuram, Olise (FRA) / Oyarzabal, Yamal, Nico Williams, Merino, Olmo (ESP), iemand anders, of: geen doelpunt:",
+    "1. Wie gaat naar de finale? (Engeland/Argentinië):",
+    "2. Eindstand na 90 min (bijv. 2-1, Engeland eerst):",
+    "3. Ruststand (bijv. 1-0, Engeland eerst):",
+    "4. Eerste doelpuntenmaker — kies uit: Kane, Bellingham, Saka, Rashford, Gordon (ENG) / Messi, Lautaro Martínez, Julián Álvarez, Mac Allister, Enzo Fernández (ARG), iemand anders, of: geen doelpunt:",
     "5. Totaal aantal doelpunten:",
     "6. Scoren beide teams? (ja/nee):",
     "7. Aantal gele kaarten:",
@@ -710,16 +724,16 @@ let wedstrijd = {
   staat: "pre",            // pre | in | post
   detail: "",               // bijv. "FT", "AET", "FT-Pens"
   klok: "",
-  scoreFRA: null, scoreESP: null,
-  penFRA: null, penESP: null,
-  winnaar: null,            // "FRA" | "ESP" | null
-  goals: [],                // {team:"FRA"|"ESP", speler, minuut, periode, eigen:boolean}
+  scoreENG: null, scoreARG: null,
+  penENG: null, penARG: null,
+  winnaar: null,            // "ENG" | "ARG" | null
+  goals: [],                // {team:"ENG"|"ARG", speler, minuut, periode, eigen:boolean}
   geleKaarten: 0, rodeKaarten: 0,
   verlenging: false,        // periode 3/4 bereikt of AET/pens
   na90bekend: false,        // 90 minuten voorbij
   rustBekend: false,
-  stand90: null,            // [fra, esp] na 90 min
-  standRust: null,          // [fra, esp] bij rust
+  stand90: null,            // [eng, arg] na 90 min
+  standRust: null,          // [eng, arg] bij rust
   laatstVernieuwd: null,
 };
 
@@ -753,26 +767,27 @@ function verwerkScoreboard(data) {
   wedstrijd.klok = st.displayClock || "";
   const periode = st.period || 0;
 
-  // Frankrijk = home in ESPN; check op afkorting voor de zekerheid
+  // Engeland is thuis; we zoeken de teams op naam op zodat het ook klopt
+  // als ESPN thuis en uit onverhoopt anders zet.
   let thuis = null, uit = null;
   for (const c of comp.competitors || []) {
     if (c.homeAway === "home") thuis = c; else uit = c;
   }
-  const thuisIsFRA = thuis && normaliseer(thuis.team && thuis.team.displayName).includes("FRANCE");
-  const fra = thuisIsFRA ? thuis : uit;
-  const esp = thuisIsFRA ? uit : thuis;
-  if (fra && esp) {
-    wedstrijd.scoreFRA = Number(fra.score ?? 0);
-    wedstrijd.scoreESP = Number(esp.score ?? 0);
-    if (fra.shootoutScore != null) wedstrijd.penFRA = Number(fra.shootoutScore);
-    if (esp.shootoutScore != null) wedstrijd.penESP = Number(esp.shootoutScore);
+  const thuisIsENG = thuis && normaliseer(thuis.team && thuis.team.displayName).includes("ENGLAND");
+  const eng = thuisIsENG ? thuis : uit;
+  const arg = thuisIsENG ? uit : thuis;
+  if (eng && arg) {
+    wedstrijd.scoreENG = Number(eng.score ?? 0);
+    wedstrijd.scoreARG = Number(arg.score ?? 0);
+    if (eng.shootoutScore != null) wedstrijd.penENG = Number(eng.shootoutScore);
+    if (arg.shootoutScore != null) wedstrijd.penARG = Number(arg.shootoutScore);
     if (wedstrijd.staat === "post") {
-      if (fra.winner === true) wedstrijd.winnaar = "FRA";
-      else if (esp.winner === true) wedstrijd.winnaar = "ESP";
-      else if (wedstrijd.penFRA != null && wedstrijd.penESP != null)
-        wedstrijd.winnaar = wedstrijd.penFRA > wedstrijd.penESP ? "FRA" : "ESP";
-      else if (wedstrijd.scoreFRA !== wedstrijd.scoreESP)
-        wedstrijd.winnaar = wedstrijd.scoreFRA > wedstrijd.scoreESP ? "FRA" : "ESP";
+      if (eng.winner === true) wedstrijd.winnaar = "ENG";
+      else if (arg.winner === true) wedstrijd.winnaar = "ARG";
+      else if (wedstrijd.penENG != null && wedstrijd.penARG != null)
+        wedstrijd.winnaar = wedstrijd.penENG > wedstrijd.penARG ? "ENG" : "ARG";
+      else if (wedstrijd.scoreENG !== wedstrijd.scoreARG)
+        wedstrijd.winnaar = wedstrijd.scoreENG > wedstrijd.scoreARG ? "ENG" : "ARG";
     }
   }
   const detailNorm = normaliseer(wedstrijd.detail);
@@ -796,8 +811,8 @@ function verwerkSummary(data) {
       const eigen = typeNorm === "own goal";
       const teamNaam = normaliseer(ev.team && ev.team.displayName);
       // Bij een eigen doelpunt vermeldt ESPN het team van de maker; het doelpunt telt voor de ander
-      let team = teamNaam.includes("FRANCE") ? "FRA" : teamNaam.includes("SPAIN") ? "ESP" : null;
-      if (eigen && team) team = team === "FRA" ? "ESP" : "FRA";
+      let team = teamNaam.includes("ENGLAND") ? "ENG" : teamNaam.includes("ARGENTINA") ? "ARG" : null;
+      if (eigen && team) team = team === "ENG" ? "ARG" : "ENG";
       const speler = (ev.participants && ev.participants[0] && ev.participants[0].athlete && ev.participants[0].athlete.displayName) || "";
       goals.push({ team, speler, eigen, periode, minuut: parseMinuut(ev.clock && ev.clock.displayValue) });
     }
@@ -808,12 +823,12 @@ function verwerkSummary(data) {
   wedstrijd.rodeKaarten = rood;
   if (goals.some(g => g.periode >= 3)) wedstrijd.verlenging = true;
 
-  const rustF = goals.filter(g => g.periode === 1 && g.team === "FRA").length;
-  const rustE = goals.filter(g => g.periode === 1 && g.team === "ESP").length;
-  wedstrijd.standRust = [rustF, rustE];
-  const f90 = goals.filter(g => g.periode <= 2 && g.team === "FRA").length;
-  const e90 = goals.filter(g => g.periode <= 2 && g.team === "ESP").length;
-  wedstrijd.stand90 = [f90, e90];
+  const rustE = goals.filter(g => g.periode === 1 && g.team === "ENG").length;
+  const rustA = goals.filter(g => g.periode === 1 && g.team === "ARG").length;
+  wedstrijd.standRust = [rustE, rustA];
+  const e90 = goals.filter(g => g.periode <= 2 && g.team === "ENG").length;
+  const a90 = goals.filter(g => g.periode <= 2 && g.team === "ARG").length;
+  wedstrijd.stand90 = [e90, a90];
 
   // spelerslijst voor het invulformulier
   vulSpelersLijst(data);
@@ -854,13 +869,13 @@ function echteAntwoorden() {
   const geenGoals = wedstrijd.goals.length === 0;
   const eerste = wedstrijd.goals[0] || null;
   return {
-    q1: o.q1 || wedstrijd.winnaar,                                          // "FRA"|"ESP"|null
+    q1: o.q1 || wedstrijd.winnaar,                                          // "ENG"|"ARG"|null
     q2: o.q2 ? parseStand(o.q2) : (wedstrijd.na90bekend ? wedstrijd.stand90 : null),
     q2live: wedstrijd.stand90,
     q3: o.q3 ? parseStand(o.q3) : (wedstrijd.rustBekend ? wedstrijd.standRust : null),
     q4: o.q4 || (eerste ? eerste.speler : (wedstrijd.staat === "post" && geenGoals ? "geen doelpunt" : null)),
     q5: o.q5 != null ? Number(o.q5) : (wedstrijd.opgehaald ? wedstrijd.goals.length : null),
-    q6: o.q6 ? o.q6 === "ja" : (wedstrijd.opgehaald ? (wedstrijd.goals.some(g=>g.team==="FRA") && wedstrijd.goals.some(g=>g.team==="ESP")) : null),
+    q6: o.q6 ? o.q6 === "ja" : (wedstrijd.opgehaald ? (wedstrijd.goals.some(g=>g.team==="ENG") && wedstrijd.goals.some(g=>g.team==="ARG")) : null),
     q7: o.q7 != null ? Number(o.q7) : (wedstrijd.opgehaald ? wedstrijd.geleKaarten : null),
     q8: o.q8 ? o.q8 === "ja" : (wedstrijd.opgehaald ? wedstrijd.rodeKaarten > 0 : null),
     q9: o.q9 ? o.q9 === "ja" : (wedstrijd.opgehaald ? wedstrijd.verlenging : null),
@@ -1021,7 +1036,7 @@ function escapeHtml(s){ return (s||"").toString().replace(/[&<>"']/g, c => ({"&"
 
 function renderScorebord() {
   const w = wedstrijd;
-  $("score").textContent = (w.scoreFRA != null) ? w.scoreFRA + " : " + w.scoreESP : "– : –";
+  $("score").textContent = (w.scoreENG != null) ? w.scoreENG + " : " + w.scoreARG : "– : –";
   const st = $("statusRegel");
   if (!w.opgehaald) st.textContent = w.fout || "Nog geen gegevens opgehaald";
   else if (w.staat === "pre") st.textContent = "Aftrap 21:00 — nog niet begonnen";
@@ -1031,7 +1046,7 @@ function renderScorebord() {
   const sub = [];
   if (w.standRust && w.rustBekend) sub.push("Rust: <b>" + w.standRust[0] + " - " + w.standRust[1] + "</b>");
   if (w.verlenging && w.stand90) sub.push("Na 90 min: <b>" + w.stand90[0] + " - " + w.stand90[1] + "</b>");
-  if (w.penFRA != null) sub.push("Strafschoppen: <b>" + w.penFRA + " - " + w.penESP + "</b>");
+  if (w.penENG != null) sub.push("Strafschoppen: <b>" + w.penENG + " - " + w.penARG + "</b>");
   if (w.opgehaald) sub.push("Geel: <b>" + w.geleKaarten + "</b> · Rood: <b>" + w.rodeKaarten + "</b>");
   if (w.winnaar) sub.push("Naar de finale: <b>" + TEAMNAAM[w.winnaar] + "</b> 🏆");
   $("subScores").innerHTML = sub.join(" &nbsp;·&nbsp; ");
@@ -1039,7 +1054,7 @@ function renderScorebord() {
   const feed = $("feed");
   const items = [];
   for (const g of w.goals) {
-    items.push('<span class="gebeurtenis">⚽ ' + (g.minuut!=null?g.minuut+"' ":"") + "<b>" + escapeHtml(g.speler || "onbekend") + "</b> (" + TEAMNAAM[g.team] + (g.eigen ? ", e.d." : "") + ")</span>");
+    items.push('<span class="gebeurtenis">⚽ ' + (g.minuut!=null?g.minuut+"' ":"") + "<b>" + escapeHtml(g.speler || "onbekend") + "</b> (" + (TEAMNAAM[g.team] || "?") + (g.eigen ? ", e.d." : "") + ")</span>");
   }
   if (w.opgehaald && w.staat !== "pre") {
     if (w.geleKaarten) items.push('<span class="gebeurtenis">🟨 × ' + w.geleKaarten + "</span>");
