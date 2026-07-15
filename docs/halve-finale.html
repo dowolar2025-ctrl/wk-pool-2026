@@ -1347,6 +1347,15 @@ const deelnemersTimer = setInterval(() => {
   haalDeelnemersOp(false);
 }, 30000);
 
+/* Browsers bevriezen timers zodra de pagina op de achtergrond staat (telefoon
+   op zwart, andere tab). Zonder dit kijk je bij terugkomst tot een halve minuut
+   naar een verouderde lijst zonder het te weten. Dus: meteen bijwerken. */
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState !== "visible") return;
+  haalDeelnemersOp(false);
+  if (wedstrijd.staat !== "post") haalLiveOp(false);
+});
+
 /* Precies op de aftrap het formulier sluiten, ook als niemand de pagina aanraakt. */
 const tijdTotAftrap = AFTRAP - new Date();
 if (tijdTotAftrap > 0 && tijdTotAftrap < 86400000) setTimeout(renderAlles, tijdTotAftrap + 1000);
