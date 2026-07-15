@@ -1041,17 +1041,23 @@ function echteAntwoorden() {
   const o = db.overrides || {};
   const geenGoals = wedstrijd.goals.length === 0;
   const eerste = wedstrijd.goals[0] || null;
+  /* Zolang de wedstrijd niet begonnen is, staan alle tellers van ESPN op nul.
+     Dat is geen tussenstand maar "er is nog niets gebeurd". Zouden we die nul
+     als uitslag behandelen, dan kreeg iedereen die 0 gele kaarten voorspelde
+     alvast 10 punten, en wie er 1 voorspelde 5 punten. Vóór de aftrap is er
+     dus geen enkel antwoord bekend. */
+  const begonnen = wedstrijd.opgehaald && wedstrijd.staat !== "pre";
   return {
     q1: o.q1 || wedstrijd.winnaar,                                          // "ENG"|"ARG"|null
     q2: o.q2 ? parseStand(o.q2) : (wedstrijd.na90bekend ? wedstrijd.stand90 : null),
     q2live: wedstrijd.stand90,
     q3: o.q3 ? parseStand(o.q3) : (wedstrijd.rustBekend ? wedstrijd.standRust : null),
     q4: o.q4 || (eerste ? eerste.speler : (wedstrijd.staat === "post" && geenGoals ? "geen doelpunt" : null)),
-    q5: o.q5 != null ? Number(o.q5) : (wedstrijd.opgehaald ? wedstrijd.goals.length : null),
-    q6: o.q6 ? o.q6 === "ja" : (wedstrijd.opgehaald ? (wedstrijd.goals.some(g=>g.team==="ENG") && wedstrijd.goals.some(g=>g.team==="ARG")) : null),
-    q7: o.q7 != null ? Number(o.q7) : (wedstrijd.opgehaald ? wedstrijd.geleKaarten : null),
-    q8: o.q8 ? o.q8 === "ja" : (wedstrijd.opgehaald ? wedstrijd.rodeKaarten > 0 : null),
-    q9: o.q9 ? o.q9 === "ja" : (wedstrijd.opgehaald ? wedstrijd.verlenging : null),
+    q5: o.q5 != null ? Number(o.q5) : (begonnen ? wedstrijd.goals.length : null),
+    q6: o.q6 ? o.q6 === "ja" : (begonnen ? (wedstrijd.goals.some(g=>g.team==="ENG") && wedstrijd.goals.some(g=>g.team==="ARG")) : null),
+    q7: o.q7 != null ? Number(o.q7) : (begonnen ? wedstrijd.geleKaarten : null),
+    q8: o.q8 ? o.q8 === "ja" : (begonnen ? wedstrijd.rodeKaarten > 0 : null),
+    q9: o.q9 ? o.q9 === "ja" : (begonnen ? wedstrijd.verlenging : null),
     q10: o.q10 != null ? Number(o.q10) : (eerste && eerste.minuut != null ? eerste.minuut : null),
     klaar: wedstrijd.staat === "post",
   };
