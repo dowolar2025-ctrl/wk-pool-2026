@@ -254,6 +254,39 @@ nav button.actief { background:var(--inkt); color:var(--papier); }
   text-align:center; color:var(--inkt-zacht); padding:44px 20px; font-size:15px;
   background:var(--wit); border:1px dashed #d8d4c6; border-radius:16px;
 }
+
+/* ============ UITBETALING (na afloop) ============ */
+.uitbetaling {
+  background:linear-gradient(135deg, var(--goud-licht), var(--wit) 60%);
+  border:1px solid #f0d49a; border-radius:20px; padding:22px 26px; margin:6px 0 20px;
+  box-shadow:var(--schaduw); position:relative; overflow:hidden;
+}
+.uitbetaling::before { content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--goud); }
+.uitbetaling h2 {
+  font-family:'Bricolage Grotesque'; font-weight:800; font-size:22px; letter-spacing:-.01em; margin-bottom:6px;
+}
+.uitbetaling .hint { color:var(--inkt-zacht); font-size:14px; line-height:1.55; margin-bottom:12px; }
+.uitbetaling .hint b { color:var(--inkt); }
+.uitbetaling .hint.klein { font-size:12.5px; margin:8px 0 0; }
+.tikkie-rij { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+.tikkie-rij input {
+  flex:1; min-width:220px; padding:11px 13px; border-radius:11px; border:1px solid var(--lijn);
+  background:var(--wit); color:var(--inkt); font-family:'Instrument Sans'; font-size:14.5px;
+}
+.tikkie-rij input:focus { outline:none; border-color:var(--goud); }
+.knop-betaal {
+  display:block; text-align:center; text-decoration:none;
+  background:var(--groen-ok); color:#fff; font-weight:700; font-size:17px;
+  padding:15px 20px; border-radius:14px; transition:background .15s, transform .15s;
+  box-shadow:0 8px 22px -8px rgba(18,161,80,.7);
+}
+.knop-betaal:hover { background:#0e8f45; transform:translateY(-1px); }
+@media (max-width:560px) {
+  .uitbetaling { padding:16px 16px; border-radius:16px; }
+  .uitbetaling h2 { font-size:18px; }
+  .tikkie-rij input { min-width:0; width:100%; }
+  .tikkie-rij .knop { width:100%; }
+}
 .melding {
   position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px);
   background:var(--inkt); color:var(--papier);
@@ -349,6 +382,8 @@ footer { text-align:center; color:#b0aa9b; font-size:12.5px; margin-top:50px; }
     <div class="info" id="vernieuwInfo">Nog geen gegevens opgehaald.</div>
     <button class="knop primair" onclick="haalLiveOp(true)">↺ Ververs nu</button>
   </div>
+
+  <div class="uitbetaling" id="uitbetaling" style="display:none"></div>
 
   <h2 class="ranglijst-titel" id="ranglijstTitel">Deelnemers</h2>
   <div class="ranglijst" id="ranglijst"></div>
@@ -576,8 +611,56 @@ async function haalDeelnemersOp(toonFout) {
     poolFout = "Kon de deelnemerslijst niet ophalen.";
     if (toonFout) toon(poolFout);
   }
+  await haalTikkieOp();
   renderAlles();
 }
+
+/* ---------------- Tikkie van de winnaar ---------------- */
+let tikkieLink = null;
+
+/* Dubbele bodem: de database accepteert alleen tikkie.me-links, en hier
+   controleren we het nog eens voordat we er een knop van maken. */
+function veiligeTikkie(link) {
+  return /^https:\/\/tikkie\.me\/[A-Za-z0-9/_.-]+$/.test(link || "") ? link : null;
+}
+
+async function haalTikkieOp() {
+  try {
+    const r = await fetch(SB_URL + "/rest/v1/pool_info?select=tikkie_link&id=eq.1", { headers: SB_HEADERS });
+    if (!r.ok) return;
+    const rijen = await r.json();
+    tikkieLink = veiligeTikkie(rijen[0] && rijen[0].tikkie_link);
+  } catch (e) { /* niet erg; dan gewoon geen betaalknop */ }
+}
+
+async function bewaarTikkie() {
+  const link = $("tikkieInvoer").value.trim();
+  if (!veiligeTikkie(link)) {
+    toon("Dat lijkt geen Tikkie-link. Hij moet beginnen met https://tikkie.me/");
+    return;
+  }
+  const knop = $("tikkieKnop");
+  knop.disabled = true; knop.textContent = "Bezig…";
+  try {
+    const kop = Object.assign({}, SB_HEADERS, { Prefer: "return=representation" });
+    const r = await fetch(SB_URL + "/rest/v1/pool_info?id=eq.1", {
+      method: "PATCH", headers: kop, body: JSON.stringify({ tikkie_link: link })
+    });
+    const tekst = await r.text();
+    if (!r.ok) { toon("De link is geweigerd. Controleer of het een echte tikkie.me-link is."); return; }
+    let rijen = []; try { rijen = JSON.parse(tekst || "[]"); } catch (e) {}
+    if (!rijen.length) { toon("Opslaan lukte niet — ververs de pagina en probeer opnieuw."); return; }
+    tikkieLink = veiligeTikkie(rijen[0].tikkie_link);
+    renderAlles();
+    toon("Tikkie klaargezet — iedereen ziet nu de betaalknop ✓");
+  } catch (e) {
+    toon("Opslaan mislukt. Controleer je internetverbinding.");
+  } finally {
+    if ($("tikkieKnop")) { knop.disabled = false; knop.textContent = "Zet klaar"; }
+  }
+}
+let tikkieWijzigen = false;
+function toonTikkieWijzig() { tikkieWijzigen = true; renderUitbetaling(); }
 
 /* Meldt een fout van de database in gewone taal terug. */
 function legFoutUit(status, tekst) {
@@ -1191,11 +1274,62 @@ function renderPot() {
   $("potDeelnemers").textContent = n + (n === 1 ? " deelnemer" : " deelnemers");
 }
 
+/* Na het laatste fluitsignaal: wie wint, en hoe wordt er betaald.
+   De winnaar zet zijn Tikkie klaar, de rest krijgt een betaalknop. */
+function renderUitbetaling() {
+  const blok = $("uitbetaling");
+  const n = db.deelnemers.length;
+  if (wedstrijd.staat !== "post" || n === 0) { blok.style.display = "none"; return; }
+  blok.style.display = "";
+
+  const { rijen } = berekenStand();
+  const beste = rijen[0];
+  const winnaars = rijen.filter(r => r.totaal === beste.totaal && r.tie === beste.tie);
+  const pot = n * INLEG;
+
+  if (winnaars.length > 1) {
+    blok.innerHTML = "<h2>🤝 Gedeelde eerste plaats</h2><div class='hint' style='margin-bottom:0'>" +
+      winnaars.map(w => "<b>" + escapeHtml(w.d.naam) + "</b>").join(" en ") +
+      " eindigen precies gelijk — ook op de tiebreaker (minuut van het eerste doelpunt). " +
+      "Volgens de spelregels wordt de pot van € " + pot + " gedeeld. Regel dat even onderling.</div>";
+    return;
+  }
+
+  const w = winnaars[0];
+  const anderen = n - 1;
+  const benIkWinnaar = !!mijnId && w.d.id === mijnId;
+
+  let h = "<h2>🏆 " + escapeHtml(w.d.naam) + " wint de pot van € " + pot + "</h2>";
+  h += "<div class='hint'>" + (anderen === 0
+      ? "Er was maar één deelnemer, dus er valt niets te verrekenen."
+      : anderen + " deelnemer" + (anderen === 1 ? "" : "s") + " × € " + INLEG + " = <b>€ " + (anderen * INLEG) +
+        "</b> voor " + escapeHtml(w.d.naam) + ". De eigen inleg hoeft niet betaald te worden.") + "</div>";
+
+  if (anderen === 0) { blok.innerHTML = h; return; }
+
+  if (!tikkieLink || tikkieWijzigen) {
+    h += "<div class='hint'>" + (benIkWinnaar
+      ? "<b>Jij hebt gewonnen!</b> Maak in de Tikkie-app een verzoek van € " + INLEG + " per persoon en plak de link hieronder — dan ziet iedereen meteen een betaalknop."
+      : "Ben jij " + escapeHtml(w.d.naam) + "? Maak een Tikkie van € " + INLEG + " per persoon en plak de link hieronder.") + "</div>";
+    h += "<div class='tikkie-rij'><input id='tikkieInvoer' placeholder='https://tikkie.me/...' value='" + escapeHtml(tikkieWijzigen ? (tikkieLink || "") : "") + "'>" +
+         "<button class='knop primair' id='tikkieKnop' onclick='bewaarTikkie()'>Zet klaar</button></div>";
+  } else if (benIkWinnaar) {
+    h += "<div class='hint'>✓ Je Tikkie staat klaar — de anderen zien nu een betaalknop. Zelf hoef je niets te betalen.</div>";
+    h += "<div class='tikkie-rij'><a class='knop' href='" + escapeHtml(tikkieLink) + "' target='_blank' rel='noopener'>Open je Tikkie</a>" +
+         "<button class='knop klein' onclick='toonTikkieWijzig()'>Andere link invoeren</button></div>";
+  } else {
+    h += "<a class='knop-betaal' href='" + escapeHtml(tikkieLink) + "' target='_blank' rel='noopener'>💶 Betaal € " + INLEG + " aan " + escapeHtml(w.d.naam) + "</a>";
+    h += "<div class='hint klein'>Tikkie opent in een nieuw scherm. Controleer daar of de naam van " + escapeHtml(w.d.naam) + " klopt voordat je betaalt.</div>";
+  }
+  blok.innerHTML = h;
+}
+
 function renderAlles() {
   renderPot();
   renderChips();
   renderFormulierStaat();
   renderScorebord();
+  renderUitbetaling();
   renderRanglijst();
 }
 
