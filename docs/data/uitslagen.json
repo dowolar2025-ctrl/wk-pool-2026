@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-07-15 07:35",
+  "laatst_bijgewerkt": "2026-07-16 07:02",
   "_uitleg": "Echte uitslagen. Wordt bijgewerkt door Claude na controle van gespeelde wedstrijden.",
   "groepswedstrijden": [
     {
@@ -889,14 +889,14 @@
       "datum": "2026-07-15",
       "thuis": "ENGELAND",
       "uit": "ARGENTINIË",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 1,
+      "uit_goals": 2
     },
     "W103": {
       "ronde": "troostfinale",
       "datum": "2026-07-18",
       "thuis": "FRANKRIJK",
-      "uit": null,
+      "uit": "ENGELAND",
       "thuis_goals": null,
       "uit_goals": null
     },
@@ -904,7 +904,7 @@
       "ronde": "finale",
       "datum": "2026-07-19",
       "thuis": "SPANJE",
-      "uit": null,
+      "uit": "ARGENTINIË",
       "thuis_goals": null,
       "uit_goals": null
     }
@@ -924,10 +924,10 @@
     "tussenstand": {
       "_uitleg": "Laatst bekende tussenstanden (alleen weergave; punten tellen pas bij de einduitslag)",
       "topscorers": "Mbappé (8), Messi (8), Haaland (7)",
-      "doelpunten": 294,
-      "gele_kaarten": 265,
+      "doelpunten": 297,
+      "gele_kaarten": 269,
       "rode_kaarten": 14,
-      "peildatum": "2026-07-15"
+      "peildatum": "2026-07-16"
     }
   }
 }
