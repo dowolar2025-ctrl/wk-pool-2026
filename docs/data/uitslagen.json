@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-07-16 07:02",
+  "laatst_bijgewerkt": "2026-07-19 09:01",
   "_uitleg": "Echte uitslagen. Wordt bijgewerkt door Claude na controle van gespeelde wedstrijden.",
   "groepswedstrijden": [
     {
@@ -897,8 +897,8 @@
       "datum": "2026-07-18",
       "thuis": "FRANKRIJK",
       "uit": "ENGELAND",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 4,
+      "uit_goals": 6
     },
     "W104": {
       "ronde": "finale",
@@ -916,18 +916,18 @@
     "gele_kaarten": null,
     "rode_kaarten": null,
     "goals_per_gekozen_speler": {
-      "Kylian Mbappé": 8,
+      "Kylian Mbappé": 10,
       "Julián Álvarez": 1,
       "Vinícius Júnior": 4,
       "Harry Kane": 6
     },
     "tussenstand": {
       "_uitleg": "Laatst bekende tussenstanden (alleen weergave; punten tellen pas bij de einduitslag)",
-      "topscorers": "Mbappé (8), Messi (8), Haaland (7)",
-      "doelpunten": 297,
+      "topscorers": "Mbappé (10), Messi (8), Haaland (7)",
+      "doelpunten": 307,
       "gele_kaarten": 269,
       "rode_kaarten": 14,
-      "peildatum": "2026-07-16"
+      "peildatum": "2026-07-19"
     }
   }
 }
