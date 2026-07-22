@@ -1,5 +1,5 @@
 {
-  "laatst_bijgewerkt": "2026-07-19 09:01",
+  "laatst_bijgewerkt": "2026-07-22 09:29",
   "_uitleg": "Echte uitslagen. Wordt bijgewerkt door Claude na controle van gespeelde wedstrijden.",
   "groepswedstrijden": [
     {
@@ -905,16 +905,16 @@
       "datum": "2026-07-19",
       "thuis": "SPANJE",
       "uit": "ARGENTINIË",
-      "thuis_goals": null,
-      "uit_goals": null
+      "thuis_goals": 1,
+      "uit_goals": 0
     }
   },
   "bonus": {
-    "wereldkampioen": null,
-    "topscorer": null,
-    "doelpunten_totaal": null,
-    "gele_kaarten": null,
-    "rode_kaarten": null,
+    "wereldkampioen": "SPANJE",
+    "topscorer": "Kylian Mbappé",
+    "doelpunten_totaal": 308,
+    "gele_kaarten": 275,
+    "rode_kaarten": 15,
     "goals_per_gekozen_speler": {
       "Kylian Mbappé": 10,
       "Julián Álvarez": 1,
@@ -924,10 +924,10 @@
     "tussenstand": {
       "_uitleg": "Laatst bekende tussenstanden (alleen weergave; punten tellen pas bij de einduitslag)",
       "topscorers": "Mbappé (10), Messi (8), Haaland (7)",
-      "doelpunten": 307,
-      "gele_kaarten": 269,
-      "rode_kaarten": 14,
-      "peildatum": "2026-07-19"
+      "doelpunten": 308,
+      "gele_kaarten": 275,
+      "rode_kaarten": 15,
+      "peildatum": "2026-07-22"
     }
   }
 }
