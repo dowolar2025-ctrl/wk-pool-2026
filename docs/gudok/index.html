@@ -10,19 +10,19 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Figtree:wght@400;500;600;700&display=swap">
 <style>
-/* Concept: het tactiekbord in de kleedkamer. Krijtlijnen, een strak schema per avond, tijden als rugnummers. */
+/* Concept: Gudok-matchday. Koningsblauw en zwart, schuine strepen zoals de wedstrijdposters, tijden als rugnummers. */
 :root{
-  --pitch:#0f5132; --pitch-deep:#0a3a24; --chalk:#f6f8f4; --line:rgba(255,255,255,.18);
-  --bg:#eef2ec; --card:#ffffff; --ink:#132018; --muted:#5b6b60; --rule:#d7dfd6;
-  --free:#0f5132; --free-bg:#e3f0e6; --taken:#8a948d; --taken-bg:#eef0ee; --reserve:#9a6b00; --reserve-bg:#fbf1d9;
+  --pitch:#0b1a3a; --pitch-deep:#050b1c; --royal:#1f4fd1; --gold:#e9c46a; --chalk:#f5f7fc; --line:rgba(255,255,255,.16);
+  --bg:#eef1f8; --card:#ffffff; --ink:#0b1430; --muted:#5a6480; --rule:#d8ddeb;
+  --free:#1f4fd1; --free-bg:#e3eafc; --taken:#8a948d; --taken-bg:#eef0ee; --reserve:#9a6b00; --reserve-bg:#fbf1d9;
   --mine:#c2410c; --mine-bg:#fdeee3; --danger:#b42318;
   --display:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
   --body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
   color-scheme:light;
 }
 @media (prefers-color-scheme:dark){:root{
-  --bg:#0c1410; --card:#132019; --ink:#e8efe9; --muted:#9aaa9f; --rule:#24352b;
-  --free:#7fd3a0; --free-bg:#163626; --taken:#6f7d74; --taken-bg:#18231d; --reserve:#f0c060; --reserve-bg:#2e2611;
+  --bg:#070c1a; --card:#0f1830; --ink:#e8ecf7; --muted:#97a1bd; --rule:#1f2a48;
+  --free:#8fb0ff; --free-bg:#152553; --taken:#6c7590; --taken-bg:#141c33; --reserve:#f0c060; --reserve-bg:#2e2611;
   --mine:#ff9a62; --mine-bg:#341c10; --danger:#ff8a80; color-scheme:dark;
 }}
 *{box-sizing:border-box}
@@ -36,14 +36,14 @@ button,input{font:inherit;color:inherit}
   padding-top:calc(env(safe-area-inset-top,0px) + 28px);padding-bottom:40px;
   padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px))}
 .board::before{content:"";position:absolute;inset:0;pointer-events:none;
-  background:
-   radial-gradient(circle at 100% 50%, transparent 0 88px, var(--line) 89px 91px, transparent 92px),
-   linear-gradient(90deg, transparent calc(100% - 2px), var(--line) 0) right center/100% 100% no-repeat,
-   repeating-linear-gradient(90deg, rgba(255,255,255,.035) 0 44px, transparent 44px 88px)}
+  background:repeating-linear-gradient(-62deg, transparent 0 34px, rgba(31,79,209,.55) 34px 52px, transparent 52px 70px, rgba(31,79,209,.28) 70px 78px);
+  -webkit-mask:linear-gradient(100deg, transparent 38%, #000 78%);mask:linear-gradient(100deg, transparent 38%, #000 78%)}
+.board::after{content:"1912";position:absolute;right:max(14px,env(safe-area-inset-right,0px));bottom:10px;font:800 italic 64px/1 var(--display);color:rgba(255,255,255,.07);letter-spacing:.04em}
 .board-in{position:relative;max-width:640px;margin:0 auto}
-.club{font:700 13px/1 var(--body);letter-spacing:.14em;text-transform:uppercase;opacity:.8}
-h1{font:800 clamp(40px,11vw,60px)/.92 var(--display);text-transform:uppercase;margin:10px 0 14px;letter-spacing:.005em;text-wrap:balance}
-h1 span{display:block;color:#ffd166}
+.club{font:700 13px/1 var(--body);letter-spacing:.14em;text-transform:uppercase;display:flex;align-items:center;gap:8px}
+.club::before{content:"";width:22px;height:4px;background:var(--gold);transform:skewX(-25deg)}
+h1{font:800 italic clamp(40px,11vw,60px)/.92 var(--display);text-transform:uppercase;margin:10px 0 14px;letter-spacing:.005em;text-wrap:balance}
+h1 span{display:block;color:var(--gold)}
 .lead{margin:0;max-width:34em;opacity:.92}
 .facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
 .fact{border:1.5px solid var(--line);border-radius:999px;padding:5px 12px;font-size:14px;font-weight:600}
@@ -55,9 +55,9 @@ main{max-width:640px;margin:-22px auto 0;position:relative;
 .mine strong{font:700 22px/1.1 var(--display);text-transform:uppercase;letter-spacing:.02em;color:var(--mine);display:block}
 .mine .grow{flex:1;min-width:0}
 
-.day{background:var(--card);border-radius:14px;margin-bottom:14px;box-shadow:0 1px 0 var(--rule),0 8px 24px -18px rgba(0,0,0,.35);overflow:hidden}
+.day{background:var(--card);border-radius:14px;border-top:4px solid var(--royal);margin-bottom:14px;box-shadow:0 1px 0 var(--rule),0 8px 24px -18px rgba(0,0,0,.35);overflow:hidden}
 .day-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:14px 16px 10px;border-bottom:1px solid var(--rule)}
-.day-h h2{margin:0;font:800 26px/1 var(--display);text-transform:uppercase;letter-spacing:.02em}
+.day-h h2{margin:0;font:800 italic 26px/1 var(--display);text-transform:uppercase;letter-spacing:.02em}
 .day-h small{color:var(--muted);font-weight:600;font-size:14px;font-variant-numeric:tabular-nums}
 .slots{list-style:none;margin:0;padding:6px}
 .slot{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;padding:10px;border-radius:10px}
@@ -72,8 +72,7 @@ main{max-width:640px;margin:-22px auto 0;position:relative;
 .st-mine .pill{background:var(--mine-bg);color:var(--mine)}
 .st-bezet .time,.st-reserve .time{color:var(--taken)}
 .btn{appearance:none;border:0;border-radius:10px;padding:11px 16px;font-weight:700;cursor:pointer;min-height:44px;white-space:nowrap}
-.btn-go{background:var(--pitch);color:#fff}
-@media (prefers-color-scheme:dark){.btn-go{background:#1f7a4c}}
+.btn-go{background:var(--royal);color:#fff}
 .btn-go:hover{filter:brightness(1.1)}
 .btn-ghost{background:transparent;color:var(--muted);text-decoration:underline;text-underline-offset:3px;padding:11px 8px}
 .btn-mine{background:var(--mine);color:#fff}
@@ -114,7 +113,7 @@ main{max-width:640px;margin:-22px auto 0;position:relative;
 <body>
 <header class="board">
   <div class="board-in">
-    <div class="club">TSV Gudok · JO11-4</div>
+    <div class="club">T.S.V. Gudok · JO11-4</div>
     <h1>Spelers&shy;gesprekken <span>na de herfst&shy;vakantie</span></h1>
     <p class="lead">Kort gesprek van 10 minuten met je kind en de trainer. Eén ouder schuift aan. Kies hieronder een vrije tijd.</p>
     <div class="facts"><span class="fact">10 minuten</span><span class="fact">Kind + 1 ouder</span><span class="fact">Rond de training</span></div>
