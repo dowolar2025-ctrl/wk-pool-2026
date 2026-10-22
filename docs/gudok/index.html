@@ -41,6 +41,8 @@ button,input{font:inherit;color:inherit}
 .board::after{content:"1912";position:absolute;right:max(14px,env(safe-area-inset-right,0px));bottom:10px;font:800 italic 64px/1 var(--display);color:rgba(255,255,255,.07);letter-spacing:.04em}
 .board-in{position:relative;max-width:640px;margin:0 auto}
 .club{font:700 13px/1 var(--body);letter-spacing:.14em;text-transform:uppercase;display:flex;align-items:center;gap:8px}
+.brand{display:flex;align-items:center;gap:12px}
+.crest{width:64px;height:64px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 2px var(--gold),0 6px 18px rgba(0,0,0,.45);flex:none}
 .club::before{content:"";width:22px;height:4px;background:var(--gold);transform:skewX(-25deg)}
 h1{font:800 italic clamp(40px,11vw,60px)/.92 var(--display);text-transform:uppercase;margin:10px 0 14px;letter-spacing:.005em;text-wrap:balance}
 h1 span{display:block;color:var(--gold)}
@@ -113,7 +115,7 @@ main{max-width:640px;margin:-22px auto 0;position:relative;
 <body>
 <header class="board">
   <div class="board-in">
-    <div class="club">T.S.V. Gudok · JO11-4</div>
+    <div class="brand"><img class="crest" src="https://www.hollandsevelden.nl/images/club_logo_van_voetbalvereniging_tsv-gudok_uit_tilburg.png?v=20161110113745" alt="Clublogo T.S.V. Gudok" width="64" height="64" onerror="this.remove()"><div class="club">T.S.V. Gudok · JO11-4</div></div>
     <h1>Spelers&shy;gesprekken <span>na de herfst&shy;vakantie</span></h1>
     <p class="lead">Kort gesprek van 10 minuten met je kind en de trainer. Eén ouder schuift aan. Kies hieronder een vrije tijd.</p>
     <div class="facts"><span class="fact">10 minuten</span><span class="fact">Kind + 1 ouder</span><span class="fact">Rond de training</span></div>
@@ -215,7 +217,7 @@ function openBook(id){
       if(r.ok){
         store.set("gudok_mine",{id,child});store.set("gudok_names",{child,parent});
         modal(`<p class="sub">Gelukt, je tijd staat vast</p><div class="ok-big">${fmtDay(s.d)}<br>${fmtDate(s.d)} · ${fmtT(s.d)}</div>
-          <p>Gesprek met <b>${esc(child)}</b>. Kom op tijd naar de kantine of de dug-out, de trainer haalt jullie op.</p>
+          <p>Gesprek met <b>${esc(child)}</b>. Zorg dat jullie op tijd bij het veld zijn.</p>
           <div class="row"><button class="btn btn-ghost" type="button" id="ics2">Zet in agenda</button><button class="btn btn-go" type="button" id="done">Klaar</button></div>`);
         document.getElementById("done").onclick=close;
         document.getElementById("ics2").onclick=()=>ics(s,child);
