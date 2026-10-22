@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Spelersgesprekken JO11-4</title>
+<meta name="description" content="Kies een tijd voor het spelersgesprek van JO11-4 bij TSV Gudok.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+/* Concept: het tactiekbord in de kleedkamer. Krijtlijnen, een strak schema per avond, tijden als rugnummers. */
+:root{
+  --pitch:#0f5132; --pitch-deep:#0a3a24; --chalk:#f6f8f4; --line:rgba(255,255,255,.18);
+  --bg:#eef2ec; --card:#ffffff; --ink:#132018; --muted:#5b6b60; --rule:#d7dfd6;
+  --free:#0f5132; --free-bg:#e3f0e6; --taken:#8a948d; --taken-bg:#eef0ee; --reserve:#9a6b00; --reserve-bg:#fbf1d9;
+  --mine:#c2410c; --mine-bg:#fdeee3; --danger:#b42318;
+  --display:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
+  --body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#0c1410; --card:#132019; --ink:#e8efe9; --muted:#9aaa9f; --rule:#24352b;
+  --free:#7fd3a0; --free-bg:#163626; --taken:#6f7d74; --taken-bg:#18231d; --reserve:#f0c060; --reserve-bg:#2e2611;
+  --mine:#ff9a62; --mine-bg:#341c10; --danger:#ff8a80; color-scheme:dark;
+}}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.5 var(--body);-webkit-font-smoothing:antialiased}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--mine);outline-offset:2px}
+
+/* Kop: het bord */
+.board{background:var(--pitch);color:var(--chalk);position:relative;overflow:hidden;
+  padding-top:calc(env(safe-area-inset-top,0px) + 28px);padding-bottom:40px;
+  padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px))}
+.board::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:
+   radial-gradient(circle at 100% 50%, transparent 0 88px, var(--line) 89px 91px, transparent 92px),
+   linear-gradient(90deg, transparent calc(100% - 2px), var(--line) 0) right center/100% 100% no-repeat,
+   repeating-linear-gradient(90deg, rgba(255,255,255,.035) 0 44px, transparent 44px 88px)}
+.board-in{position:relative;max-width:640px;margin:0 auto}
+.club{font:700 13px/1 var(--body);letter-spacing:.14em;text-transform:uppercase;opacity:.8}
+h1{font:800 clamp(40px,11vw,60px)/.92 var(--display);text-transform:uppercase;margin:10px 0 14px;letter-spacing:.005em;text-wrap:balance}
+h1 span{display:block;color:#ffd166}
+.lead{margin:0;max-width:34em;opacity:.92}
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.fact{border:1.5px solid var(--line);border-radius:999px;padding:5px 12px;font-size:14px;font-weight:600}
+
+main{max-width:640px;margin:-22px auto 0;position:relative;
+  padding-left:max(14px,env(safe-area-inset-left,0px));padding-right:max(14px,env(safe-area-inset-right,0px));padding-bottom:calc(40px + env(safe-area-inset-bottom,0px))}
+
+.mine{background:var(--mine-bg);border:2px solid var(--mine);border-radius:14px;padding:14px 16px;margin-bottom:14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.mine strong{font:700 22px/1.1 var(--display);text-transform:uppercase;letter-spacing:.02em;color:var(--mine);display:block}
+.mine .grow{flex:1;min-width:0}
+
+.day{background:var(--card);border-radius:14px;margin-bottom:14px;box-shadow:0 1px 0 var(--rule),0 8px 24px -18px rgba(0,0,0,.35);overflow:hidden}
+.day-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:14px 16px 10px;border-bottom:1px solid var(--rule)}
+.day-h h2{margin:0;font:800 26px/1 var(--display);text-transform:uppercase;letter-spacing:.02em}
+.day-h small{color:var(--muted);font-weight:600;font-size:14px;font-variant-numeric:tabular-nums}
+.slots{list-style:none;margin:0;padding:6px}
+.slot{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;padding:10px;border-radius:10px}
+.slot+.slot{border-top:1px dashed var(--rule)}
+.time{font:800 30px/1 var(--display);font-variant-numeric:tabular-nums;letter-spacing:.01em;min-width:4.2ch}
+.time small{display:block;font:600 12px/1.2 var(--body);color:var(--muted);letter-spacing:0}
+.state{font-weight:600;font-size:15px;min-width:0}
+.pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:13px;font-weight:700}
+.st-vrij .pill{background:var(--free-bg);color:var(--free)}
+.st-bezet .pill{background:var(--taken-bg);color:var(--taken)}
+.st-reserve .pill{background:var(--reserve-bg);color:var(--reserve)}
+.st-mine .pill{background:var(--mine-bg);color:var(--mine)}
+.st-bezet .time,.st-reserve .time{color:var(--taken)}
+.btn{appearance:none;border:0;border-radius:10px;padding:11px 16px;font-weight:700;cursor:pointer;min-height:44px;white-space:nowrap}
+.btn-go{background:var(--pitch);color:#fff}
+@media (prefers-color-scheme:dark){.btn-go{background:#1f7a4c}}
+.btn-go:hover{filter:brightness(1.1)}
+.btn-ghost{background:transparent;color:var(--muted);text-decoration:underline;text-underline-offset:3px;padding:11px 8px}
+.btn-mine{background:var(--mine);color:#fff}
+.btn:disabled{opacity:.5;cursor:default}
+
+.note{color:var(--muted);font-size:14px;margin:18px 4px 0}
+.foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center;margin-top:22px;padding-top:14px;border-top:1px solid var(--rule);color:var(--muted);font-size:13px}
+.loading{padding:28px 16px;color:var(--muted);text-align:center}
+
+/* Sheet */
+.scrim{position:fixed;inset:0;background:rgba(5,15,10,.55);display:flex;align-items:flex-end;justify-content:center;z-index:20}
+.sheet{background:var(--card);width:100%;max-width:520px;border-radius:18px 18px 0 0;padding:20px max(18px,env(safe-area-inset-right,0px)) calc(20px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px));max-height:92vh;overflow:auto;animation:up .22s ease-out}
+@media (min-width:560px){.scrim{align-items:center}.sheet{border-radius:18px}}
+@keyframes up{from{transform:translateY(24px);opacity:.4}}
+@media (prefers-reduced-motion:reduce){.sheet{animation:none}}
+.sheet h3{margin:0 0 2px;font:800 30px/1 var(--display);text-transform:uppercase}
+.sheet .sub{color:var(--muted);margin:0 0 16px}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.field label{font-weight:700;font-size:14px}
+.field input{border:1.5px solid var(--rule);background:var(--bg);border-radius:10px;padding:12px;font-size:17px;width:100%}
+.field input:focus{border-color:var(--free);outline:none}
+.field .hint{font-size:13px;color:var(--muted)}
+.code-in{letter-spacing:.5em;font:700 24px/1 var(--display)!important;text-align:center}
+.row{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:6px}
+.err{color:var(--danger);font-weight:600;font-size:14px;min-height:1.2em;margin:4px 0 8px}
+.ok-big{font:800 44px/1 var(--display);color:var(--free);text-transform:uppercase;margin:6px 0 10px}
+
+/* Beheer */
+.admin table{width:100%;border-collapse:collapse;font-size:14px}
+.admin td,.admin th{padding:8px 6px;border-bottom:1px solid var(--rule);text-align:left;vertical-align:middle}
+.admin th{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.admin .t{font:700 18px/1 var(--display);white-space:nowrap;font-variant-numeric:tabular-nums}
+.admin .day-row td{background:var(--bg);font-weight:700;text-transform:uppercase;font-size:12px;letter-spacing:.1em}
+.mini{appearance:none;border:1px solid var(--rule);background:transparent;border-radius:8px;padding:6px 9px;font-size:13px;cursor:pointer;color:var(--ink)}
+.scroll{overflow-x:auto}
+</style>
+</head>
+<body>
+<header class="board">
+  <div class="board-in">
+    <div class="club">TSV Gudok · JO11-4</div>
+    <h1>Spelers&shy;gesprekken <span>na de herfst&shy;vakantie</span></h1>
+    <p class="lead">Kort gesprek van 10 minuten met je kind en de trainer. Eén ouder schuift aan. Kies hieronder een vrije tijd.</p>
+    <div class="facts"><span class="fact">10 minuten</span><span class="fact">Kind + 1 ouder</span><span class="fact">Rond de training</span></div>
+  </div>
+</header>
+
+<main>
+  <div id="mine"></div>
+  <div id="days"><div class="loading">Tijden ophalen…</div></div>
+  <p class="note">Wisselen? Geef eerst je tijd vrij met je 4-cijferige code en kies daarna een nieuwe. Code kwijt? Stuur de trainer een appje.</p>
+  <div class="foot"><span id="upd">&nbsp;</span><button class="btn btn-ghost" id="adminBtn" type="button">Trainer</button></div>
+</main>
+
+<div id="modal"></div>
+
+<script>
+const API="https://kcmtjmaetgyimrisvqaa.supabase.co/rest/v1/rpc/";
+const KEY="sb_publishable_5zayDe_1CyNh5laTZ6_1sA_89Kizyje";
+const TZ="Europe/Amsterdam";
+let slots=[],busy=false,adminCode=null;
+
+async function rpc(fn,body){
+  const r=await fetch(API+fn,{method:"POST",headers:{"apikey":KEY,"Content-Type":"application/json"},body:JSON.stringify(body||{})});
+  if(!r.ok) throw new Error("Geen verbinding met de server. Probeer het zo nog eens.");
+  return r.json();
+}
+const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
+const fmtT=d=>new Intl.DateTimeFormat("nl-NL",{hour:"2-digit",minute:"2-digit",timeZone:TZ}).format(d);
+const fmtDay=d=>new Intl.DateTimeFormat("nl-NL",{weekday:"long",timeZone:TZ}).format(d);
+const fmtDate=d=>new Intl.DateTimeFormat("nl-NL",{day:"numeric",month:"long",timeZone:TZ}).format(d);
+const dayKey=d=>new Intl.DateTimeFormat("en-CA",{timeZone:TZ}).format(d);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const plus10=d=>new Date(d.getTime()+600000);
+
+async function load(){
+  try{
+    const rows=await rpc("gudok_slots");
+    slots=rows.map(r=>({...r,d:new Date(r.start_at)}));
+    const mine=store.get("gudok_mine");
+    if(mine && !slots.find(s=>s.id===mine.id && s.status==="bezet")) store.del("gudok_mine");
+    render();
+    document.getElementById("upd").textContent="Bijgewerkt om "+fmtT(new Date());
+  }catch(e){
+    if(!slots.length) document.getElementById("days").innerHTML='<div class="loading">'+esc(e.message)+'</div>';
+  }
+}
+
+function render(){
+  const mine=store.get("gudok_mine");
+  const m=document.getElementById("mine");
+  if(mine){
+    const s=slots.find(x=>x.id===mine.id);
+    m.innerHTML=s?`<div class="mine"><div class="grow"><small>Jouw gesprek met ${esc(mine.child)}</small><strong>${fmtDay(s.d)} ${fmtDate(s.d)} · ${fmtT(s.d)}</strong></div><button class="btn btn-mine" type="button" id="ics">Zet in agenda</button></div>`:"";
+    const b=document.getElementById("ics"); if(b) b.onclick=()=>ics(s,mine.child);
+  } else m.innerHTML="";
+  const groups={};
+  slots.forEach(s=>{(groups[dayKey(s.d)]=groups[dayKey(s.d)]||[]).push(s)});
+  document.getElementById("days").innerHTML=Object.values(groups).map(g=>{
+    const free=g.filter(s=>s.status==="vrij").length;
+    return `<section class="day"><div class="day-h"><h2>${fmtDay(g[0].d)} ${fmtDate(g[0].d)}</h2><small>${free} vrij</small></div><ul class="slots">${g.map(s=>{
+      const isMine=mine&&mine.id===s.id;
+      const cls=isMine?"st-mine":"st-"+s.status;
+      const label=isMine?"Jouw tijd":s.status==="vrij"?"Vrij":s.status==="bezet"?"Bezet":"Reserve";
+      const act=s.status==="vrij"?`<button class="btn btn-go" type="button" data-book="${s.id}">Kies</button>`
+        :s.status==="bezet"?`<button class="btn btn-ghost" type="button" data-cancel="${s.id}">Vrijgeven</button>`:"";
+      return `<li class="slot ${cls}"><div class="time">${fmtT(s.d)}<small>tot ${fmtT(plus10(s.d))}</small></div><div class="state"><span class="pill">${label}</span></div><div>${act}</div></li>`;
+    }).join("")}</ul></section>`;
+  }).join("");
+  document.querySelectorAll("[data-book]").forEach(b=>b.onclick=()=>openBook(+b.dataset.book));
+  document.querySelectorAll("[data-cancel]").forEach(b=>b.onclick=()=>openCancel(+b.dataset.cancel));
+}
+
+function modal(html){const el=document.getElementById("modal");el.innerHTML=`<div class="scrim" id="scrim"><div class="sheet" role="dialog" aria-modal="true">${html}</div></div>`;
+  document.getElementById("scrim").onclick=e=>{if(e.target.id==="scrim")close()};
+  const f=el.querySelector("input");if(f)setTimeout(()=>f.focus(),60);}
+function close(){document.getElementById("modal").innerHTML=""}
+document.addEventListener("keydown",e=>{if(e.key==="Escape")close()});
+
+function openBook(id){
+  const s=slots.find(x=>x.id===id);
+  const last=store.get("gudok_names")||{};
+  modal(`<h3>${fmtDay(s.d)} ${fmtT(s.d)}</h3><p class="sub">${fmtDate(s.d)}, ${fmtT(s.d)} tot ${fmtT(plus10(s.d))}</p>
+  <form id="f" novalidate>
+    <div class="field"><label for="child">Naam van je kind</label><input id="child" autocomplete="off" maxlength="60" value="${esc(last.child||"")}"></div>
+    <div class="field"><label for="parent">Jouw naam</label><input id="parent" autocomplete="name" maxlength="60" value="${esc(last.parent||"")}"></div>
+    <div class="field"><label for="code">Kies een code van 4 cijfers</label><input id="code" class="code-in" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off"><span class="hint">Hiermee kun je later zelf je tijd vrijgeven. Onthoud hem goed.</span></div>
+    <div class="err" id="err" role="alert"></div>
+    <div class="row"><button class="btn btn-ghost" type="button" id="x">Annuleren</button><button class="btn btn-go" id="go">Tijd vastleggen</button></div>
+  </form>`);
+  document.getElementById("x").onclick=close;
+  document.getElementById("f").onsubmit=async e=>{
+    e.preventDefault(); if(busy)return;
+    const child=document.getElementById("child").value.trim(),parent=document.getElementById("parent").value.trim(),code=document.getElementById("code").value.trim();
+    const err=document.getElementById("err");
+    if(child.length<2){err.textContent="Vul de naam van je kind in.";return}
+    if(parent.length<2){err.textContent="Vul je eigen naam in.";return}
+    if(!/^\d{4}$/.test(code)){err.textContent="De code moet uit precies 4 cijfers bestaan.";return}
+    busy=true;document.getElementById("go").disabled=true;err.textContent="";
+    try{
+      const r=await rpc("gudok_book",{p_slot:id,p_parent:parent,p_child:child,p_code:code});
+      if(r.ok){
+        store.set("gudok_mine",{id,child});store.set("gudok_names",{child,parent});
+        modal(`<p class="sub">Gelukt, je tijd staat vast</p><div class="ok-big">${fmtDay(s.d)}<br>${fmtDate(s.d)} · ${fmtT(s.d)}</div>
+          <p>Gesprek met <b>${esc(child)}</b>. Kom op tijd naar de kantine of de dug-out, de trainer haalt jullie op.</p>
+          <p class="sub">Je code: <b>${esc(code)}</b>. Maak er even een screenshot van.</p>
+          <div class="row"><button class="btn btn-ghost" type="button" id="ics2">Zet in agenda</button><button class="btn btn-go" type="button" id="done">Klaar</button></div>`);
+        document.getElementById("done").onclick=close;
+        document.getElementById("ics2").onclick=()=>ics(s,child);
+      } else {err.textContent=r.msg;}
+    }catch(e2){err.textContent=e2.message}
+    busy=false;const g=document.getElementById("go");if(g)g.disabled=false;load();
+  };
+}
+
+function openCancel(id){
+  const s=slots.find(x=>x.id===id);
+  modal(`<h3>Tijd vrijgeven</h3><p class="sub">${fmtDay(s.d)} ${fmtDate(s.d)}, ${fmtT(s.d)}</p>
+  <form id="f" novalidate>
+    <div class="field"><label for="code">Jouw code van 4 cijfers</label><input id="code" class="code-in" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off"></div>
+    <div class="err" id="err" role="alert"></div>
+    <div class="row"><button class="btn btn-ghost" type="button" id="x">Terug</button><button class="btn btn-go" id="go">Vrijgeven</button></div>
+  </form>`);
+  document.getElementById("x").onclick=close;
+  document.getElementById("f").onsubmit=async e=>{
+    e.preventDefault(); if(busy)return;
+    const code=document.getElementById("code").value.trim(),err=document.getElementById("err");
+    if(!/^\d{4}$/.test(code)){err.textContent="Vul je code van 4 cijfers in.";return}
+    busy=true;document.getElementById("go").disabled=true;
+    try{const r=await rpc("gudok_cancel",{p_slot:id,p_code:code});
+      if(r.ok){const m=store.get("gudok_mine");if(m&&m.id===id)store.del("gudok_mine");close();}
+      else err.textContent=r.msg;
+    }catch(e2){err.textContent=e2.message}
+    busy=false;const g=document.getElementById("go");if(g)g.disabled=false;load();
+  };
+}
+
+function ics(s,child){
+  const f=d=>d.toISOString().replace(/[-:]/g,"").replace(/\.\d{3}/,"");
+  const body=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Gudok JO11-4//NL","BEGIN:VEVENT","UID:gudok-jo11-4-"+s.id+"@gesprek","DTSTAMP:"+f(new Date()),
+    "DTSTART:"+f(s.d),"DTEND:"+f(plus10(s.d)),"SUMMARY:Spelersgesprek "+child+" (JO11-4)","LOCATION:TSV Gudok\\, Sportpark Dalem Zuid\\, Tilburg",
+    "BEGIN:VALARM","TRIGGER:-PT30M","ACTION:DISPLAY","DESCRIPTION:Spelersgesprek","END:VALARM","END:VEVENT","END:VCALENDAR"].join("\r\n");
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([body],{type:"text/calendar"}));a.download="spelersgesprek.ics";document.body.appendChild(a);a.click();a.remove();
+}
+
+/* Beheer */
+document.getElementById("adminBtn").onclick=()=>{
+  modal(`<h3>Trainer</h3><p class="sub">Voer je beheercode in om namen te zien.</p>
+  <form id="f" novalidate><div class="field"><label for="ac">Beheercode</label><input id="ac" autocomplete="off" autocapitalize="characters"></div>
+  <div class="err" id="err" role="alert"></div><div class="row"><button class="btn btn-ghost" type="button" id="x">Sluiten</button><button class="btn btn-go">Openen</button></div></form>`);
+  document.getElementById("x").onclick=close;
+  document.getElementById("f").onsubmit=async e=>{e.preventDefault();const c=document.getElementById("ac").value.trim();
+    try{const r=await rpc("gudok_admin",{p_admin:c});if(!r.ok){document.getElementById("err").textContent=r.msg;return}adminCode=c;showAdmin(r.rows)}catch(e2){document.getElementById("err").textContent=e2.message}};
+};
+function showAdmin(rows){
+  let lastDay="",n=rows.filter(r=>r.child_name).length;
+  const trs=rows.map(r=>{const d=new Date(r.start_at);let pre="";const k=dayKey(d);
+    if(k!==lastDay){lastDay=k;pre=`<tr class="day-row"><td colspan="3">${fmtDay(d)} ${fmtDate(d)}</td></tr>`}
+    const who=r.child_name?`<b>${esc(r.child_name)}</b><br><small>${esc(r.parent_name)}</small>`:(r.is_reserve?"<i>Reserve</i>":"<span style='color:var(--muted)'>vrij</span>");
+    const act=r.child_name?`<button class="mini" data-a="clear" data-id="${r.id}">Vrijmaken</button>`:`<button class="mini" data-a="toggle_reserve" data-id="${r.id}">${r.is_reserve?"Openzetten":"Reserve maken"}</button>`;
+    return pre+`<tr><td class="t">${fmtT(d)}</td><td>${who}</td><td style="text-align:right">${act}</td></tr>`}).join("");
+  modal(`<div class="admin"><h3>Overzicht</h3><p class="sub">${n} van ${rows.length} tijden gekozen</p><div class="scroll"><table><tbody>${trs}</tbody></table></div>
+    <div class="err" id="err"></div><div class="row"><button class="btn btn-go" type="button" id="x">Sluiten</button></div></div>`);
+  document.getElementById("x").onclick=close;
+  document.querySelectorAll("[data-a]").forEach(b=>{let armed=false;b.onclick=async()=>{
+    if(b.dataset.a==="clear"&&!armed){armed=true;b.textContent="Zeker weten?";return}
+    const r=await rpc("gudok_admin_action",{p_admin:adminCode,p_slot:+b.dataset.id,p_action:b.dataset.a});
+    if(!r.ok){document.getElementById("err").textContent=r.msg;return}
+    const a=await rpc("gudok_admin",{p_admin:adminCode});showAdmin(a.rows);load();}});
+}
+
+load();
+setInterval(()=>{if(!document.getElementById("scrim"))load()},20000);
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)load()});
+</script>
+</body>
+</html>
