@@ -115,7 +115,7 @@ main{max-width:640px;margin:-22px auto 0;position:relative;
 <body>
 <header class="board">
   <div class="board-in">
-    <div class="brand"><img class="crest" src="https://www.hollandsevelden.nl/images/club_logo_van_voetbalvereniging_tsv-gudok_uit_tilburg.png?v=20161110113745" alt="Clublogo T.S.V. Gudok" width="64" height="64" onerror="this.remove()"><div class="club">T.S.V. Gudok · JO11-4</div></div>
+    <div class="brand"><img class="crest" id="crest" alt="Clublogo T.S.V. Gudok" width="64" height="64" hidden><div class="club">T.S.V. Gudok · JO11-4</div></div>
     <h1>Spelers&shy;gesprekken <span>na de herfst&shy;vakantie</span></h1>
     <p class="lead">Kort gesprek van 10 minuten met je kind en de trainer. Eén ouder schuift aan. Kies hieronder een vrije tijd.</p>
     <div class="facts"><span class="fact">10 minuten</span><span class="fact">Kind + 1 ouder</span><span class="fact">Rond de training</span></div>
@@ -283,6 +283,7 @@ function showAdmin(rows){
     const a=await rpc("gudok_admin",{p_admin:adminCode});showAdmin(a.rows);load();}});
 }
 
+(async()=>{try{const d=await rpc("gudok_logo");if(typeof d==="string"&&d.startsWith("data:image/")){const c=document.getElementById("crest");c.src=d;c.hidden=false}}catch(e){}})();
 load();
 setInterval(()=>{if(!document.getElementById("scrim"))load()},20000);
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)load()});
