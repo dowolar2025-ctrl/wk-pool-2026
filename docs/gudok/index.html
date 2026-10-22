@@ -123,7 +123,7 @@ main{max-width:640px;margin:-22px auto 0;position:relative;
 <main>
   <div id="mine"></div>
   <div id="days"><div class="loading">Tijden ophalen…</div></div>
-  <p class="note">Wisselen? Geef eerst je tijd vrij met je 4-cijferige code en kies daarna een nieuwe. Code kwijt? Stuur de trainer een appje.</p>
+  <p class="note">Je kiest één vaste tijd. Lukt die toch niet? Stuur de trainer een appje.</p>
   <div class="foot"><span id="upd">&nbsp;</span><button class="btn btn-ghost" id="adminBtn" type="button">Trainer</button></div>
 </main>
 
@@ -178,12 +178,11 @@ function render(){
       const cls=isMine?"st-mine":"st-"+s.status;
       const label=isMine?"Jouw tijd":s.status==="vrij"?"Vrij":s.status==="bezet"?"Bezet":"Reserve";
       const act=s.status==="vrij"?(mine?"":`<button class="btn btn-go" type="button" data-book="${s.id}">Kies</button>`)
-        :s.status==="bezet"?`<button class="btn btn-ghost" type="button" data-cancel="${s.id}">Vrijgeven</button>`:"";
+        :"";
       return `<li class="slot ${cls}"><div class="time">${fmtT(s.d)}<small>tot ${fmtT(plus10(s.d))}</small></div><div class="state"><span class="pill">${label}</span></div><div>${act}</div></li>`;
     }).join("")}</ul></section>`;
   }).join("");
   document.querySelectorAll("[data-book]").forEach(b=>b.onclick=()=>openBook(+b.dataset.book));
-  document.querySelectorAll("[data-cancel]").forEach(b=>b.onclick=()=>openCancel(+b.dataset.cancel));
 }
 
 function modal(html){const el=document.getElementById("modal");el.innerHTML=`<div class="scrim" id="scrim"><div class="sheet" role="dialog" aria-modal="true">${html}</div></div>`;
@@ -199,18 +198,17 @@ function openBook(id){
   <form id="f" novalidate>
     <div class="field"><label for="child">Naam van je kind</label><input id="child" autocomplete="off" maxlength="60" value="${esc(last.child||"")}"></div>
     <div class="field"><label for="parent">Jouw naam</label><input id="parent" autocomplete="name" maxlength="60" value="${esc(last.parent||"")}"></div>
-    <div class="field"><label for="code">Kies een code van 4 cijfers</label><input id="code" class="code-in" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off"><span class="hint">Hiermee kun je later zelf je tijd vrijgeven. Onthoud hem goed.</span></div>
+    <p class="sub">Let op: je kiest één vaste tijd. Wijzigen kan alleen via de trainer.</p>
     <div class="err" id="err" role="alert"></div>
     <div class="row"><button class="btn btn-ghost" type="button" id="x">Annuleren</button><button class="btn btn-go" id="go">Tijd vastleggen</button></div>
   </form>`);
   document.getElementById("x").onclick=close;
   document.getElementById("f").onsubmit=async e=>{
     e.preventDefault(); if(busy)return;
-    const child=document.getElementById("child").value.trim(),parent=document.getElementById("parent").value.trim(),code=document.getElementById("code").value.trim();
+    const child=document.getElementById("child").value.trim(),parent=document.getElementById("parent").value.trim(),code=String(Math.floor(1000+Math.random()*9000));
     const err=document.getElementById("err");
     if(child.length<2){err.textContent="Vul de naam van je kind in.";return}
     if(parent.length<2){err.textContent="Vul je eigen naam in.";return}
-    if(!/^\d{4}$/.test(code)){err.textContent="De code moet uit precies 4 cijfers bestaan.";return}
     busy=true;document.getElementById("go").disabled=true;err.textContent="";
     try{
       const r=await rpc("gudok_book",{p_slot:id,p_parent:parent,p_child:child,p_code:code});
@@ -218,7 +216,6 @@ function openBook(id){
         store.set("gudok_mine",{id,child});store.set("gudok_names",{child,parent});
         modal(`<p class="sub">Gelukt, je tijd staat vast</p><div class="ok-big">${fmtDay(s.d)}<br>${fmtDate(s.d)} · ${fmtT(s.d)}</div>
           <p>Gesprek met <b>${esc(child)}</b>. Kom op tijd naar de kantine of de dug-out, de trainer haalt jullie op.</p>
-          <p class="sub">Je code: <b>${esc(code)}</b>. Maak er even een screenshot van.</p>
           <div class="row"><button class="btn btn-ghost" type="button" id="ics2">Zet in agenda</button><button class="btn btn-go" type="button" id="done">Klaar</button></div>`);
         document.getElementById("done").onclick=close;
         document.getElementById("ics2").onclick=()=>ics(s,child);
