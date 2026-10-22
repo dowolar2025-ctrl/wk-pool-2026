@@ -177,7 +177,7 @@ function render(){
       const isMine=mine&&mine.id===s.id;
       const cls=isMine?"st-mine":"st-"+s.status;
       const label=isMine?"Jouw tijd":s.status==="vrij"?"Vrij":s.status==="bezet"?"Bezet":"Reserve";
-      const act=s.status==="vrij"?`<button class="btn btn-go" type="button" data-book="${s.id}">Kies</button>`
+      const act=s.status==="vrij"?(mine?"":`<button class="btn btn-go" type="button" data-book="${s.id}">Kies</button>`)
         :s.status==="bezet"?`<button class="btn btn-ghost" type="button" data-cancel="${s.id}">Vrijgeven</button>`:"";
       return `<li class="slot ${cls}"><div class="time">${fmtT(s.d)}<small>tot ${fmtT(plus10(s.d))}</small></div><div class="state"><span class="pill">${label}</span></div><div>${act}</div></li>`;
     }).join("")}</ul></section>`;
